@@ -38,21 +38,33 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
 	}
 
 	public enum Sortation{
-		SORT_BY_FIRSTNAME((n1, n2) -> {
-			String s1 = n1.getVorname() + n1.getNachname();
-			String s2 = n2.getVorname() + n2.getNachname();
-			return s1.toLowerCase().compareTo(s2.toLowerCase());
+		SORT_BY_FIRSTNAME(new Comparator<NamiMitglied>() {
+			@Override
+			public int compare(NamiMitglied n1, NamiMitglied n2) {
+				String s1 = n1.getVorname() + n1.getNachname();
+				String s2 = n2.getVorname() + n2.getNachname();
+				return s1.toLowerCase().compareTo(s2.toLowerCase());
+			}
 		}),
-		SORT_BY_LASTNAME((n1, n2) -> {
-			String s1 = n1.getNachname() + n1.getVorname();
-			String s2 = n2.getNachname() + n2.getVorname();
-			return s1.toLowerCase().compareTo(s2.toLowerCase());
+		SORT_BY_LASTNAME(new Comparator<NamiMitglied>() {
+			@Override
+			public int compare(NamiMitglied n1, NamiMitglied n2) {
+				String s1 = n1.getNachname() + n1.getVorname();
+				String s2 = n2.getNachname() + n2.getVorname();
+				return s1.toLowerCase().compareTo(s2.toLowerCase());
+			}
 		}),
-		SORT_BY_AGE((n1, n2) -> {
-			return n1.getGeburtsDatum().compareTo(n2.getGeburtsDatum());
+		SORT_BY_AGE(new Comparator<NamiMitglied>() {
+			@Override
+			public int compare(NamiMitglied n1, NamiMitglied n2) {
+				return n1.getGeburtsDatum().compareTo(n2.getGeburtsDatum());
+			}
 		}),
-		SORT_BY_ID((n1, n2) -> {
-			return n1.getMitgliedsnummer() - n2.getMitgliedsnummer();
+		SORT_BY_ID(new Comparator<NamiMitglied>() {
+			@Override
+			public int compare(NamiMitglied n1, NamiMitglied n2){
+				return n1.getMitgliedsnummer() - n2.getMitgliedsnummer();
+			}
 		});
 
 		private Comparator<NamiMitglied> comparator;
