@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment/>
+<entry key="regex.beitragszahlungen">^\s*var zahlungenStore = Ext.create\('Ext.data.Store',\{data:\{items:(.*)\},fields:\["id","rechnungsNummer","rechnungsPosition","buchungsText","beitragsSatz","value","beitragBis","status","beitragsKonto"\],proxy:\{type: 'memory',reader: \{type: 'json',root: 'items'\}\}\}\);$</entry>
+</properties>

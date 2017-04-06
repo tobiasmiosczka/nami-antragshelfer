@@ -1,0 +1,17 @@
+package nami.connector.json;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import nami.connector.Mitgliedstyp;
+
+import java.lang.reflect.Type;
+
+public class MitgliedstypDeserializer implements JsonDeserializer<Mitgliedstyp> {
+
+    @Override
+    public Mitgliedstyp deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        return Mitgliedstyp.fromString(json.getAsString());
+    }
+}
