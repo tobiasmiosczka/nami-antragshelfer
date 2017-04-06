@@ -46,7 +46,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.tobiasmiosczka.nami</groupId>
-            <artifactId>connector</artifactId>
+            <artifactId>application-forms</artifactId>
             <version>3.1</version>
         </dependency>
     </dependencies>

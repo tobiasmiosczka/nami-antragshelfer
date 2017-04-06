@@ -15,6 +15,7 @@
 
     <modules>
         <module>Connector</module>
+        <module>ApplicationForms</module>
         <module>Antragshelfer</module>
     </modules>
 
