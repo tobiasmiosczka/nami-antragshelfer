@@ -4,8 +4,8 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.toasterguy.nami</groupId>
-    <artifactId>connector</artifactId>
+    <groupId>com.github.tobiasmiosczka.nami</groupId>
+    <artifactId>nami</artifactId>
     <version>3.1</version>
     <packaging>jar</packaging>
 
