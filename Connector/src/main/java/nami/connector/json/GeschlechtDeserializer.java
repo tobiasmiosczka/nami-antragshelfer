@@ -8,7 +8,7 @@ import nami.connector.Geschlecht;
 
 import java.lang.reflect.Type;
 
-public class GeschlechtDeserializer implements JsonDeserializer<Geschlecht> {
+class GeschlechtDeserializer implements JsonDeserializer<Geschlecht> {
 
     @Override
     public Geschlecht deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

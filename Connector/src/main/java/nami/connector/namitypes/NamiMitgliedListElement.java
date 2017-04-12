@@ -110,7 +110,6 @@ public class NamiMitgliedListElement extends NamiAbstractMitglied implements Com
         return Integer.parseInt(entries.version);
     }
 
-    @Override
     public NamiMitglied getFullData(NamiConnector con) throws NamiApiException, IOException {
         return NamiMitglied.getMitgliedById(con, id);
     }

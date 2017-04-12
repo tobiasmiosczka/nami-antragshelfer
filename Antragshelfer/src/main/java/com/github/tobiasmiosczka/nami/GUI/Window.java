@@ -13,10 +13,10 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.GroupSelector;
 import com.github.tobiasmiosczka.nami.applicationForms.*;
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.SchulungenMap;
-import com.github.tobiasmiosczka.nami.program.Helper;
-import com.github.tobiasmiosczka.nami.program.Program;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
+import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
+import com.github.tobiasmiosczka.nami.program.Program;
 import nami.connector.Mitgliedstyp;
 import nami.connector.Stufe;
 import nami.connector.exception.NamiApiException;
@@ -98,8 +98,12 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 	}
 
 	public static void main(String[] args) {
-		Helper.setFileEncodingUTF8();
-		Window window = new Window();
+		try {
+			FileEncodingHelper.setFileEncoding("UTF-8");
+		} catch (IllegalAccessException | NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+        Window window = new Window();
 	}
 
 	/**
@@ -608,7 +612,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 				return;
 			}
 			try {
-				new WriterNotfallliste().run(sd.getAbsolutePath(), program.getParticipants());
+				new WriterEmergencyList().run(sd.getAbsolutePath(), program.getParticipants());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			} catch (NoParticipantsException e1) {

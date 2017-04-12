@@ -8,7 +8,7 @@ import nami.connector.Mitgliedstyp;
 
 import java.lang.reflect.Type;
 
-public class MitgliedstypDeserializer implements JsonDeserializer<Mitgliedstyp> {
+class MitgliedstypDeserializer implements JsonDeserializer<Mitgliedstyp> {
 
     @Override
     public Mitgliedstyp deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

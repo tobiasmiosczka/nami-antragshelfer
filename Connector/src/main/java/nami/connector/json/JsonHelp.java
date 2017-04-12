@@ -1,5 +1,6 @@
 package nami.connector.json;
 
+import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Baustein;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nami.connector.*;
@@ -15,6 +16,7 @@ public class JsonHelp {
             .registerTypeAdapter(MitgliedStatus.class, new MitgliedStatusDeserializer())
             .registerTypeAdapter(Mitgliedstyp.class, new MitgliedStatusDeserializer())
             .registerTypeAdapter(Stufe.class, new StufeDeserializer())
+            .registerTypeAdapter(Baustein.class, new BausteinDeserializer())
             .create();
 
     public static String toJson(Object o) {

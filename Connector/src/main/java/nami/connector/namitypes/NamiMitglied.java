@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import nami.connector.*;
 import nami.connector.exception.NamiApiException;
@@ -226,66 +224,6 @@ public class NamiMitglied extends NamiAbstractMitglied{
         return ort;
     }
 
-    @Override
-    public NamiMitglied getFullData(NamiConnector con) throws NamiApiException, IOException {
-        // do nothing (this object already contains the full data)
-        return this;
-    }
-
-    /**
-     * Gibt die Stammdaten dieses Mitglieds als ausführlichen Text zurück. Der
-     * Rückgabewert enthält also mehr Angaben als die Ausgabe der
-     * <tt>toString</tt>-Method.
-     *
-     * @return für die Ausgabe formatierte Mitgliedsdaten
-     */
-    public String toLongString() {
-        StringBuilder str = new StringBuilder();
-
-        /*
-          Speichert eine Zeile, die ausgegeben werden soll.
-         */
-        final class Row {
-            private String key;
-            private String value;
-
-            private Row(String key, String value) {
-                this.key = key;
-                this.value = value;
-            }
-        }
-        List<Row> rows = new LinkedList<>();
-        rows.add(new Row("Nachname", nachname));
-        rows.add(new Row("Vorname", vorname));
-        rows.add(new Row("Straße", strasse));
-        rows.add(new Row("PLZ, Ort", plz + " " + ort));
-        rows.add(new Row("E-Mail", email));
-        rows.add(new Row("E-Mail Vertr.", emailVertretungsberechtigter));
-        rows.add(new Row("Telefon 1", telefon1));
-        rows.add(new Row("Telefon 2", telefon2));
-        rows.add(new Row("Telefon 3", telefon3));
-        rows.add(new Row("Telefax", telefax));
-        //TODO: integrate
-        rows.add(new Row("Geburtsdatum", geburtsDatum.toString()));
-        rows.add(new Row("Stammgruppierung", gruppierung));
-        rows.add(new Row("Stufe", stufe.toString()));
-        // TODO: integrate
-        rows.add(new Row("Eintrittsdatum", eintrittsdatum.toString()));
-
-        int longestKey = 0;
-        for (Row row : rows) {
-            if (row.key.length() > longestKey) {
-                longestKey = row.key.length();
-            }
-        }
-        String formatString = "  %-" + (longestKey + 1) + "s %s\n";
-        for (Row row : rows) {
-            str.append(String.format(formatString, row.key + ":", row.value));
-        }
-
-        return str.toString();
-    }
-
     /**
      * Holt den Datensatz eines Mitglieds aus NaMi.
      *
@@ -320,7 +258,6 @@ public class NamiMitglied extends NamiAbstractMitglied{
      *             IOException
      * @throws NamiException
      *             Fehler der bei der Anfrage an NaMi auftritt
-     *
      */
     public static int getIdByMitgliedsnummer(NamiConnector con, String mitgliedsnummer) throws IOException, NamiException {
         NamiSearchedValues search = new NamiSearchedValues();

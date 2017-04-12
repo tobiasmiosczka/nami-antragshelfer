@@ -6,30 +6,21 @@ package nami.connector;
  * @author Fabian Lipp
  * 
  */
-public class NamiServer {
+public enum NamiServer {
 
-    /**
-     * Daten des NaMi-Testservers.
-     */
-    public static final NamiServer TESTSERVER = new NamiServer(
-            "namitest.dpsg.de", false, "ica", true);
+    //Daten des NaMi-Testservers.
+    TESTSERVER("namitest.dpsg.de", false, "ica", true),
 
-    /**
-     * Daten des Produktiv-Servers. Der offizielle API-Zugang nicht genutzt.
-     */
-    public static final NamiServer LIVESERVER = new NamiServer("nami.dpsg.de",
-            true, "ica", false);
+    //Daten des Produktiv-Servers. Der offizielle API-Zugang nicht genutzt.
+    LIVESERVER("nami.dpsg.de", true, "ica", false),
 
-    /**
-     * Daten des Produktiv-Servers mit Benutzung der API.
-     */
-    public static final NamiServer LIVESERVER_WITH_API = new NamiServer(
-            "nami.dpsg.de", true, "ica", true);
+    //Daten des Produktiv-Servers mit Benutzung der API.
+    LIVESERVER_WITH_API("nami.dpsg.de", true, "ica", true);
 
-    private String namiServer = "namitest.dpsg.de";
-    private boolean useSsl = false;
-    private String namiDeploy = "ica";
-    private boolean useApiAccess = true;
+    final private String namiServer;
+    final private boolean useSsl;
+    final private String namiDeploy;
+    final private boolean useApiAccess;
 
     /**
      * Erstellt die Beschreibung eines NaMi-Servers.
@@ -43,7 +34,7 @@ public class NamiServer {
      * @param useApiAccess
      *            gibt an, ob der offizielle API-Zugang genutzt werden soll
      */
-    public NamiServer(String namiServer, boolean useSsl, String namiDeploy,
+    NamiServer(String namiServer, boolean useSsl, String namiDeploy,
             boolean useApiAccess) {
         this.namiServer = namiServer;
         this.useSsl = useSsl;

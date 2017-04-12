@@ -28,14 +28,10 @@ public enum MitgliedStatus {
      *         nicht umgesetzt werden kann
      */
     public static MitgliedStatus fromString(String str) {
-        switch (str) {
-        case "Aktiv":
+        switch (str.toLowerCase()) {
         case "aktiv":
-        case "AKTIV":
             return AKTIV;
-        case "Inaktiv":
         case "inaktiv":
-        case "INAKTIV":
             return INAKTIV;
         case "":
             return null;

@@ -8,7 +8,7 @@ import nami.connector.Beitragsart;
 
 import java.lang.reflect.Type;
 
-public class BeitragsartDeserializer implements JsonDeserializer<Beitragsart> {
+class BeitragsartDeserializer implements JsonDeserializer<Beitragsart> {
 
     @Override
     public Beitragsart deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

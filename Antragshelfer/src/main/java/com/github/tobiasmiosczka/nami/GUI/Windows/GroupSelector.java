@@ -16,9 +16,9 @@ public class GroupSelector extends JFrame implements ActionListener {
     private final JDialog dialog;
     private final JButton   btnOne,
                             btnAll;
-    private JComboBox<Gruppierung> cbGroupSelect;
+    private final JComboBox<Gruppierung> cbGroupSelect;
 
-    private Gruppierung[] groups;
+    private final Gruppierung[] groups;
 
     private Gruppierung group = null;
 

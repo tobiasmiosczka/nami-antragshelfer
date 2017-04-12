@@ -23,13 +23,15 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
@@ -52,7 +54,7 @@ public class NamiConnector {
     private final NamiServer server;
     private final NamiCredentials credentials;
 
-    private final HttpClient httpclient = HttpClientBuilder.create().build();
+    private final CloseableHttpClient httpclient = HttpClientBuilder.create().build();
     private static final Logger log = Logger.getLogger(NamiConnector.class.getName());
 
     /**
@@ -99,7 +101,7 @@ public class NamiConnector {
             nvps.add(new BasicNameValuePair("Login", "API"));
             nvps.add(new BasicNameValuePair("redirectTo", "./pages/loggedin.jsp"));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-            HttpResponse response = execute(httpPost, true);
+            HttpResponse response = execute(httpPost);
             HttpEntity responseEntity = response.getEntity();
 
             Type type = NamiApiResponse.getType(Object.class);
@@ -119,7 +121,7 @@ public class NamiConnector {
             nvps.add(new BasicNameValuePair("redirectTo", "app.jsp"));
             nvps.add(new BasicNameValuePair("Login", "Anmelden"));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-            HttpResponse response = execute(httpPost, false);
+            HttpResponse response = execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
@@ -129,7 +131,7 @@ public class NamiConnector {
                 if (locationHeader != null) {
                     String redirectUrl = locationHeader.getValue();
                     HttpGet httpGet = new HttpGet(redirectUrl);
-                    response = execute(httpGet, false);
+                    response = execute(httpGet);
                     statusCode = response.getStatusLine().getStatusCode();
                     log.info("Got redirect to: " + redirectUrl);
                     System.out.println(statusCode);
@@ -184,7 +186,7 @@ public class NamiConnector {
         return serializer.createJDom(tagNode);
     }
 
-    private HttpResponse execute(HttpUriRequest request, boolean followRedirect) throws IOException {
+    private HttpResponse execute(HttpUriRequest request) throws IOException {
         log.fine("Sending request to NaMi-Server: " + request.getURI());
         return httpclient.execute(request);
     }
@@ -286,7 +288,7 @@ public class NamiConnector {
         }
 
         // Sende Request an Server
-        HttpResponse response = execute(request, false);
+        HttpResponse response = execute(request);
         HttpEntity responseEntity = response.getEntity();
 
         checkResponse(response, responseEntity, "application/json");
@@ -356,7 +358,7 @@ public class NamiConnector {
         }
 
         // Sende Request an Server
-        HttpResponse response = execute(request, false);
+        HttpResponse response = execute(request);
         HttpEntity responseEntity = response.getEntity();
 
         checkResponse(response, responseEntity, "text/html");

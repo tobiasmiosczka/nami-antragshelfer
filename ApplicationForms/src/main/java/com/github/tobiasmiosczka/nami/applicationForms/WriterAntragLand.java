@@ -3,27 +3,24 @@ package com.github.tobiasmiosczka.nami.applicationForms;
 import java.util.Date;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.calcAge;
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateString;
+public class WriterAntragLand extends Writer {
 
-
-public class WriterAntragLand extends WriterAntrag{
-
-	private final String 	mitgliedsVerband;
-	private final String träger;
-	private final String plz;
-	private final String ort;
-	private final String land;
+	private final String 	mitgliedsVerband,
+							träger,
+							plz,
+							ort,
+							land;
 
 	private final boolean keinDatum;
 
-	private final Date 	datumVon;
-	private final Date datumBis;
+	private final Date 	datumVon,
+						datumBis;
 
 	public WriterAntragLand(String mitgliedsVerband, String träger, boolean keinDatum, Date datumVon, Date datumBis, String plz, String ort, String land) {
 		super();
@@ -38,7 +35,7 @@ public class WriterAntragLand extends WriterAntrag{
 	}
 
 	@Override
-	public void doTheMagic(List<NamiMitglied> participants, TextDocument odtDoc){
+	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
 		//association data
 		Table tAssociation = odtDoc.getHeader().getTableList().get(0);
 		//Mitgliedsverband
@@ -49,8 +46,8 @@ public class WriterAntragLand extends WriterAntrag{
 		//event data
 		Table tEvent = odtDoc.getHeader().getTableList().get(1);
 		//Datum (von-bis)
-		if(!keinDatum){
-			tEvent.getCellByPosition(2, 0).setStringValue(getDateString(datumVon) + " - " + getDateString(datumBis));
+		if (!keinDatum) {
+			tEvent.getCellByPosition(2, 0).setStringValue(TimeHelp.getDateString(datumVon) + " - " + TimeHelp.getDateString(datumBis));
 		}
 		//PLZ Ort
 		tEvent.getCellByPosition(8, 0).setStringValue(plz + " " + ort);
@@ -66,44 +63,25 @@ public class WriterAntragLand extends WriterAntrag{
 
 		for (NamiMitglied participant : participants) {
 
-			int row = tParticipants.getRowCount() - 1;
+			Row row = tParticipants.getRowByIndex(tParticipants.getRowCount() - 1);
 			//Lfd. Nr.
 
 			//Kursleiter K= Kursleiter, R= Referent, L= Leiter
 
 			//Name, Vorname
-			tParticipants.getCellByPosition(2, row).setStringValue(participant.getNachname() + ", " + participant.getVorname());
+			row.getCellByIndex(2).setStringValue(participant.getNachname() + ", " + participant.getVorname());
 			//Anschrift: Straße, PLZ, Wohnort
-			tParticipants.getCellByPosition(3, row).setStringValue(participant.getStrasse() + ", " + participant.getPLZ() + ", " + participant.getOrt());
+			row.getCellByIndex(3).setStringValue(participant.getStrasse() + ", " + participant.getPLZ() + ", " + participant.getOrt());
 			//w=weibl. m=männl.
-			String geschlecht;
-			switch (participant.getGeschlecht()) {
-				case MAENNLICH:
-					geschlecht = "m";
-					break;
-				case WEIBLICH:
-					geschlecht = "W";
-					break;
-				default:
-					geschlecht = "";
-					break;
-			}
-			tParticipants.getCellByPosition(4, row).setStringValue(geschlecht);
+			row.getCellByIndex(4).setStringValue("" + participant.getGeschlecht().getCharacter());
 			//Alter
 			if (!keinDatum) {
-				Date birthday = participant.getGeburtsDatum();
-				int diffInYearsStart = calcAge(birthday, datumBis);
-				int diffInYearsEnd = calcAge(birthday, datumBis);
-				if (diffInYearsEnd > diffInYearsStart) {//participant has his/her birthday at the event
-					tParticipants.getCellByPosition(5, row).setStringValue(String.valueOf(diffInYearsStart) + "-" + String.valueOf(diffInYearsEnd));
-				} else {
-					tParticipants.getCellByPosition(5, row).setStringValue(String.valueOf(diffInYearsStart));
-				}
+				row.getCellByIndex(5).setStringValue(TimeHelp.calcAgeRange(participant.getGeburtsDatum(), datumVon, datumBis));
 			}
 			Row r = tParticipants.appendRow();
 			r.setHeight(height, true);
 		}
-		tParticipants.removeRowsByIndex(tParticipants.getRowCount() -1, tParticipants.getRowCount() - 1);
+		tParticipants.removeRowsByIndex(tParticipants.getRowCount() - 1, tParticipants.getRowCount() - 1);
 	}
 
 	@Override

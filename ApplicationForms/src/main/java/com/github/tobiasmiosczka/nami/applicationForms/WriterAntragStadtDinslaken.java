@@ -3,6 +3,7 @@ package com.github.tobiasmiosczka.nami.applicationForms;
 import java.util.Date;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
@@ -11,17 +12,18 @@ import org.odftoolkit.simple.style.StyleTypeDefinitions;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.calcAge;
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateString;
 
 
-public class WriterAntragStadtDinslaken extends WriterAntrag {
+public class WriterAntragStadtDinslaken extends Writer {
 
-	private final String 	massnahme;
-	private final String ort;
-	private final boolean keinDatum;
-	private final Date	datumVon;
-	private final Date datumBis;
+	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
+	private static final double height = 0.7;
+
+	private final String 	massnahme,
+							ort;
+	private final boolean 	keinDatum;
+	private final Date		datumVon,
+							datumBis;
 
 	public WriterAntragStadtDinslaken(String massnahme, boolean keinDatum, Date datumVon, Date datumBis, String ort) {
 		super();
@@ -33,27 +35,23 @@ public class WriterAntragStadtDinslaken extends WriterAntrag {
 	}
 
 	@Override
-	public void doTheMagic(List<NamiMitglied> participants, TextDocument odtDoc) {
+	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
 		//event data
 		Table tEvent = odtDoc.getHeader().getTableList().get(0);
 		//Maßnahme
 		tEvent.getCellByPosition(0, 0).setStringValue(tEvent.getCellByPosition(0, 0).getStringValue() + massnahme);
 		//Datum von bis
 		if (!keinDatum) {
-			tEvent.getCellByPosition(0, 1).setStringValue(tEvent.getCellByPosition(0, 1).getStringValue() + getDateString(datumVon) + " - " + getDateString(datumBis));
+			tEvent.getCellByPosition(0, 1).setStringValue(tEvent.getCellByPosition(0, 1).getStringValue() + TimeHelp.getDateString(datumVon) + " - " + TimeHelp.getDateString(datumBis));
 		}
 		tEvent.getCellByPosition(1, 1).setStringValue(tEvent.getCellByPosition(1, 1).getStringValue() + ort);
 
 		//participants data
 		Table tParticipants = odtDoc.getTableList().get(0);
 
-		Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
-		double height = 0.7;
-
 		boolean first = true;
 		for (NamiMitglied participant : participants) {
 			Row row;
-
 			if (first) {
 				row = tParticipants.getRowByIndex(1);
 				first = false;
@@ -67,7 +65,6 @@ public class WriterAntragStadtDinslaken extends WriterAntrag {
 				row.getCellByIndex(i).setFont(font);
 			}
 
-			Date birthday = participant.getGeburtsDatum();
 			//Nr.
 
 			//Nachnahme
@@ -81,19 +78,10 @@ public class WriterAntragStadtDinslaken extends WriterAntrag {
 			//Ort
 			row.getCellByIndex(5).setStringValue(participant.getOrt());
 			//Geburtsdatum
-			row.getCellByIndex(6).setStringValue(getDateString(birthday));
+			row.getCellByIndex(6).setStringValue(TimeHelp.getDateString(participant.getGeburtsDatum()));
 			//Alter
 			if (!keinDatum) {
-				//Alter
-				//compute age
-				int diffInYearsStart = calcAge(birthday, datumVon);
-				int diffInYearsEnd = calcAge(birthday, datumBis);
-				if (diffInYearsEnd > diffInYearsStart) {
-					//participant has his/her birthday at the event
-					row.getCellByIndex(7).setStringValue(String.valueOf(diffInYearsStart) + "-" + String.valueOf(diffInYearsEnd));
-				} else {
-					row.getCellByIndex(7).setStringValue(String.valueOf(diffInYearsStart));
-				}
+				row.getCellByIndex(7).setStringValue(TimeHelp.calcAgeRange(participant.getGeburtsDatum(), datumVon, datumBis));
 			}
 		}
 	}

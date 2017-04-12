@@ -15,7 +15,7 @@ import org.odftoolkit.simple.TextDocument;
  * @author Tobias Miosczka
  *
  */
-public abstract class WriterAntrag {
+public abstract class Writer {
 
 	static {
 		// set loglevel off
@@ -38,7 +38,7 @@ public abstract class WriterAntrag {
 		InputStream s = Thread.currentThread().getContextClassLoader().getResourceAsStream("applicationForms/"+getResourceFileName());
 		TextDocument odtDoc = TextDocument.loadDocument(s);
 		//manipulate doc
-		doTheMagic(participants, odtDoc);
+		manipulateDoc(participants, odtDoc);
 
 		//output
 		odtDoc.save(output);
@@ -102,7 +102,7 @@ public abstract class WriterAntrag {
 	 * @param odtDoc
 	 * 				document object
 	 */
-	protected abstract void doTheMagic(List<NamiMitglied> participants, TextDocument odtDoc);
+	protected abstract void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc);
 		
 	/**
 	 * returns resource file name as a string. the resource files saved in "/resources"

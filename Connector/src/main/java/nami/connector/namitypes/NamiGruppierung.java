@@ -110,13 +110,13 @@ public class NamiGruppierung {
             return grpNum;
         } else {
             // Es wird eine höhere Ebene verlangt
-            String result = grpNum.substring(0, targetE.getSignificantChars());
+            StringBuilder result = new StringBuilder(grpNum.substring(0, targetE.getSignificantChars()));
 
             // Fülle die GruppierungsID rechts mit Nullen auf 6 Stellen auf
             while (result.length() < 6) {
-                result = result + "0";
+                result.append("0");
             }
-            return result;
+            return result.toString();
         }
     }
 

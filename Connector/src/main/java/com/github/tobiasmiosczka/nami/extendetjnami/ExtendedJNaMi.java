@@ -36,6 +36,7 @@ public class ExtendedJNaMi {
         NamiURIBuilder builder = con.getURIBuilder(URL_SCHULUNGEN);
         builder.appendPath(Integer.toString(mitgliedsID));
         builder.appendPath("/flist");
+        System.out.println(builder.build().toString());
         HttpGet httpGet = new HttpGet(builder.build());
         Type type = new TypeToken<NamiResponse<Collection<Schulung>>>() {
         }.getType();

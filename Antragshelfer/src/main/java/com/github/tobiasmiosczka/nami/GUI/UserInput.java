@@ -1,7 +1,8 @@
 package com.github.tobiasmiosczka.nami.GUI;
 
+import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.awt.event.ActionEvent;
 
 public class UserInput implements ActionListener{
 
-	abstract class Input<Type>{
+	abstract class Input<T>{
 		private final JLabel label;
 		
 		public Input(JPanel parent, int index, String description) {
@@ -30,7 +31,7 @@ public class UserInput implements ActionListener{
 		}
 		
 		public abstract boolean check();
-		public abstract Type getValue();
+		public abstract T getValue();
 		public abstract String toString();
 	}
 	
@@ -92,11 +93,9 @@ public class UserInput implements ActionListener{
 	
 	private class InputDate extends Input<Date>{
 		final JTextField textField;
-		final SimpleDateFormat sdfUserInput = new SimpleDateFormat("dd.MM.yyyy");
-		
 		public InputDate(JPanel parent, int index, String description, Date preview) {
 			super(parent, index, description);
-			textField = new JTextField(sdfUserInput.format(preview));
+			textField = new JTextField(TimeHelp.getDateString(preview));
 			textField.setBounds(150,  11 + (index * 30), 220,  20);
 			parent.add(textField);
 		}
@@ -104,7 +103,7 @@ public class UserInput implements ActionListener{
 		@Override
 		public boolean check() {
 			try {
-				sdfUserInput.parse(textField.getText());
+				TimeHelp.getDateFromInputInput(textField.getText());
 			} catch (ParseException e) {
 				return false;
 			}
@@ -114,7 +113,7 @@ public class UserInput implements ActionListener{
 		@Override
 		public Date getValue() {
 			try {
-				return sdfUserInput.parse(textField.getText());
+				return TimeHelp.getDateFromInputInput(textField.getText());
 			} catch (ParseException e) {
 				return null;
 			}
@@ -122,7 +121,7 @@ public class UserInput implements ActionListener{
 
 		@Override
 		public String toString() {
-			return sdfUserInput.format(getValue());
+			return TimeHelp.getDateString(getValue());
 		}	
 	}
 	

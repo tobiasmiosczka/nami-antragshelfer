@@ -27,7 +27,7 @@ public enum Ebene {
      */
     STAMM(6);
 
-    private int significantChars;
+    private final int significantChars;
 
     Ebene(int significantChars) {
         this.significantChars = significantChars;
@@ -52,12 +52,12 @@ public enum Ebene {
      */
     public static Ebene getFromGruppierungId(int gruppierungId) {
         // Fülle die GruppierungsID links mit Nullen auf 6 Stellen auf
-        String gruppierungsString = Integer.toString(gruppierungId);
+        StringBuilder gruppierungsString = new StringBuilder(Integer.toString(gruppierungId));
         while (gruppierungsString.length() < 6) {
-            gruppierungsString = "0" + gruppierungsString;
+            gruppierungsString.insert(0, "0");
         }
 
-        return getFromGruppierungId(gruppierungsString);
+        return getFromGruppierungId(gruppierungsString.toString());
     }
 
     /**
@@ -87,7 +87,7 @@ public enum Ebene {
      * @return entsprechende Ebene; <code>null</code>, wenn der String nicht
      *         umgesetzt werden kann
      */
-    public static Ebene getFromString(String str) {
+    public static Ebene fromString(String str) {
         if (str == null) {
             return null;
         }

@@ -8,27 +8,32 @@ package nami.connector;
  */
 public enum Stufe {
 
-    WOELFLING,
-    JUNGPFADFINDER,
-    PFADFINDER,
-    ROVER,
-    ANDERE;
+    WOELFLING("Wölfling"),
+    JUNGPFADFINDER("Jungpfadfinder"),
+    PFADFINDER("Pfadfinder"),
+    ROVER("Rover"),
+    ANDERE("Andere");
 
-    public static Stufe fromString(String str) {
-        if(str == null) {
+    private final String stufe;
+
+    Stufe(String stufe) {
+        this.stufe = stufe;
+    }
+
+    @Override
+    public String toString() {
+        return stufe;
+    }
+
+    public static Stufe fromString(String string) {
+        if(string == null) {
             return ANDERE;
         }
-        switch (str) {
-            case "Wölfling":
-                return WOELFLING;
-            case "Jungpfadfinder":
-                return JUNGPFADFINDER;
-            case "Pfadfinder":
-                return PFADFINDER;
-            case "Rover":
-                return ROVER;
-            default:
-                return ANDERE;
+        for(Stufe stufe : Stufe.values()) {
+            if(stufe.toString().equals(string)) {
+                return stufe;
+            }
         }
+        return ANDERE;
     }
 }

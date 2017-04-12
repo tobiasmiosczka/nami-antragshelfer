@@ -8,7 +8,7 @@ import nami.connector.Stufe;
 
 import java.lang.reflect.Type;
 
-public class StufeDeserializer implements JsonDeserializer<Stufe> {
+class StufeDeserializer implements JsonDeserializer<Stufe> {
 
     @Override
     public Stufe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

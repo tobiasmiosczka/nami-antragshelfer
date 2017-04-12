@@ -1,6 +1,7 @@
 package com.github.tobiasmiosczka.nami.program;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class SortedList<T> extends ArrayList<T> {
@@ -22,7 +23,7 @@ public class SortedList<T> extends ArrayList<T> {
     }
 
     private void update() {
-        this.sort(this.comparator);
+        Collections.sort(this, this.comparator);
     }
 
     public Comparator<T> getComparator() {

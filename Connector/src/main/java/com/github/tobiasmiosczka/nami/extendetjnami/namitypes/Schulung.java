@@ -1,53 +1,45 @@
 package com.github.tobiasmiosczka.nami.extendetjnami.namitypes;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
-/**
- * Created by Tobias on 25.09.2016.
- * Representation of a members courses
- */
 public class Schulung {
-    public class SchulungsDaten {
-        private int id;
-        private String vstgName;
-        private String veranstalter;
-        private String rowCssClass;
-        private String mitglied;
-        private String baustein;
-        private Date vstgTag;
 
-        public String getVstgName() {
-            return vstgName;
-        }
-
-        public String getVeranstalter() {
-            return veranstalter;
-        }
-
-        public String getBaustein() {
-            return baustein;
-        }
-
-        public Date getVstgTag() {
-            return vstgTag;
-        }
-    }
-
-    private  String Descriptor;
-    private String name;
-    private SchulungsDaten entries;
-    private String id;
+    @SerializedName("entries_vstgTag")
+    @Expose
+    private Date date;
+    @SerializedName("entries_veranstalter")
+    @Expose
+    private String veranstalter;
+    @SerializedName("entries_vstgName")
+    @Expose
+    private String veranstaltungsname;
+    @SerializedName("entries_baustein")
+    @Expose
+    private Baustein baustein;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("descriptor")
+    @Expose
+    private String descriptor;
+    @SerializedName("entries_id")
+    @Expose
+    private Integer entriesId;
+    @SerializedName("representedClass")
+    @Expose
     private String representedClass;
+    @SerializedName("entries_mitglied")
+    @Expose
+    private String entriesMitglied;
 
-    public String getDescriptor() {
-        return Descriptor;
+    public Baustein getBaustein() {
+        return baustein;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public SchulungsDaten getSchulungsDaten() {
-        return entries;
+    public Date getDate() {
+        return date;
     }
 }

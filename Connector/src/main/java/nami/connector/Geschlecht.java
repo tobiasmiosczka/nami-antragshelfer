@@ -10,12 +10,28 @@ public enum Geschlecht {
     /**
      * Männlich.
      */
-    MAENNLICH,
+    MAENNLICH("männlich", 'm'),
 
     /**
      * Weiblich.
      */
-    WEIBLICH;
+    WEIBLICH("weiblich", 'w');
+
+    private final String string;
+    private final char character;
+
+    Geschlecht(String string, char character) {
+        this.string = string;
+        this.character = character;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public char getCharacter() {
+        return character;
+    }
 
     /**
      * Setzt einen String ins entsprechende Geschlecht um.
