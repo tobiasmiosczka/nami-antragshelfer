@@ -108,7 +108,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      */
     public void login(String user, String pass) throws NamiLoginException, IOException{
         NamiCredentials credentials = new NamiCredentials(user, pass);
-        connector = new NamiConnector(NamiServer.LIVESERVER_WITH_API, credentials);
+        connector = new NamiConnector(NamiServer.LIVESERVER, credentials);
         connector.namiLogin();
     }
 

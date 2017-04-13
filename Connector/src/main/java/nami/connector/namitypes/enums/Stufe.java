@@ -1,4 +1,4 @@
-package nami.connector;
+package nami.connector.namitypes.enums;
 
 /**
  * Stufen, die es in NaMi gibt.

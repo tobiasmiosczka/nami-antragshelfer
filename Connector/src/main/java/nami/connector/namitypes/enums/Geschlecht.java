@@ -1,32 +1,29 @@
-package nami.connector;
+package nami.connector.namitypes.enums;
 
 /**
  * Beschreibt das Geschlecht eines Mitglieds.
  * 
  * @author Fabian Lipp
+ * @author Tobias Miosczka
  * 
  */
 public enum Geschlecht {
-    /**
-     * Männlich.
-     */
+    //Männlich.
     MAENNLICH("männlich", 'm'),
 
-    /**
-     * Weiblich.
-     */
+    //Weiblich.
     WEIBLICH("weiblich", 'w');
 
-    private final String string;
+    private final String tag;
     private final char character;
 
-    Geschlecht(String string, char character) {
-        this.string = string;
+    Geschlecht(String tag, char character) {
+        this.tag = tag;
         this.character = character;
     }
 
-    public String getString() {
-        return string;
+    public String getTag() {
+        return tag;
     }
 
     public char getCharacter() {
@@ -42,18 +39,14 @@ public enum Geschlecht {
      *         umgesetzt werden kann
      */
     public static Geschlecht fromString(String str) {
-        switch (str) {
-        case "männlich":
-        case "MAENNLICH":
-            return MAENNLICH;
-        case "weiblich":
-        case "WEIBLICH":
-            return WEIBLICH;
-        case "":
-            return null;
-        default:
-            throw new IllegalArgumentException(
-                    "Unexpected String for Geschlecht: " + str);
+        if (str == null) {
+            throw new IllegalArgumentException("Unexpected String for Geschlecht: " + str);
         }
+        for (Geschlecht geschlecht : Geschlecht.values()) {
+            if (geschlecht.getTag().equals(str)) {
+                return geschlecht;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected String for Geschlecht: " + str);
     }
 }

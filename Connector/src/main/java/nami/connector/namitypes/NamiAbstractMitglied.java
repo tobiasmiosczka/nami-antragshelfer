@@ -1,6 +1,8 @@
 package nami.connector.namitypes;
 
-import nami.connector.*;
+import nami.connector.namitypes.enums.Geschlecht;
+import nami.connector.namitypes.enums.MitgliedStatus;
+import nami.connector.namitypes.enums.Mitgliedstyp;
 
 public abstract class NamiAbstractMitglied {
     public abstract int getId();

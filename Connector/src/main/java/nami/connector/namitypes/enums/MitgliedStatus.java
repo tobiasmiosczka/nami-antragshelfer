@@ -1,4 +1,4 @@
-package nami.connector;
+package nami.connector.namitypes.enums;
 
 /**
  * Stati, die es in NaMi gibt.

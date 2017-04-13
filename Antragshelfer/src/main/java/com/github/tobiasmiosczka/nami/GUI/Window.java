@@ -17,8 +17,8 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.Program;
-import nami.connector.Mitgliedstyp;
-import nami.connector.Stufe;
+import nami.connector.namitypes.enums.Mitgliedstyp;
+import nami.connector.namitypes.enums.Stufe;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiMitglied;
@@ -43,44 +43,44 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 	private static final int lastUpdate = 2017;
 
 	private JTextField 	tfFirstName,
-			tfLastName,
-			tfUsername;
+						tfLastName,
+						tfUsername;
 	private JLabel      lbUser;
 
 	private JCheckBox 	cWoelflinge,
-			cJungpfadfinder,
-			cPfadfinder,
-			cRover,
-			cAndere,
-			cMitglied,
-			cSchnuppermitglied,
-			cNichtmitglied;
+						cJungpfadfinder,
+						cPfadfinder,
+						cRover,
+						cAndere,
+						cMitglied,
+						cSchnuppermitglied,
+						cNichtmitglied;
 
 	private JProgressBar progressBar;
 
 	private JButton 	bAdd,
-			bLogin,
-			bRemove;
+						bLogin,
+						bRemove;
 
 	private JMenuItem 	mntmExit,
-			mntmHelp,
-			mntmLicence,
-			mntmAntragStadt,
-			mntmAntragLand,
-			mntmAntragLandLeiter,
-			mntmNotfallliste,
-			mntmChangelog;
+						mntmHelp,
+						mntmLicence,
+						mntmAntragStadt,
+						mntmAntragLand,
+						mntmAntragLandLeiter,
+						mntmNotfallliste,
+						mntmChangelog;
 
 	private JPasswordField	pfPassword;
 
 	private JRadioButton 	rbSortByFirstname,
 							rbSortByLastname;
 
-	private JList<NamiMitglied>			listFiltered,
-			listParticipants;
+	private JList<NamiMitglied>	listFiltered,
+								listParticipants;
 
 	private DefaultListModel<NamiMitglied> 	dlmFiltered,
-			dlmParticipants;
+											dlmParticipants;
 
 	private final WindowHelp windowHelp = new WindowHelp();
 	private final WindowLicence windowLicence = new WindowLicence();

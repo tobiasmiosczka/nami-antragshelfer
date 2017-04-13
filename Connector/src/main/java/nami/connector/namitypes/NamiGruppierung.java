@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nami.connector.Ebene;
+import nami.connector.namitypes.enums.Ebene;
 import nami.connector.NamiConnector;
 import nami.connector.NamiResponse;
 import nami.connector.NamiURIBuilder;

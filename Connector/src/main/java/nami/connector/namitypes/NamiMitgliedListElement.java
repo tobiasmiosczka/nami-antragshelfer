@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import nami.connector.Geschlecht;
-import nami.connector.MitgliedStatus;
-import nami.connector.Mitgliedstyp;
+import nami.connector.namitypes.enums.Geschlecht;
+import nami.connector.namitypes.enums.MitgliedStatus;
+import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.NamiConnector;
 import nami.connector.NamiResponse;
 import nami.connector.NamiURIBuilder;

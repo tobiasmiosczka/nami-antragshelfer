@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import nami.connector.Geschlecht;
+import nami.connector.namitypes.enums.Geschlecht;
 
 import java.lang.reflect.Type;
 

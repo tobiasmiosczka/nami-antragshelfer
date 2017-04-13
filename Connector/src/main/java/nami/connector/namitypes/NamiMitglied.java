@@ -9,6 +9,7 @@ import nami.connector.*;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiException;
 
+import nami.connector.namitypes.enums.*;
 import org.apache.http.client.methods.HttpGet;
 
 import com.google.gson.reflect.TypeToken;
