@@ -328,51 +328,28 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		pFilterOptions.add(lblFilter);
 	}
 
-	/**
-	 * initializes the GUI
-	 */
-	private void initialize() {
-		setResizable(false);
-		setTitle("Nami Antragshelfer "+String.valueOf(VERSION_MAJOR)+"."+String.valueOf(VERSION_MINOR));
-		setBounds(100, 100, 600, 650);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
-
-		loadImage();
-
-		initMenuBar();
-
-		JPanel pAll = new JPanel();
-		getContentPane().add(pAll);
-		pAll.setLayout(new GridLayout(1, 3, 0, 0));
-
+	private void initOptionsPane(JPanel panel) {
 		JPanel pOptions = new JPanel();
-		pAll.add(pOptions);
+		panel.add(pOptions);
 		pOptions.setLayout(null);
-
 		initLoginPane(pOptions);
-
 		initFilterOptionsPane(pOptions);
-
 		initSortByPane(pOptions);
 
 		JLabel lblCopyRight = new JLabel("(c) Tobias Miosczka 2013 - " + lastUpdate);
 		lblCopyRight.setFont(new Font("Arial", Font.PLAIN, 11));
 		lblCopyRight.setBounds(10, 576, 178, 14);
 		pOptions.add(lblCopyRight);
+	}
 
+	private void initMemberPane(JPanel panel) {
 		JPanel pListFiltered = new JPanel();
-		pAll.add(pListFiltered);
+		panel.add(pListFiltered);
 		pListFiltered.setLayout(null);
 
 		JLabel lblMitglieder = new JLabel("Mitglieder", SwingConstants.CENTER);
 		lblMitglieder.setBounds(0, 10, 200, 25);
 		pListFiltered.add(lblMitglieder);
-
-		bAdd = new JButton("Hinzufügen =>");
-		bAdd.addActionListener(this);
-		bAdd.setBounds(10, 566, 178, 23);
-		pListFiltered.add(bAdd);
 
 		listFiltered = new JList<>();
 		listFiltered.setBounds(0, 35, 200, 525);
@@ -382,26 +359,53 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		spListFiltered.setViewportView(listFiltered);
 		pListFiltered.add(spListFiltered);
 
-		JPanel panel_1 = new JPanel();
-		pAll.add(panel_1);
-		panel_1.setLayout(null);
+		bAdd = new JButton("Hinzufügen =>");
+		bAdd.addActionListener(this);
+		bAdd.setBounds(10, 566, 178, 23);
+		pListFiltered.add(bAdd);
+	}
+
+	private void initParticipantsPane(JPanel panel) {
+		JPanel pParticipants = new JPanel();
+		panel.add(pParticipants);
+		pParticipants.setLayout(null);
 
 		JLabel lblTeilnehmer = new JLabel("Teilnehmer", SwingConstants.CENTER);
 		lblTeilnehmer.setBounds(0, 10, 200, 25);
-		panel_1.add(lblTeilnehmer);
-
-		bRemove = new JButton("<= Entfernen");
-		bRemove.addActionListener(this);
-		bRemove.setBounds(10, 566, 178, 23);
-		panel_1.add(bRemove);
-
+		pParticipants.add(lblTeilnehmer);
+		
 		listParticipants = new JList<>();
 		listParticipants.setBounds(0, 35, 200, 525);
 
 		JScrollPane spListParticipants = new JScrollPane();
 		spListParticipants.setBounds(0, 35, 200, 525);
 		spListParticipants.setViewportView(listParticipants);
-		panel_1.add(spListParticipants);
+		pParticipants.add(spListParticipants);
+
+		bRemove = new JButton("<= Entfernen");
+		bRemove.addActionListener(this);
+		bRemove.setBounds(10, 566, 178, 23);
+		pParticipants.add(bRemove);
+	}
+
+	/**
+	 * initializes the GUI
+	 */
+	private void initialize() {
+		setResizable(false);
+		setTitle("Nami Antragshelfer " + String.valueOf(VERSION_MAJOR) + "." + String.valueOf(VERSION_MINOR));
+		setSize(600, 650);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		loadImage();
+		initMenuBar();
+
+		JPanel pAll = new JPanel();
+		getContentPane().add(pAll);
+		pAll.setLayout(new GridLayout(1, 3, 0, 0));
+
+		initOptionsPane(pAll);
+		initMemberPane(pAll);
+		initParticipantsPane(pAll);
 
 		dlmFiltered = new DefaultListModel<>();
 		dlmParticipants = new DefaultListModel<>();
