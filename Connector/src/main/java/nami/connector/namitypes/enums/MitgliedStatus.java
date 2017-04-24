@@ -4,6 +4,7 @@ package nami.connector.namitypes.enums;
  * Stati, die es in NaMi gibt.
  * 
  * @author Fabian Lipp
+ *
  * 
  */
 public enum MitgliedStatus {
@@ -13,11 +14,21 @@ public enum MitgliedStatus {
     /**
      * Mitglied ist aktiv.
      */
-    AKTIV,
+    AKTIV("Aktiv"),
     /**
      * Mitglied ist nicht aktiv.
      */
-    INAKTIV;
+    INAKTIV("Inaktiv");
+
+    private String tag;
+
+    MitgliedStatus(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
+    }
 
     /**
      * Setzt einen String in den entsprechenden Mitgliedstyp um.
@@ -28,16 +39,14 @@ public enum MitgliedStatus {
      *         nicht umgesetzt werden kann
      */
     public static MitgliedStatus fromString(String str) {
-        switch (str.toLowerCase()) {
-        case "aktiv":
-            return AKTIV;
-        case "inaktiv":
-            return INAKTIV;
-        case "":
-            return null;
-        default:
-            throw new IllegalArgumentException(
-                    "Unexpected String for MitgliedStatus: " + str);
+        if (str == null ||str.equals("")) {
+            throw new IllegalArgumentException("Unexpected String for MitgliedStatus: " + str);
         }
+        for (MitgliedStatus mitgliedStatus : MitgliedStatus.values()) {
+            if (mitgliedStatus.getTag().equals(str)) {
+                return mitgliedStatus;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected String for MitgliedStatus: " + str);
     }
 }

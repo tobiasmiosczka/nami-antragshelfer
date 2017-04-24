@@ -54,31 +54,43 @@ public class NamiMitglied extends NamiAbstractMitglied{
      * Beschreibt die Bankverbindung eines Mitglieds.
      */
     public static class Kontoverbindung {
-        private String id;
-        private String mitgliedsNummer;
+        private Integer id;
+        private Integer mitgliedsNummer;
 
         private String kontoinhaber;
+        private String institut;
         private String kontonummer;
         private String bankleitzahl;
-        private String institut;
 
         private String iban;
         private String bic;
+
+        private Integer zahlungsKonditionId;
+        private String zahlungsKondition;
     }
 
-    private int id;
-    private int mitgliedsNummer;
-
-    private String beitragsarten;
-    private Collection<Integer> beitragsartenId;
-    private String statusId; // ENUM??
-    private String status; // ENUM?? (z.B. AKTIV)
+    private Integer id;
+    private Integer mitgliedsNummer;
 
     private String vorname;
     private String nachname;
+    private String geschlechtId;
+    private Geschlecht geschlecht;
+    private Date geburtsDatum;
+
     private String strasse;
+    private String nameZusatz;
     private String plz;
     private String ort;
+    private Integer regionId;
+    private String region;
+    private Integer landId;
+    private String land;
+
+    private Integer staatsangehoerigkeitId;
+    private String staatsangehoerigkeit;
+    private String staatsangehoerigkeitText;
+
     private String telefon1;
     private String telefon2;
     private String telefon3;
@@ -86,44 +98,46 @@ public class NamiMitglied extends NamiAbstractMitglied{
     private String email;
     private String emailVertretungsberechtigter;
 
-    private String staatsangehoerigkeitId; // int?
-    private String staatsangehoerigkeit;
-    private String staatsangehoerigkeitText;
-
     private String mglTypeId; // ENUM?? z.B. NICHT_MITGLIED
-    private String mglType;
-
-    private Date geburtsDatum;
-
-    private String regionId; // int? (null möglich)
-    private String region;
-
-    private String landId; // int?
-    private String land;
-
-    private String gruppierung;
-    private int gruppierungId;
-    // private String ersteUntergliederungId" : null, //?
-    private String ersteUntergliederung;
+    private Mitgliedstyp mglType;
 
     private String ersteTaetigkeitId;
     private String ersteTaetigkeit;
-    private Stufe stufe;
+    private String ersteUntergliederungId;
+    private String ersteUntergliederung;
 
-    private boolean wiederverwendenFlag;
+    private Integer konfessionId;
+    private String konfession; //TODO: enum?
+
     private boolean zeitschriftenversand;
+    private boolean wiederverwendenFlag;
 
-    private String konfessionId; // int?
-    private String konfession; // ENUM?
-    private String geschlechtId;
-    private Geschlecht geschlecht;
+    private MitgliedStatus status;
+    private Stufe stufe;
+    private Integer gruppierungId;
+    private String gruppierung;
 
     private Date eintrittsdatum;
-    private String zahlungsweise;
-    private int version;
+    private Date austrittsDatum;
+
+    private Integer version;
     private Date lastUpdated;
 
+    private Integer beitragsartId;
+    private String beitragsart;
+
     private Kontoverbindung kontoverbindung;
+
+    //private Object fixBeitrag;
+    //private Object woelfling;
+    //private Object jungpfadfinder;
+    //private Object pfadfinder;
+    //private Object rover;
+    //private String genericField1;
+    //private String genericField2;
+    //private boolean sonst01;
+    //private boolean sonst02;
+    //private Object spitzname;
 
     @Override
     public int getId() {
@@ -152,12 +166,12 @@ public class NamiMitglied extends NamiAbstractMitglied{
 
     @Override
     public MitgliedStatus getStatus() {
-        return MitgliedStatus.fromString(status);
+        return status;
     }
 
     @Override
     public Mitgliedstyp getMitgliedstyp() {
-        return Mitgliedstyp.fromString(mglType);
+        return mglType;
     }
 
     @Override
@@ -186,7 +200,7 @@ public class NamiMitglied extends NamiAbstractMitglied{
      * @return Beitragsart
      */
     public Beitragsart getBeitragsart() {
-        return Beitragsart.fromString(beitragsarten);
+        return Beitragsart.fromString(beitragsart);
     }
 
     /**

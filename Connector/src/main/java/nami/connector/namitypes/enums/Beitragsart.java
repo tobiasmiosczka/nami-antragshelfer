@@ -8,25 +8,37 @@ package nami.connector.namitypes.enums;
  * 
  */
 public enum Beitragsart {
-    /**
-     * Normaler Beitragssatz.
-     */
-    VOLLER_BEITRAG,
 
-    /**
-     * Familienermäßigung.
-     */
-    FAMILIEN_BEITRAG,
+    //Normaler Beitragssatz
+    VOLLER_BEITRAG("Voller Beitrag"),
 
-    /**
-     * Sozialermäßigung.
-     */
-    SOZIALERMAESSIGUNG,
+    //Familienermäßigung
+    FAMILIEN_BEITRAG("Familienermäßigt"),
 
-    /**
-     * Personen, die keinen Mitgliedsbeitrag bezahlen müssen.
-     */
-    KEIN_BEITRAG;
+    //Sozialermäßigung
+    SOZIALERMAESSIGUNG("Sozialermäßigt"),
+
+    //Normaler Beitragssatz
+    VOLLER_BEITRAG_STIFTUNGSEURO("Voller Beitrag - Stiftungseuro"),
+
+    //Familienermäßigung
+    FAMILIEN_BEITRAG_STIFTUNGSEURO("Familienermäßigt - Stiftungseuro"),
+
+    //Sozialermäßigung
+    SOZIALERMAESSIGUNG_STIFTUNGSEURO("Sozialermäßigt - Stiftungseuro"),
+
+    //Personen, die keinen Mitgliedsbeitrag bezahlen müssen
+    KEIN_BEITRAG("(keine Beitragsarten zugeordnet)");
+
+    private String tag;
+
+    Beitragsart(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
+    }
 
     /**
      * Setzt einen String in die entsprechende Beitragsart um.
@@ -37,28 +49,14 @@ public enum Beitragsart {
      *         Beitragsart angegeben ist
      */
     public static Beitragsart fromString(String str) {
-        switch (str) {
-        case "Voller Beitrag":
-        case "Voller Beitrag - Stiftungseuro":
-        case "VOLLER_BEITRAG":
-            return VOLLER_BEITRAG;
-        case "Familienermäßigt":
-        case "Familienermäßigt - Stiftungseuro":
-        case "FAMILIEN_BEITRAG":
-            return FAMILIEN_BEITRAG;
-        case "Sozialermäßigt":
-        case "Sozialermäßigt - Stiftungseuro":
-        case "SOZIALERMAESSIGUNG":
-            return SOZIALERMAESSIGUNG;
-        case "NICHT_MITGLIEDER":
-        case "KEIN_BEITRAG":
-        case "(keine Beitragsarten zugeordnet)":
+        if(str == null || str.equals("")) {
             return KEIN_BEITRAG;
-        case "":
-            return null;
-        default:
-            throw new IllegalArgumentException(
-                    "Unexpected String for Beitragsart:" + str);
         }
+        for(Beitragsart beitragsart : Beitragsart.values()) {
+            if (beitragsart.getTag().equals(str)) {
+                return beitragsart;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected String for Beitragsart:" + str);
     }
 }

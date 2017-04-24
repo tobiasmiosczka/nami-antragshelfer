@@ -7,14 +7,17 @@ import nami.connector.namitypes.enums.*;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.Date;
 
 public class JsonHelp {
     private static final Gson gson = new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd hh:mm:ss")
+
+            .registerTypeAdapter(Date.class, new DateDeserializer())
+
             .registerTypeAdapter(Beitragsart.class, new BeitragsartDeserializer())
             .registerTypeAdapter(Geschlecht.class, new GeschlechtDeserializer())
             .registerTypeAdapter(MitgliedStatus.class, new MitgliedStatusDeserializer())
-            .registerTypeAdapter(Mitgliedstyp.class, new MitgliedStatusDeserializer())
+            .registerTypeAdapter(Mitgliedstyp.class, new MitgliedstypDeserializer())
             .registerTypeAdapter(Stufe.class, new StufeDeserializer())
             .registerTypeAdapter(Baustein.class, new BausteinDeserializer())
             .create();
