@@ -17,6 +17,7 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.Program;
+import nami.connector.namitypes.enums.Geschlecht;
 import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.namitypes.enums.Stufe;
 import nami.connector.exception.NamiApiException;
@@ -52,9 +53,13 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 						cPfadfinder,
 						cRover,
 						cAndere,
+
 						cMitglied,
 						cSchnuppermitglied,
-						cNichtmitglied;
+						cNichtmitglied,
+
+						cMaennlich,
+						cWeiblich;
 
 	private JProgressBar progressBar;
 
@@ -71,10 +76,11 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 						mntmNotfallliste,
 						mntmChangelog;
 
-	private JPasswordField	pfPassword;
+	private JRadioButtonMenuItem 	rbmiSortByFirstname,
+									rbmiSortByLastname,
+									rbmiSortByAge;
 
-	private JRadioButton 	rbSortByFirstname,
-							rbSortByLastname;
+	private JPasswordField	pfPassword;
 
 	private JList<NamiMitglied>	listFiltered,
 								listParticipants;
@@ -130,6 +136,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
+		/**Programm*/
 		JMenu mnNewMenu = new JMenu("Programm");
 		menuBar.add(mnNewMenu);
 
@@ -137,6 +144,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		mntmExit.addActionListener(this);
 		mnNewMenu.add(mntmExit);
 
+		/**Anträge*/
 		JMenu mAntrag = new JMenu("Anträge");
 		menuBar.add(mAntrag);
 
@@ -156,6 +164,33 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		mntmNotfallliste.addActionListener(this);
 		mAntrag.add(mntmNotfallliste);
 
+		/**Einstellungen*/
+		JMenu mProperties = new JMenu("Einstellungen");
+		menuBar.add(mProperties);
+
+		JMenu mSortation = new JMenu("Sortierung");
+		mProperties.add(mSortation);
+
+		ButtonGroup sortByRadioButtonGroup = new ButtonGroup();
+
+		rbmiSortByFirstname = new JRadioButtonMenuItem("Vorname");
+		rbmiSortByFirstname.addActionListener(this);
+		sortByRadioButtonGroup.add(rbmiSortByFirstname);
+		mSortation.add(rbmiSortByFirstname);
+
+		rbmiSortByLastname = new JRadioButtonMenuItem("Nachname");
+		rbmiSortByLastname.addActionListener(this);
+		sortByRadioButtonGroup.add(rbmiSortByLastname);
+		mSortation.add(rbmiSortByLastname);
+
+		rbmiSortByAge = new JRadioButtonMenuItem("Alter");
+		rbmiSortByAge.addActionListener(this);
+		sortByRadioButtonGroup.add(rbmiSortByAge);
+		mSortation.add(rbmiSortByAge);
+
+		rbmiSortByLastname.setSelected(true);
+
+		/**Hilfe*/
 		JMenu mHelp = new JMenu("Hilfe");
 		menuBar.add(mHelp);
 
@@ -170,36 +205,6 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		mntmChangelog = new JMenuItem("Changelog");
 		mntmChangelog.addActionListener(this);
 		mHelp.add(mntmChangelog);
-	}
-
-	private void initSortByPane(JPanel pOptions) {
-		JPanel pSortBy =new JPanel();
-
-		pSortBy.setBounds(10, 450, 100, 100);
-		pSortBy.setLayout(null);
-
-		JLabel lbSortBy = new JLabel("Sortieren nach:");
-		lbSortBy.setBounds(0, 0, 180, 25);
-		pSortBy.add(lbSortBy);
-
-		rbSortByFirstname = new JRadioButton("Vorname");
-		rbSortByFirstname.setBounds(0, 25, 100, 25);
-		rbSortByFirstname.setSelected(false);
-		rbSortByFirstname.addActionListener(this);
-		pSortBy.add(rbSortByFirstname);
-
-		rbSortByLastname = new JRadioButton("Nachname");
-		rbSortByLastname.setBounds(0, 50, 100, 25);
-		rbSortByLastname.setSelected(true);
-		rbSortByLastname.addActionListener(this);
-		pSortBy.add(rbSortByLastname);
-
-		pOptions.add(pSortBy);
-
-		ButtonGroup sortByRadioButtonGroup = new ButtonGroup();
-		sortByRadioButtonGroup.add(rbSortByFirstname);
-		sortByRadioButtonGroup.add(rbSortByLastname);
-
 	}
 
 	private void initLoginPane(JPanel pOptions) {
@@ -250,12 +255,40 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 	private void initFilterOptionsPane(JPanel pOptions) {
 		JPanel pFilterOptions = new JPanel();
 		pFilterOptions.setLayout(null);
-		pFilterOptions.setBounds(10, 150, 180, 275);
+		pFilterOptions.setBounds(10, 150, 180, 500);
 		pOptions.add(pFilterOptions);
 
+		JLabel lblFilter = new JLabel("Filter");
+		lblFilter.setBounds(64, 0, 46, 25);
+		pFilterOptions.add(lblFilter);
 
+		/**Name*/
+		JPanel pName = new JPanel();
+		pName.setBorder(BorderFactory.createTitledBorder("Name"));
+		pName.setBounds(0, 25, 180, 70);
+		pFilterOptions.add(pName);
+		pName.setLayout(new GridLayout(0, 2, 0, 0));
+
+		JLabel lVorname = new JLabel("Vorname:");
+		pName.add(lVorname);
+
+		tfFirstName = new JTextField();
+		pName.add(tfFirstName);
+		tfFirstName.setColumns(10);
+		tfFirstName.getDocument().addDocumentListener(this);
+
+		JLabel lNachnahme = new JLabel("Nachnahme:");
+		pName.add(lNachnahme);
+
+		tfLastName = new JTextField();
+		pName.add(tfLastName);
+		tfLastName.setColumns(10);
+		tfLastName.getDocument().addDocumentListener(this);
+
+		/**Stufe*/
 		JPanel pStufe = new JPanel();
-		pStufe.setBounds(0, 25, 180, 125);
+		pStufe.setBorder(BorderFactory.createTitledBorder("Stufe"));
+		pStufe.setBounds(0, 95, 180, 145);
 		pFilterOptions.add(pStufe);
 		pStufe.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -283,29 +316,10 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		cAndere.addActionListener(this);
 		pStufe.add(cAndere);
 
-		JPanel pName = new JPanel();
-		pName.setBounds(0, 150, 180, 50);
-		pFilterOptions.add(pName);
-		pName.setLayout(new GridLayout(0, 2, 0, 0));
-
-		JLabel lVorname = new JLabel("Vorname:");
-		pName.add(lVorname);
-
-		tfFirstName = new JTextField();
-		pName.add(tfFirstName);
-		tfFirstName.setColumns(10);
-		tfFirstName.getDocument().addDocumentListener(this);
-
-		JLabel lNachnahme = new JLabel("Nachnahme:");
-		pName.add(lNachnahme);
-
-		tfLastName = new JTextField();
-		pName.add(tfLastName);
-		tfLastName.setColumns(10);
-		tfLastName.getDocument().addDocumentListener(this);
-
+		/**Mitgliedstyp*/
 		JPanel pAktiv = new JPanel();
-		pAktiv.setBounds(0, 200, 180, 75);
+		pAktiv.setBounds(0, 240, 180, 95);
+		pAktiv.setBorder(BorderFactory.createTitledBorder("Mitgliedstyp"));
 		pFilterOptions.add(pAktiv);
 		pAktiv.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -323,9 +337,28 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		cNichtmitglied.addActionListener(this);
 		pAktiv.add(cNichtmitglied);
 
-		JLabel lblFilter = new JLabel("Filter");
-		lblFilter.setBounds(64, 0, 46, 25);
-		pFilterOptions.add(lblFilter);
+
+		/**Geschlecht*/
+		JPanel pGeschlecht = new JPanel();
+		pGeschlecht.setBorder(BorderFactory.createTitledBorder("Geschlecht"));
+		pGeschlecht.setBounds(0, 335, 180, 70);
+		pFilterOptions.add(pGeschlecht);
+		pGeschlecht.setLayout(new GridLayout(0, 1, 0, 0));
+
+		cMaennlich = new JCheckBox("männlich");
+		cMaennlich.addActionListener(this);
+		cMaennlich.setSelected(true);
+		pGeschlecht.add(cMaennlich);
+
+		cWeiblich = new JCheckBox("weiblich");
+		cWeiblich.addActionListener(this);
+		cWeiblich.setSelected(true);
+		pGeschlecht.add(cWeiblich);
+
+		JLabel lblCopyRight = new JLabel("\u00a9 Tobias Miosczka 2013 - " + lastUpdate);
+		lblCopyRight.setFont(new Font("Arial", Font.PLAIN, 12));
+		lblCopyRight.setBounds(0, 475, 180, 25);
+		pFilterOptions.add(lblCopyRight);
 	}
 
 	private void initOptionsPane(JPanel panel) {
@@ -334,12 +367,6 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		pOptions.setLayout(null);
 		initLoginPane(pOptions);
 		initFilterOptionsPane(pOptions);
-		initSortByPane(pOptions);
-
-		JLabel lblCopyRight = new JLabel("(c) Tobias Miosczka 2013 - " + lastUpdate);
-		lblCopyRight.setFont(new Font("Arial", Font.PLAIN, 11));
-		lblCopyRight.setBounds(10, 576, 178, 14);
-		pOptions.add(lblCopyRight);
 	}
 
 	private void initMemberPane(JPanel panel) {
@@ -355,13 +382,13 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		listFiltered.setBounds(0, 35, 200, 525);
 
 		JScrollPane spListFiltered = new JScrollPane();
-		spListFiltered.setBounds(0, 35, 200, 525);
+		spListFiltered.setBounds(0, 35, 200, 575);
 		spListFiltered.setViewportView(listFiltered);
 		pListFiltered.add(spListFiltered);
 
 		bAdd = new JButton("Hinzufügen =>");
 		bAdd.addActionListener(this);
-		bAdd.setBounds(10, 566, 178, 23);
+		bAdd.setBounds(10, 616, 178, 23);
 		pListFiltered.add(bAdd);
 	}
 
@@ -378,13 +405,13 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		listParticipants.setBounds(0, 35, 200, 525);
 
 		JScrollPane spListParticipants = new JScrollPane();
-		spListParticipants.setBounds(0, 35, 200, 525);
+		spListParticipants.setBounds(0, 35, 200, 575);
 		spListParticipants.setViewportView(listParticipants);
 		pParticipants.add(spListParticipants);
 
 		bRemove = new JButton("<= Entfernen");
 		bRemove.addActionListener(this);
-		bRemove.setBounds(10, 566, 178, 23);
+		bRemove.setBounds(10, 616, 178, 23);
 		pParticipants.add(bRemove);
 	}
 
@@ -394,7 +421,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 	private void initialize() {
 		setResizable(false);
 		setTitle("Nami Antragshelfer " + String.valueOf(VERSION_MAJOR) + "." + String.valueOf(VERSION_MINOR));
-		setSize(600, 650);
+		setSize(600, 700);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		loadImage();
 		initMenuBar();
@@ -457,13 +484,18 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 				(!bIsWlf && !bIsJng && !bIsPfd && !bIsRvr && cAndere.isSelected()))
 				){
 				//check Aktiv
-				if( (cMitglied.isSelected()			 && d.getMitgliedstyp() == Mitgliedstyp.MITGLIED)||
-					(cSchnuppermitglied.isSelected() && d.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED)||
+				if( (cMitglied.isSelected()			 && d.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
+					(cSchnuppermitglied.isSelected() && d.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
 					(cNichtmitglied.isSelected()	 && d.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED)){
-					//check Name
-					if((d.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
-							d.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase())){
-						dlmFiltered.addElement(d);
+					//check gender
+					if( (cWeiblich.isSelected() && d.getGeschlecht() == Geschlecht.WEIBLICH) ||
+						(cMaennlich.isSelected() && d.getGeschlecht() == Geschlecht.MAENNLICH)){
+
+						//check Name
+						if ((d.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
+								d.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase())) {
+							dlmFiltered.addElement(d);
+						}
 					}
 				}
 			}
@@ -491,7 +523,9 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 				source == cAndere ||
 				source == cMitglied ||
 				source == cSchnuppermitglied ||
-				source == cNichtmitglied){
+				source == cNichtmitglied ||
+				source == cMaennlich ||
+				source == cWeiblich){
 			updateLists();
 		}
 		if(source == bAdd){
@@ -505,12 +539,16 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		if(source == bLogin || source == tfUsername || source == pfPassword){
 			this.login();
 		}
-		if(source == rbSortByLastname) {
+		if(source == rbmiSortByLastname) {
 			program.sortBy(Program.Sortation.SORT_BY_LASTNAME);
 			updateLists();
 		}
-		if(source == rbSortByFirstname) {
+		if(source == rbmiSortByFirstname) {
 			program.sortBy(Program.Sortation.SORT_BY_FIRSTNAME);
+			updateLists();
+		}
+		if(source == rbmiSortByAge) {
+			program.sortBy(Program.Sortation.SORT_BY_AGE);
 			updateLists();
 		}
 		if(source == mntmExit){
