@@ -17,7 +17,7 @@ import nami.connector.namitypes.NamiSearchedValues;
  * @author Tobias Miosczka
  * 
  */
-class NaMiDataLoader extends Thread {
+public class NaMiDataLoader extends Thread {
 	
 	public interface NamiDataLoaderHandler{
 		void update(int percent, NamiMitglied e);
