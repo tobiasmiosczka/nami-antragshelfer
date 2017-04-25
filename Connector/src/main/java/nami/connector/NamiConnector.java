@@ -281,6 +281,7 @@ public class NamiConnector {
      *             </ul>
      */
     public <T> T executeApiRequest(HttpUriRequest request, final Type typeOfT) throws IOException, NamiApiException {
+        log.info("HTTP Call: " + request.getURI().toString());
         if (!isAuthenticated) {
             throw new NamiApiException("Did not login before API Request.");
         }
