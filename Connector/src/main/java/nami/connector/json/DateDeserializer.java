@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Tobias on 24.04.2017.
  */
-public class DateDeserializer implements JsonDeserializer<Date>{
+class DateDeserializer implements JsonDeserializer<Date>{
 
     SimpleDateFormat sdfNaMi = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 

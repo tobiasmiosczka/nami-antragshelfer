@@ -3,6 +3,7 @@ package com.github.tobiasmiosczka.nami.extendetjnami;
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Schulung;
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.SchulungenMap;
+
 import com.google.gson.reflect.TypeToken;
 import nami.connector.NamiConnector;
 import nami.connector.NamiResponse;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
+
 import nami.connector.NamiConnector;
 import nami.connector.exception.NamiApiException;
 import nami.connector.namitypes.NamiMitglied;
@@ -35,14 +36,14 @@ class NaMiDataLoader extends Thread {
 	}
 	
 	private void load() throws NamiApiException, IOException{
-		long t1=System.currentTimeMillis();
+		long t1 = System.currentTimeMillis();
 		NamiSearchedValues search = new NamiSearchedValues();
 		if(group != null) {
 			search.setGruppierungsnummer(String.valueOf(group.getId()));
 		}
 		Collection<NamiMitgliedListElement> result = search.getAllResults(connector);
 		int i = 0;
-		int items=result.size();
+		int items = result.size();
 
 		for(NamiMitgliedListElement element : result){
 			NamiMitglied e = element.getFullData(connector);

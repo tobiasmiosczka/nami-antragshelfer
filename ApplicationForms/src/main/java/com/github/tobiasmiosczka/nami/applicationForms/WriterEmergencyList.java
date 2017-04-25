@@ -3,7 +3,7 @@ package com.github.tobiasmiosczka.nami.applicationForms;
 import java.util.Collection;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.program.PhoneNumberHelper;
+import com.github.tobiasmiosczka.nami.program.PhoneContact;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
@@ -48,32 +48,32 @@ public class WriterEmergencyList extends Writer {
 
 		//Phone1
 		sb.append("Telefon 1:\n");
-		Collection<PhoneNumberHelper.Contact> contactsPhone1 = PhoneNumberHelper.getPhoneContacts(member.getTelefon1());
-		for (PhoneNumberHelper.Contact c : contactsPhone1) {
+		Collection<PhoneContact> contactsPhone1 = PhoneContact.getPhoneContacts(member.getTelefon1());
+		for (PhoneContact c : contactsPhone1) {
 			sb.append(c)
 					.append("\n");
 		}
 
 		//Phone2
 		sb.append("Telefon 2:\n");
-		Collection<PhoneNumberHelper.Contact> contactsPhone2 = PhoneNumberHelper.getPhoneContacts(member.getTelefon2());
-		for (PhoneNumberHelper.Contact c : contactsPhone2) {
+		Collection<PhoneContact> contactsPhone2 = PhoneContact.getPhoneContacts(member.getTelefon2());
+		for (PhoneContact c : contactsPhone2) {
 			sb.append(c)
 					.append("\n");
 		}
 
 		//Phone3
 		sb.append("Telefon 3:\n");
-		Collection<PhoneNumberHelper.Contact> contactsPhone3 = PhoneNumberHelper.getPhoneContacts(member.getTelefon3());
-		for (PhoneNumberHelper.Contact c : contactsPhone3) {
+		Collection<PhoneContact> contactsPhone3 = PhoneContact.getPhoneContacts(member.getTelefon3());
+		for (PhoneContact c : contactsPhone3) {
 			sb.append(c)
 					.append("\n");
 		}
 
 		//Fax
 		sb.append("Fax:\n");
-		Collection<PhoneNumberHelper.Contact> contactsFax = PhoneNumberHelper.getPhoneContacts(member.getTelefax());
-		for (PhoneNumberHelper.Contact c : contactsFax) {
+		Collection<PhoneContact> contactsFax = PhoneContact.getPhoneContacts(member.getTelefax());
+		for (PhoneContact c : contactsFax) {
 			sb.append(c)
 					.append("\n");
 		}
