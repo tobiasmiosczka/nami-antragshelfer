@@ -701,17 +701,33 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 	}
 
 	@Override
-	public void loaderUpdate(int percents, String info) {
+	public void onUpdate(int current, int count, NamiMitglied member) {
 		EventQueue.invokeLater(() -> {
-			progressBar.setValue(percents);
-			progressBar.setString(info);
+			progressBar.setMaximum(count);
+			progressBar.setValue(current);
+			StringBuilder sb = new StringBuilder("(")
+					.append(current)
+					.append("/")
+					.append(count)
+					.append(") ")
+					.append(member.getVorname())
+					.append(" ")
+					.append(member.getNachname());
+			progressBar.setString(sb.toString());
 			updateLists();
 		});
 	}
 
 	@Override
-	public  void loaderDone(long timeMS) {
+	public void onException(Exception e) {
+		//TODO: do something meaningfull, handle Exception, show it on GUI
+		e.printStackTrace();
+	}
+
+	@Override
+	public  void onDone(long timeMS) {
 		EventQueue.invokeLater(() -> {
+			progressBar.setMaximum(100);
 			progressBar.setValue(100);
 			progressBar.setString("Fertig nach" + timeMS / 1000 + "s.");
 			updateLists();

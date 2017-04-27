@@ -12,6 +12,7 @@ import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.NamiSearchedValues;
 
 /**
  * Program
@@ -22,8 +23,9 @@ import nami.connector.namitypes.NamiMitglied;
 public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
 
     public interface ProgramHandler {
-        void loaderUpdate(int percents, String info);
-        void loaderDone(long timeMS);
+        void onUpdate(int current, int count, NamiMitglied member);
+        void onDone(long timeMS);
+        void onException(Exception e);
         Gruppierung selectGruppierung(Collection<Gruppierung> gruppierungen);
     }
 
@@ -81,11 +83,11 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     public void sortBy(Sortation sortation) {
         Comparator<NamiMitglied> s = sortation.getComparator();
         participants.setComparator(s);
-        member.setComparator(s);
+        members.setComparator(s);
     }
 
     private NamiConnector 	connector;
-    private final SortedList<NamiMitglied> member;
+    private final SortedList<NamiMitglied> members;
     private final SortedList<NamiMitglied> participants;
     private ProgramHandler handler;
 
@@ -94,7 +96,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      */
     public Program(ProgramHandler handler){
         this.handler = handler;
-        member = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
+        members = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
         participants = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
     }
 
@@ -119,11 +121,15 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      *
      */
     public void loadData() throws IOException, NamiApiException {
-        member.clear();
+        members.clear();
         participants.clear();
         Collection<Gruppierung> groups = ExtendedJNaMi.getGruppierungen(connector);
         Gruppierung group = handler.selectGruppierung(groups);
-        NaMiDataLoader dl = new NaMiDataLoader(connector, group, this);
+        NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
+        if (group != null) {
+            namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getId()));
+        }
+        NaMiDataLoader dl = new NaMiDataLoader(connector, namiSearchedValues, this);
         dl.start();
     }
 
@@ -134,8 +140,8 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      * 				object in member list
      */
     public void putMemberToParticipants(NamiMitglied n){
-        if(member.contains(n)) {
-            member.remove(n);
+        if(members.contains(n)) {
+            members.remove(n);
             participants.add(n);
         }
     }
@@ -149,7 +155,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     public void putParticipantToMember(NamiMitglied n){
         if(participants.contains(n)) {
             participants.remove(n);
-            member.add(n);
+            members.add(n);
         }
     }
 
@@ -160,7 +166,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      * 				member list
      */
     public List<NamiMitglied> getMember(){
-        return member;
+        return members;
     }
 
     /**
@@ -174,17 +180,24 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     }
 
     @Override
-    public void update(int percent, NamiMitglied e) {
+    public void onUpdate(int current, int count, NamiMitglied namiMitglied) {
         synchronized (this) {
-            member.add(e);
-            handler.loaderUpdate(percent, "Lädt "+ e.getVorname() + " " + e.getNachname() + " " + percent + "%");
+            members.add(namiMitglied);
+            handler.onUpdate(current, count, namiMitglied);
         }
     }
 
     @Override
-    public void done(long time) {
+    public void onDone(long time) {
         synchronized (this) {
-            handler.loaderDone(time);
+            handler.onDone(time);
+        }
+    }
+
+    @Override
+    public void onException(Exception e) {
+        synchronized (this) {
+            handler.onException(e);
         }
     }
 }

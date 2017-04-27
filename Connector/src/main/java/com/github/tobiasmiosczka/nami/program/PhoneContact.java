@@ -47,6 +47,7 @@ public class PhoneContact {
         List<PhoneContact> contacts = new LinkedList<>();
         if (string == null || string.isEmpty())
             return contacts;
+        string = string.replace(" ", "");
         String[] strings = string.split(";");
         for(String s : strings) {
             PhoneContact c = getPhoneContact(s);
