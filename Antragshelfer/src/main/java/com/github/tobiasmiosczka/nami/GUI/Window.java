@@ -473,19 +473,20 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			boolean bIsJng = (d.getStufe() == Stufe.JUNGPFADFINDER);
 			boolean bIsPfd = (d.getStufe() == Stufe.PFADFINDER);
 			boolean bIsRvr = (d.getStufe() == Stufe.ROVER);
+			boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
 			//check stufe
 			if(((bIsWlf && cWoelflinge.isSelected()) ||
 				(bIsJng && cJungpfadfinder.isSelected()) ||
 				(bIsPfd && cPfadfinder.isSelected()) ||
 				(bIsRvr && cRover.isSelected()) ||
-				(!bIsWlf && !bIsJng && !bIsPfd && !bIsRvr && cAndere.isSelected()))
+				(bIsNon && cAndere.isSelected()))
 				){
 				//check Aktiv
 				if( (cMitglied.isSelected()			 && d.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
 					(cSchnuppermitglied.isSelected() && d.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
 					(cNichtmitglied.isSelected()	 && d.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED)){
 					//check gender
-					if( (cWeiblich.isSelected() && d.getGeschlecht() == Geschlecht.WEIBLICH) ||
+					if( (cWeiblich.isSelected()  && d.getGeschlecht() == Geschlecht.WEIBLICH) ||
 						(cMaennlich.isSelected() && d.getGeschlecht() == Geschlecht.MAENNLICH)){
 						//check Name
 						if ((d.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
