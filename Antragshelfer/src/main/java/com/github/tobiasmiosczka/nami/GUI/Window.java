@@ -37,11 +37,31 @@ import java.util.List;
  * @author Tobias Miosczka
  *
  */
-public class Window extends JFrame implements  ActionListener, DocumentListener, Program.ProgramHandler {
+public class Window extends JFrame implements  ActionListener, Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
 	private static final int VERSION_MINOR = 1;
 	private static final int lastUpdate = 2017;
+
+	private static final Color colorSuccess = Color.decode("0x009900");
+	private static final Color colorFailed = Color.decode("0xCC0000");
+
+	private final DocumentListener nameFilterListener = new DocumentListener() {
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			updateLists();
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			updateLists();
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			updateLists();
+		}
+	};
 
 	private JTextField 	tfFirstName,
 						tfLastName,
@@ -94,15 +114,6 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 
 	private final Program program;
 
-	/**
-	 * returns the GUIs JProgressBar
-	 *
-	 * @return GUIs JProgressBar to display progress
-	 */
-	private JProgressBar getProgressBar(){
-		return progressBar;
-	}
-
 	public static void main(String[] args) {
 		try {
 			FileEncodingHelper.setFileEncoding("UTF-8");
@@ -121,13 +132,12 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		setVisible(true);
 	}
 
-	private void loadImage() {
+	private void loadWindowIcon() {
 		try {
 			InputStream s = Thread.currentThread().getContextClassLoader().getResourceAsStream("images/lilie.gif");
 			Image icon = ImageIO.read(s);
 			setIconImage(icon);
 		} catch (IOException e) {
-			System.out.println("Icon couldn't be loaded.");
 			e.printStackTrace();
 		}
 	}
@@ -275,7 +285,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		tfFirstName = new JTextField();
 		pName.add(tfFirstName);
 		tfFirstName.setColumns(10);
-		tfFirstName.getDocument().addDocumentListener(this);
+		tfFirstName.getDocument().addDocumentListener(nameFilterListener);
 
 		JLabel lNachnahme = new JLabel("Nachnahme:");
 		pName.add(lNachnahme);
@@ -283,7 +293,7 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		tfLastName = new JTextField();
 		pName.add(tfLastName);
 		tfLastName.setColumns(10);
-		tfLastName.getDocument().addDocumentListener(this);
+		tfLastName.getDocument().addDocumentListener(nameFilterListener);
 
 		/**Stufe*/
 		JPanel pStufe = new JPanel();
@@ -415,15 +425,12 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		pParticipants.add(bRemove);
 	}
 
-	/**
-	 * initializes the GUI
-	 */
 	private void initialize() {
 		setResizable(false);
 		setTitle("Nami Antragshelfer " + String.valueOf(VERSION_MAJOR) + "." + String.valueOf(VERSION_MINOR));
 		setSize(600, 700);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		loadImage();
+		loadWindowIcon();
 		initMenuBar();
 
 		JPanel pAll = new JPanel();
@@ -440,33 +447,23 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 		listParticipants.setModel(dlmParticipants);
 	}
 
-	/**
-	 * displays login results
-	 *
-	 * @param success
-	 * 				true if username/password is correct
-	 * 				false if username/password wrong
-	 * @param user
-	 * 				username that will be displayed
-	 */
-	private void showPassResult(boolean success, String user){
-		Color colorSuccess = Color.decode("0x009900");
-		Color colorFailed = Color.decode("0xCC0000");
-		if(success){ //TODO: simplify
+	private void showPassResult(boolean success, String text){
+		if(success){
 			tfUsername.setBackground(colorSuccess);
 			pfPassword.setBackground(colorSuccess);
 			progressBar.setString("");
-			lbUser.setText("Angemeldet als "+user);
+			lbUser.setText(text);
+			bLogin.setEnabled(false);
+			tfUsername.setEnabled(false);
+			pfPassword.setEnabled(false);
 		}else{
 			tfUsername.setBackground(colorFailed);
 			pfPassword.setBackground(colorFailed);
-			progressBar.setString("Falscher Name/Passwort.");
+			JOptionPane.showMessageDialog(this, text);
+			progressBar.setString("");
 		}
 	}
 
-	/**
-	 * updates the member and participants lists and sorts their elements
-	 */
 	private void updateLists(){ //TODO: simplify
 		dlmFiltered.removeAllElements();
 
@@ -490,7 +487,6 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 					//check gender
 					if( (cWeiblich.isSelected() && d.getGeschlecht() == Geschlecht.WEIBLICH) ||
 						(cMaennlich.isSelected() && d.getGeschlecht() == Geschlecht.MAENNLICH)){
-
 						//check Name
 						if ((d.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
 								d.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase())) {
@@ -500,19 +496,14 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 				}
 			}
 		}
-		//listParticipants
 
+		//listParticipants
 		dlmParticipants.removeAllElements();
 		for(NamiMitglied d : program.getParticipants()){
 			dlmParticipants.addElement(d);
 		}
 	}
 
-	/**
-	 * Listener for all elements of the GUI
-	 *
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
@@ -670,34 +661,16 @@ public class Window extends JFrame implements  ActionListener, DocumentListener,
 			program.login(user, pass);
 			program.loadData();
 		} catch (NamiLoginException e) {
-			this.showPassResult(false, "");
+			this.showPassResult(false, e.getMessage());
 			return;
 		} catch (IOException e) {
-			this.getProgressBar().setString("Keine Verbindung zur NaMi.");
+			this.showPassResult(false, "Keine Verbindung zum Server: " + e.getMessage());
 			return;
 		} catch (NamiApiException e) {
-			e.printStackTrace();
+			this.showPassResult(false, e.getMessage());
+			return;
 		}
-
-		bLogin.setEnabled(false);
-		tfUsername.setEnabled(false);
-		pfPassword.setEnabled(false);
-		showPassResult(true, user);
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-		updateLists();
-	}
-
-	@Override
-	public void insertUpdate(DocumentEvent e) {
-		updateLists();
-	}
-
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-		updateLists();
+		showPassResult(true, "Angemeldet als " + user);
 	}
 
 	@Override
