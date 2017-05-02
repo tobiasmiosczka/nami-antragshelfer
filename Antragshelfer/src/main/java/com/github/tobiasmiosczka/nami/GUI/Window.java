@@ -30,13 +30,6 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
-
-/**
- * Programs GUI class
- *
- * @author Tobias Miosczka
- *
- */
 public class Window extends JFrame implements  ActionListener, Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
@@ -123,9 +116,6 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
         Window window = new Window();
 	}
 
-	/**
-	 * Constructor
-	 */
 	public Window() {
 		this.program = new Program(this);
 		initialize();
@@ -600,7 +590,6 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 				return;
 			}
 
-
 			SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
 			if(!sd.showDialog()) {
 				return;
@@ -613,7 +602,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			} catch (NoParticipantsException e1) {
 			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
 			return;
-		}
+			}
 		}
 		if(source == mntmAntragStadt){
 			UserInput ui = new UserInput(this);
@@ -695,6 +684,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 	@Override
 	public void onException(Exception e) {
 		//TODO: do something meaningfull, handle Exception, show it on GUI
+		JOptionPane.showMessageDialog(this, "Beim laden der Mitgliedsdaten ist ein Fehler aufgetreten.");
 		e.printStackTrace();
 	}
 
