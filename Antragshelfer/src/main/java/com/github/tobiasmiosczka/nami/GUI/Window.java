@@ -21,7 +21,6 @@ import nami.connector.namitypes.enums.Geschlecht;
 import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.namitypes.enums.Stufe;
 import nami.connector.exception.NamiApiException;
-import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiMitglied;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 
@@ -55,6 +54,8 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			updateLists();
 		}
 	};
+
+	private JPanel pLogin;
 
 	private JTextField 	tfFirstName,
 						tfLastName,
@@ -136,7 +137,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		/**Programm*/
+		/*Programm*/
 		JMenu mnNewMenu = new JMenu("Programm");
 		menuBar.add(mnNewMenu);
 
@@ -144,7 +145,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		mntmExit.addActionListener(this);
 		mnNewMenu.add(mntmExit);
 
-		/**Anträge*/
+		/*Anträge*/
 		JMenu mAntrag = new JMenu("Anträge");
 		menuBar.add(mAntrag);
 
@@ -164,7 +165,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		mntmNotfallliste.addActionListener(this);
 		mAntrag.add(mntmNotfallliste);
 
-		/**Einstellungen*/
+		/*Einstellungen*/
 		JMenu mProperties = new JMenu("Einstellungen");
 		menuBar.add(mProperties);
 
@@ -190,7 +191,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 
 		rbmiSortByLastname.setSelected(true);
 
-		/**Hilfe*/
+		/*Hilfe*/
 		JMenu mHelp = new JMenu("Hilfe");
 		menuBar.add(mHelp);
 
@@ -208,7 +209,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 	}
 
 	private void initLoginPane(JPanel pOptions) {
-		JPanel pLogin = new JPanel();
+		pLogin = new JPanel();
 		pLogin.setBounds(10, 10, 180, 100);
 		pOptions.add(pLogin);
 		pLogin.setLayout(null);
@@ -262,7 +263,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		lblFilter.setBounds(64, 0, 46, 25);
 		pFilterOptions.add(lblFilter);
 
-		/**Name*/
+		/*Name*/
 		JPanel pName = new JPanel();
 		pName.setBorder(BorderFactory.createTitledBorder("Name"));
 		pName.setBounds(0, 25, 180, 70);
@@ -285,7 +286,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		tfLastName.setColumns(10);
 		tfLastName.getDocument().addDocumentListener(nameFilterListener);
 
-		/**Stufe*/
+		/*Stufe*/
 		JPanel pStufe = new JPanel();
 		pStufe.setBorder(BorderFactory.createTitledBorder("Stufe"));
 		pStufe.setBounds(0, 95, 180, 145);
@@ -316,7 +317,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		cAndere.addActionListener(this);
 		pStufe.add(cAndere);
 
-		/**Mitgliedstyp*/
+		/*Mitgliedstyp*/
 		JPanel pAktiv = new JPanel();
 		pAktiv.setBounds(0, 240, 180, 95);
 		pAktiv.setBorder(BorderFactory.createTitledBorder("Mitgliedstyp"));
@@ -338,7 +339,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pAktiv.add(cNichtmitglied);
 
 
-		/**Geschlecht*/
+		/*Geschlecht*/
 		JPanel pGeschlecht = new JPanel();
 		pGeschlecht.setBorder(BorderFactory.createTitledBorder("Geschlecht"));
 		pGeschlecht.setBounds(0, 335, 180, 70);
@@ -454,45 +455,68 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		}
 	}
 
-	private void updateLists(){ //TODO: simplify
-		dlmFiltered.removeAllElements();
-
-		List<NamiMitglied> l = program.getMember();
-		for(NamiMitglied d : l){
-			boolean bIsWlf = (d.getStufe() == Stufe.WOELFLING);
-			boolean bIsJng = (d.getStufe() == Stufe.JUNGPFADFINDER);
-			boolean bIsPfd = (d.getStufe() == Stufe.PFADFINDER);
-			boolean bIsRvr = (d.getStufe() == Stufe.ROVER);
-			boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
-			//check stufe
-			if(((bIsWlf && cWoelflinge.isSelected()) ||
+	private boolean checkFilter(NamiMitglied m) {
+		boolean bIsWlf = (m.getStufe() == Stufe.WOELFLING);
+		boolean bIsJng = (m.getStufe() == Stufe.JUNGPFADFINDER);
+		boolean bIsPfd = (m.getStufe() == Stufe.PFADFINDER);
+		boolean bIsRvr = (m.getStufe() == Stufe.ROVER);
+		boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
+		//check stufe
+		if(!((bIsWlf && cWoelflinge.isSelected()) ||
 				(bIsJng && cJungpfadfinder.isSelected()) ||
 				(bIsPfd && cPfadfinder.isSelected()) ||
 				(bIsRvr && cRover.isSelected()) ||
 				(bIsNon && cAndere.isSelected()))
-				){
-				//check Aktiv
-				if( (cMitglied.isSelected()			 && d.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
-					(cSchnuppermitglied.isSelected() && d.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
-					(cNichtmitglied.isSelected()	 && d.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED)){
-					//check gender
-					if( (cWeiblich.isSelected()  && d.getGeschlecht() == Geschlecht.WEIBLICH) ||
-						(cMaennlich.isSelected() && d.getGeschlecht() == Geschlecht.MAENNLICH)){
-						//check Name
-						if ((d.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
-								d.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase())) {
-							dlmFiltered.addElement(d);
-						}
-					}
-				}
+				) {
+			return false;
+		}
+		//check Aktiv
+		if(!((cMitglied.isSelected()			 && m.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
+				(cSchnuppermitglied.isSelected() && m.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
+				(cNichtmitglied.isSelected()	 && m.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED))) {
+			return false;
+		}
+		//check gender
+		if(!((cWeiblich.isSelected()  && m.getGeschlecht() == Geschlecht.WEIBLICH) ||
+				(cMaennlich.isSelected() && m.getGeschlecht() == Geschlecht.MAENNLICH))) {
+			return false;
+		}
+		//check Name
+		if (!((m.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
+				m.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase()))) {
+			return false;
+		}
+		return true;
+	}
+
+	private void updateLists(){ //TODO: make it faster
+		List<NamiMitglied> selected = listFiltered.getSelectedValuesList();
+
+		dlmFiltered.removeAllElements();
+		for(NamiMitglied m : program.getMember()){
+			if (checkFilter(m)) {
+				dlmFiltered.addElement(m);
 			}
 		}
 
-		//listParticipants
-		dlmParticipants.removeAllElements();
-		for(NamiMitglied d : program.getParticipants()){
-			dlmParticipants.addElement(d);
+		int[] selectedIndices = new int[selected.size()];
+		for (int i = 0; i < selected.size(); ++i) {
+			selectedIndices[i] = dlmFiltered.indexOf(selected.get(i));
 		}
+		listFiltered.setSelectedIndices(selectedIndices);
+
+		selected = listParticipants.getSelectedValuesList();
+
+		dlmParticipants.removeAllElements();
+		for(NamiMitglied m : program.getParticipants()){
+			dlmParticipants.addElement(m);
+		}
+
+		selectedIndices = new int[selected.size()];
+		for(int i = 0; i < selected.size(); ++i) {
+			selectedIndices[i] = dlmParticipants.indexOf(selected.get(i));
+		}
+		listParticipants.setSelectedIndices(selectedIndices);
 	}
 
 	@Override
@@ -650,9 +674,6 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		try{
 			program.login(user, pass);
 			program.loadData();
-		} catch (NamiLoginException e) {
-			this.showPassResult(false, e.getMessage());
-			return;
 		} catch (IOException e) {
 			this.showPassResult(false, "Keine Verbindung zum Server: " + e.getMessage());
 			return;
@@ -668,15 +689,8 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		EventQueue.invokeLater(() -> {
 			progressBar.setMaximum(count);
 			progressBar.setValue(current);
-			StringBuilder sb = new StringBuilder("(")
-					.append(current)
-					.append("/")
-					.append(count)
-					.append(") ")
-					.append(member.getVorname())
-					.append(" ")
-					.append(member.getNachname());
-			progressBar.setString(sb.toString());
+			String sb = "(" + current + "/" + count + ") " + member.getVorname() + " " + member.getNachname();
+			progressBar.setString(sb);
 			updateLists();
 		});
 	}
@@ -693,7 +707,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		EventQueue.invokeLater(() -> {
 			progressBar.setMaximum(100);
 			progressBar.setValue(100);
-			progressBar.setString("Fertig nach" + timeMS / 1000 + "s.");
+			progressBar.setString("Fertig nach " + timeMS / 1000 + "s.");
 			updateLists();
 		});
 	}
