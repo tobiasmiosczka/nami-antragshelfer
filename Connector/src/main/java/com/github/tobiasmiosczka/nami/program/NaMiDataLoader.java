@@ -41,8 +41,7 @@ public class NaMiDataLoader extends Thread {
 			items = result.size();
 		for(NamiMitgliedListElement element : result){
 			NamiMitglied member = element.getFullData(connector);
-			handler.onUpdate(i, items, member);
-			i++;
+			handler.onUpdate(++i, items, member);
 		}
 		handler.onDone((System.currentTimeMillis() - startTimeInMillis));
 	}
