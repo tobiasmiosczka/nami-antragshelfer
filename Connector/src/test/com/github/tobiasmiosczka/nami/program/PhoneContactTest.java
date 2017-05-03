@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class PhoneContactTest {
 
-    PhoneContact[] contactsArray;
+    private PhoneContact[] contactsArray;
 
     @Before
     public void initialize() {
@@ -18,7 +18,8 @@ public class PhoneContactTest {
                 "01234 56789 (Max Mustermann);" +
                 " 01234 56789  ( Max Mustermann ) ;" +
                 "01234 56789 (Max Mustermann(Vater));" +
-                "01234 56789 ()";
+                "01234 56789 ();" +
+                "01234 56789 (;;;";
 
         Collection<PhoneContact> contactsCollection = PhoneContact.getPhoneContacts(string);
         contactsArray = contactsCollection.toArray(new PhoneContact[contactsCollection.size()]);
@@ -43,5 +44,10 @@ public class PhoneContactTest {
 
         assertEquals("01234 56789", contactsArray[5].getPhoneNumber());
         assertEquals("", contactsArray[5].getName());
+
+        assertEquals("01234 56789 (", contactsArray[6].getPhoneNumber());
+        assertEquals(null, contactsArray[6].getName());
+
+        assertEquals(7, contactsArray.length);
     }
 }
