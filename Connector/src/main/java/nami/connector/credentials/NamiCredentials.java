@@ -13,8 +13,8 @@ import nami.connector.exception.CredentialsInitiationException;
  * 
  */
 public class NamiCredentials {
-    private String apiUser;
-    private String apiPass;
+    private final String apiUser;
+    private final String apiPass;
 
     /**
      * Erzeugt ein neues Credentials-Objekt, wobei die Zugangsdaten für NaMi

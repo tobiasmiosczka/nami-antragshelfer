@@ -40,7 +40,7 @@ public enum Geschlecht {
      */
     public static Geschlecht fromString(String str) {
         if (str == null) {
-            throw new IllegalArgumentException("Unexpected String for Geschlecht: " + str);
+            throw new IllegalArgumentException("Unexpected String for Geschlecht: null");
         }
         for (Geschlecht geschlecht : Geschlecht.values()) {
             if (geschlecht.getTag().equals(str)) {

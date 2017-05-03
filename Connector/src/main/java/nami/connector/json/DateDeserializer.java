@@ -10,12 +10,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Tobias on 24.04.2017.
- */
 class DateDeserializer implements JsonDeserializer<Date>{
 
-    SimpleDateFormat sdfNaMi = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final SimpleDateFormat sdfNaMi = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     @Override
     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

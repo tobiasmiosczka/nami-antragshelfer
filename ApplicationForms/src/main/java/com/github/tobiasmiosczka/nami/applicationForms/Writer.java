@@ -68,7 +68,7 @@ public abstract class Writer {
 	 * 				List of all participants
 	 */
 	public void run(String output, List<NamiMitglied> participants) throws Exception, NoParticipantsException {
-		int pages = (int) Math.ceil((double)(participants.size())/(double)(getMaxParticipantsPerPage()));
+		int pages = (int) Math.ceil((double)(participants.size()) / (double)(getMaxParticipantsPerPage()));
 		if(pages == 0){
 			//no pages to export
 			throw new NoParticipantsException();

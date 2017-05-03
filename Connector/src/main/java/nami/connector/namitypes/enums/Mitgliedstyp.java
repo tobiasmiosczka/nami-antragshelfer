@@ -44,7 +44,7 @@ public enum Mitgliedstyp {
      */
     public static Mitgliedstyp fromString(String str) {
         if (str == null) {
-            throw new IllegalArgumentException("Unexpected String for Mitgliedstyp: " + str);
+            throw new IllegalArgumentException("Unexpected String for Mitgliedstyp: null");
         }
         for (Mitgliedstyp mitgliedstyp : Mitgliedstyp.values()) {
             if (mitgliedstyp.getTag().equals(str)) {
