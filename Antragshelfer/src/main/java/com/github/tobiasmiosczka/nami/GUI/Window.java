@@ -6,8 +6,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.*;
+import java.util.List;
 
 import com.github.tobiasmiosczka.nami.GUI.Windows.GroupSelector;
 import com.github.tobiasmiosczka.nami.applicationForms.*;
@@ -24,12 +29,7 @@ import nami.connector.exception.NamiApiException;
 import nami.connector.namitypes.NamiMitglied;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.List;
-
-public class Window extends JFrame implements  ActionListener, Program.ProgramHandler {
+public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
 	private static final int VERSION_MINOR = 1;
@@ -40,67 +40,45 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 
 	private final DocumentListener nameFilterListener = new DocumentListener() {
 		@Override
-		public void insertUpdate(DocumentEvent e) {
-			updateLists();
-		}
+		public void insertUpdate(DocumentEvent e) {}
 
 		@Override
-		public void removeUpdate(DocumentEvent e) {
-			updateLists();
-		}
+		public void removeUpdate(DocumentEvent e) {}
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			updateLists();
+			updateMembersList();
 		}
 	};
-
-	private JPanel pLogin;
 
 	private JTextField 	tfFirstName,
 						tfLastName,
 						tfUsername;
-	private JLabel      lbUser;
+
+	private JPasswordField	pfPassword;
+
+	private JLabel lbUser;
 
 	private JCheckBox 	cWoelflinge,
 						cJungpfadfinder,
 						cPfadfinder,
 						cRover,
 						cAndere,
-
 						cMitglied,
 						cSchnuppermitglied,
 						cNichtmitglied,
-
 						cMaennlich,
 						cWeiblich;
 
 	private JProgressBar progressBar;
 
-	private JButton 	bAdd,
-						bLogin,
-						bRemove;
-
-	private JMenuItem 	mntmExit,
-						mntmHelp,
-						mntmLicence,
-						mntmAntragStadt,
-						mntmAntragLand,
-						mntmAntragLandLeiter,
-						mntmNotfallliste,
-						mntmChangelog;
-
-	private JRadioButtonMenuItem 	rbmiSortByFirstname,
-									rbmiSortByLastname,
-									rbmiSortByAge;
-
-	private JPasswordField	pfPassword;
+	private JButton bLogin;
 
 	private JList<NamiMitglied>	listFiltered,
 								listParticipants;
 
-	private DefaultListModel<NamiMitglied> 	dlmFiltered,
-											dlmParticipants;
+	private final DefaultListModel<NamiMitglied> 	dlmFiltered = new DefaultListModel<>(),
+													dlmParticipants = new DefaultListModel<>();
 
 	private final WindowHelp windowHelp = new WindowHelp();
 	private final WindowLicence windowLicence = new WindowLicence();
@@ -141,28 +119,28 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		JMenu mnNewMenu = new JMenu("Programm");
 		menuBar.add(mnNewMenu);
 
-		mntmExit = new JMenuItem("Beenden");
-		mntmExit.addActionListener(this);
+		JMenuItem mntmExit = new JMenuItem("Beenden");
+		mntmExit.addActionListener((ActionEvent e) -> System.exit(0));
 		mnNewMenu.add(mntmExit);
 
 		/*Anträge*/
 		JMenu mAntrag = new JMenu("Anträge");
 		menuBar.add(mAntrag);
 
-		mntmAntragStadt = new JMenuItem("Antrag an Stadt");
-		mntmAntragStadt.addActionListener(this);
+		JMenuItem mntmAntragStadt = new JMenuItem("Antrag an Stadt");
+		mntmAntragStadt.addActionListener((ActionEvent e) -> applicationTown());
 		mAntrag.add(mntmAntragStadt);
 
-		mntmAntragLand = new JMenuItem("Antrag an Land");
-		mntmAntragLand.addActionListener(this);
+		JMenuItem mntmAntragLand = new JMenuItem("Antrag an Diözese Münster");
+		mntmAntragLand.addActionListener((ActionEvent e) -> applicationMuenster());
 		mAntrag.add(mntmAntragLand);
 
-		mntmAntragLandLeiter = new JMenuItem("Antrag an Land (Leiter)");
-		mntmAntragLandLeiter.addActionListener(this);
+		JMenuItem mntmAntragLandLeiter = new JMenuItem("Antrag an Diözese Münster (Leiter)");
+		mntmAntragLandLeiter.addActionListener((ActionEvent e) -> applicationMuensterGroupLeader());
 		mAntrag.add(mntmAntragLandLeiter);
 
-		mntmNotfallliste = new JMenuItem("Notfallliste");
-		mntmNotfallliste.addActionListener(this);
+		JMenuItem mntmNotfallliste = new JMenuItem("Notfallliste");
+		mntmNotfallliste.addActionListener((ActionEvent e) -> emergencyPhoneList());
 		mAntrag.add(mntmNotfallliste);
 
 		/*Einstellungen*/
@@ -174,18 +152,18 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 
 		ButtonGroup sortByRadioButtonGroup = new ButtonGroup();
 
-		rbmiSortByFirstname = new JRadioButtonMenuItem("Vorname");
-		rbmiSortByFirstname.addActionListener(this);
+		JRadioButtonMenuItem rbmiSortByFirstname = new JRadioButtonMenuItem("Vorname");
+		rbmiSortByFirstname.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_FIRSTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByFirstname);
 		mSortation.add(rbmiSortByFirstname);
 
-		rbmiSortByLastname = new JRadioButtonMenuItem("Nachname");
-		rbmiSortByLastname.addActionListener(this);
+		JRadioButtonMenuItem rbmiSortByLastname = new JRadioButtonMenuItem("Nachname");
+		rbmiSortByLastname.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_LASTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByLastname);
 		mSortation.add(rbmiSortByLastname);
 
-		rbmiSortByAge = new JRadioButtonMenuItem("Alter");
-		rbmiSortByAge.addActionListener(this);
+		JRadioButtonMenuItem rbmiSortByAge = new JRadioButtonMenuItem("Alter");
+		rbmiSortByAge.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_AGE));
 		sortByRadioButtonGroup.add(rbmiSortByAge);
 		mSortation.add(rbmiSortByAge);
 
@@ -195,21 +173,21 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		JMenu mHelp = new JMenu("Hilfe");
 		menuBar.add(mHelp);
 
-		mntmHelp = new JMenuItem("Hilfe");
-		mntmHelp.addActionListener(this);
+		JMenuItem mntmHelp = new JMenuItem("Hilfe");
+		mntmHelp.addActionListener((ActionEvent e) -> windowHelp.setVisible(true));
 		mHelp.add(mntmHelp);
 
-		mntmLicence = new JMenuItem("Lizenz");
-		mntmLicence.addActionListener(this);
+		JMenuItem mntmLicence = new JMenuItem("Lizenz");
+		mntmLicence.addActionListener((ActionEvent e) -> windowLicence.setVisible(true));
 		mHelp.add(mntmLicence);
 
-		mntmChangelog = new JMenuItem("Changelog");
-		mntmChangelog.addActionListener(this);
+		JMenuItem mntmChangelog = new JMenuItem("Changelog");
+		mntmChangelog.addActionListener((ActionEvent e) -> windowChangelog.setVisible(true));
 		mHelp.add(mntmChangelog);
 	}
 
 	private void initLoginPane(JPanel pOptions) {
-		pLogin = new JPanel();
+		JPanel pLogin = new JPanel();
 		pLogin.setBounds(10, 10, 180, 100);
 		pOptions.add(pLogin);
 		pLogin.setLayout(null);
@@ -227,7 +205,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pLoginForm.add(lUsername);
 
 		tfUsername = new JTextField();
-		tfUsername.addActionListener(this);
+		tfUsername.addActionListener(e -> login());
 		tfUsername.setColumns(10);
 		pLoginForm.add(tfUsername);
 
@@ -235,11 +213,11 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pLoginForm.add(lPassword);
 
 		pfPassword = new JPasswordField();
-		pfPassword.addActionListener(this);
+		pfPassword.addActionListener(e -> login());
 		pLoginForm.add(pfPassword);
 
 		bLogin = new JButton("Login");
-		bLogin.addActionListener(this);
+		bLogin.addActionListener(e -> login());
 		bLogin.setBounds(49, 77, 89, 23);
 		pLogin.add(bLogin);
 
@@ -294,27 +272,27 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pStufe.setLayout(new GridLayout(0, 1, 0, 0));
 
 		cWoelflinge = new JCheckBox("Wölflinge");
-		cWoelflinge.addActionListener(this);
+		cWoelflinge.addActionListener(e -> updateMembersList());
 		cWoelflinge.setSelected(true);
 		pStufe.add(cWoelflinge);
 
 		cJungpfadfinder = new JCheckBox("Jungpfadfinder");
-		cJungpfadfinder.addActionListener(this);
+		cJungpfadfinder.addActionListener(e -> updateMembersList());
 		cJungpfadfinder.setSelected(true);
 		pStufe.add(cJungpfadfinder);
 
 		cPfadfinder = new JCheckBox("Pfadfinder");
-		cPfadfinder.addActionListener(this);
+		cPfadfinder.addActionListener(e -> updateMembersList());
 		cPfadfinder.setSelected(true);
 		pStufe.add(cPfadfinder);
 
 		cRover = new JCheckBox("Rover");
-		cRover.addActionListener(this);
+		cRover.addActionListener(e -> updateMembersList());
 		cRover.setSelected(true);
 		pStufe.add(cRover);
 
 		cAndere = new JCheckBox("Andere");
-		cAndere.addActionListener(this);
+		cAndere.addActionListener(e -> updateMembersList());
 		pStufe.add(cAndere);
 
 		/*Mitgliedstyp*/
@@ -325,17 +303,17 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pAktiv.setLayout(new GridLayout(0, 1, 0, 0));
 
 		cMitglied = new JCheckBox("Mitglieder");
-		cMitglied.addActionListener(this);
+		cMitglied.addActionListener(e -> updateMembersList());
 		cMitglied.setSelected(true);
 		pAktiv.add(cMitglied);
 
 		cSchnuppermitglied = new JCheckBox("Schnuppermitglieder");
-		cSchnuppermitglied.addActionListener(this);
+		cSchnuppermitglied.addActionListener(e -> updateMembersList());
 		cSchnuppermitglied.setSelected(true);
 		pAktiv.add(cSchnuppermitglied);
 
 		cNichtmitglied = new JCheckBox("Nichtmitglieder");
-		cNichtmitglied.addActionListener(this);
+		cNichtmitglied.addActionListener(e -> updateMembersList());
 		pAktiv.add(cNichtmitglied);
 
 
@@ -347,12 +325,12 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		pGeschlecht.setLayout(new GridLayout(0, 1, 0, 0));
 
 		cMaennlich = new JCheckBox("männlich");
-		cMaennlich.addActionListener(this);
+		cMaennlich.addActionListener(e -> updateMembersList());
 		cMaennlich.setSelected(true);
 		pGeschlecht.add(cMaennlich);
 
 		cWeiblich = new JCheckBox("weiblich");
-		cWeiblich.addActionListener(this);
+		cWeiblich.addActionListener(e -> updateMembersList());
 		cWeiblich.setSelected(true);
 		pGeschlecht.add(cWeiblich);
 
@@ -387,8 +365,12 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		spListFiltered.setViewportView(listFiltered);
 		pListFiltered.add(spListFiltered);
 
-		bAdd = new JButton("Hinzufügen =>");
-		bAdd.addActionListener(this);
+		JButton bAdd = new JButton("Hinzufügen =>");
+		bAdd.addActionListener((ActionEvent e) -> {
+			listFiltered.getSelectedValuesList().forEach(program::putMemberToParticipants);
+			updateMembersList();
+			updateParticipantsList();
+		});
 		bAdd.setBounds(10, 616, 178, 23);
 		pListFiltered.add(bAdd);
 	}
@@ -410,8 +392,12 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		spListParticipants.setViewportView(listParticipants);
 		pParticipants.add(spListParticipants);
 
-		bRemove = new JButton("<= Entfernen");
-		bRemove.addActionListener(this);
+		JButton bRemove = new JButton("<= Entfernen");
+		bRemove.addActionListener((ActionEvent e) -> {
+			listParticipants.getSelectedValuesList().forEach(program::putParticipantToMember);
+			updateMembersList();
+			updateParticipantsList();
+		});
 		bRemove.setBounds(10, 616, 178, 23);
 		pParticipants.add(bRemove);
 	}
@@ -432,8 +418,6 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		initMemberPane(pAll);
 		initParticipantsPane(pAll);
 
-		dlmFiltered = new DefaultListModel<>();
-		dlmParticipants = new DefaultListModel<>();
 		listFiltered.setModel(dlmFiltered);
 		listParticipants.setModel(dlmParticipants);
 	}
@@ -462,7 +446,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 		boolean bIsRvr = (m.getStufe() == Stufe.ROVER);
 		boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
 		//check stufe
-		if(!((bIsWlf && cWoelflinge.isSelected()) ||
+		if(!(   (bIsWlf && cWoelflinge.isSelected()) ||
 				(bIsJng && cJungpfadfinder.isSelected()) ||
 				(bIsPfd && cPfadfinder.isSelected()) ||
 				(bIsRvr && cRover.isSelected()) ||
@@ -471,25 +455,40 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			return false;
 		}
 		//check Aktiv
-		if(!((cMitglied.isSelected()			 && m.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
+		if(!(   (cMitglied.isSelected()			 && m.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
 				(cSchnuppermitglied.isSelected() && m.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
 				(cNichtmitglied.isSelected()	 && m.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED))) {
 			return false;
 		}
 		//check gender
-		if(!((cWeiblich.isSelected()  && m.getGeschlecht() == Geschlecht.WEIBLICH) ||
+		if(!(   (cWeiblich.isSelected()  && m.getGeschlecht() == Geschlecht.WEIBLICH) ||
 				(cMaennlich.isSelected() && m.getGeschlecht() == Geschlecht.MAENNLICH))) {
 			return false;
 		}
 		//check Name
-		if (!((m.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) &&
-				m.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase()))) {
+		if (    !(m.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) ||
+				!(m.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase()))) {
 			return false;
 		}
 		return true;
 	}
 
-	private void updateLists(){ //TODO: make it faster
+	private void updateParticipantsList() {
+		List<NamiMitglied> selected = listParticipants.getSelectedValuesList();
+
+		dlmParticipants.removeAllElements();
+		for(NamiMitglied m : program.getParticipants()){
+			dlmParticipants.addElement(m);
+		}
+
+		int[] selectedIndices = new int[selected.size()];
+		for(int i = 0; i < selected.size(); ++i) {
+			selectedIndices[i] = dlmParticipants.indexOf(selected.get(i));
+		}
+		listParticipants.setSelectedIndices(selectedIndices);
+	}
+
+	private void updateMembersList(){ //TODO: make it faster
 		List<NamiMitglied> selected = listFiltered.getSelectedValuesList();
 
 		dlmFiltered.removeAllElements();
@@ -504,167 +503,106 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			selectedIndices[i] = dlmFiltered.indexOf(selected.get(i));
 		}
 		listFiltered.setSelectedIndices(selectedIndices);
-
-		selected = listParticipants.getSelectedValuesList();
-
-		dlmParticipants.removeAllElements();
-		for(NamiMitglied m : program.getParticipants()){
-			dlmParticipants.addElement(m);
-		}
-
-		selectedIndices = new int[selected.size()];
-		for(int i = 0; i < selected.size(); ++i) {
-			selectedIndices[i] = dlmParticipants.indexOf(selected.get(i));
-		}
-		listParticipants.setSelectedIndices(selectedIndices);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-		if( source == cWoelflinge ||
-				source == cJungpfadfinder ||
-				source == cPfadfinder ||
-				source == cRover ||
-				source == cAndere ||
-				source == cMitglied ||
-				source == cSchnuppermitglied ||
-				source == cNichtmitglied ||
-				source == cMaennlich ||
-				source == cWeiblich){
-			updateLists();
-		}
-		if(source == bAdd){
-			listFiltered.getSelectedValuesList().forEach(program::putMemberToParticipants);
-			updateLists();
-		}
-		if(source == bRemove){
-			listParticipants.getSelectedValuesList().forEach(program::putParticipantToMember);
-			updateLists();
-		}
-		if(source == bLogin || source == tfUsername || source == pfPassword){
-			this.login();
-		}
-		if(source == rbmiSortByLastname) {
-			program.sortBy(Program.Sortation.SORT_BY_LASTNAME);
-			updateLists();
-		}
-		if(source == rbmiSortByFirstname) {
-			program.sortBy(Program.Sortation.SORT_BY_FIRSTNAME);
-			updateLists();
-		}
-		if(source == rbmiSortByAge) {
-			program.sortBy(Program.Sortation.SORT_BY_AGE);
-			updateLists();
-		}
-		if(source == mntmExit){
-			System.exit(0);
-		}
-		if(source == mntmHelp){
-			windowHelp.setVisible(true);
-		}
-		if(source == mntmLicence){
-			windowLicence.setVisible(true);
-		}
-		if(source == mntmChangelog){
-			windowChangelog.setVisible(true);
-		}
-		if(source == mntmAntragLand){
-			UserInput ui = new UserInput(this);
-			ui.addStringOption("Mitgliedsverband" , "DPSG Diözesanverband Münster");
-			ui.addStringOption("Träger", "Stamm DPSG St. Vincentius Dinslaken");
-			ui.addBooleanOption("Datum freilassen", false);
-			ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
-			ui.addDateOption("Ende (tt.mm.jjjj)", new Date());
-			ui.addStringOption("PLZ", "");
-			ui.addStringOption("Ort", "");
-			ui.addStringOption("Land", "Deutschland");
-			if(!ui.showModal()) {
-				return;
-			}
-
-			SaveDialog sd = new SaveDialog("Land Ausgefüllt.odt");
-			if(!sd.showDialog()) {
-				return;
-			}
-
-			try {
-				new WriterAntragLand((String)ui.getOption(0), (String)ui.getOption(1), (Boolean)ui.getOption(2), (Date)ui.getOption(3), (Date)ui.getOption(4), (String)ui.getOption(5), (String)ui.getOption(6), (String)ui.getOption(7)).run(sd.getAbsolutePath(), program.getParticipants());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			} catch (NoParticipantsException e1) {
-				JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
-				return;
-			}
-		}
-		if(source == mntmAntragLandLeiter){
-			UserInput ui = new UserInput(this);
-			ui.addBooleanOption("Datum freilassen", false);
-			ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
-			if(!ui.showModal()) {
-				return;
-			}
-
-			// load courses of selected members
-			List<SchulungenMap> schulungen;
-			try {
-				schulungen = program.loadSchulungen(program.getParticipants());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				return;
-			}
-
-			SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
-			if(!sd.showDialog()) {
-				return;
-			}
-
-			try {
-				new WriterAntragLandLeiter(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+	private void applicationMuenster() {
+		UserInput ui = new UserInput(this);
+		ui.addBooleanOption("Datum freilassen", false);
+		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
+		if(!ui.showModal()) {
 			return;
-			}
 		}
-		if(source == mntmAntragStadt){
-			UserInput ui = new UserInput(this);
-			ui.addStringOption("Maßnahme" , "");
-			ui.addBooleanOption("Datum freilassen", false);
-			ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
-			ui.addDateOption("Ende (tt.mm.jjjj)", new Date());
-			ui.addStringOption("Ort", "");
-			if(!ui.showModal()) {
-				return;
-			}
 
-			SaveDialog sd = new SaveDialog("Stadt Ausgefüllt.odt");
-			if(!sd.showDialog()) {
-				return;
-			}
-
-			try {
-				new WriterAntragStadtDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(sd.getAbsolutePath(), program.getParticipants());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			} catch (NoParticipantsException e1) {
-				JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
-				return;
-			}
+		// load courses of selected members
+		List<SchulungenMap> schulungen;
+		try {
+			schulungen = program.loadSchulungen(program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return;
 		}
-		if(source == mntmNotfallliste){
-			SaveDialog sd = new SaveDialog("applicationForms/Notfallliste.odt");
-			if(!sd.showDialog()) {
-				return;
-			}
-			try {
-				new WriterEmergencyList().run(sd.getAbsolutePath(), program.getParticipants());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			} catch (NoParticipantsException e1) {
+
+		SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+
+		try {
+			new WriterAntragLandLeiter(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
 			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
-			}
+		}
+	}
+
+	private void applicationMuensterGroupLeader() {
+		UserInput ui = new UserInput(this);
+		ui.addBooleanOption("Datum freilassen", false);
+		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
+		if(!ui.showModal()) {
+			return;
+		}
+
+		// load courses of selected members
+		List<SchulungenMap> schulungen;
+		try {
+			schulungen = program.loadSchulungen(program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return;
+		}
+
+		SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+
+		try {
+			new WriterAntragLandLeiter(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
+			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		}
+	}
+
+	private void applicationTown() {
+		UserInput ui = new UserInput(this);
+		ui.addStringOption("Maßnahme" , "");
+		ui.addBooleanOption("Datum freilassen", false);
+		ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
+		ui.addDateOption("Ende (tt.mm.jjjj)", new Date());
+		ui.addStringOption("Ort", "");
+		if(!ui.showModal()) {
+			return;
+		}
+
+		SaveDialog sd = new SaveDialog("Stadt Ausgefüllt.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+
+		try {
+			new WriterAntragStadtDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
+			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		}
+	}
+
+	private void emergencyPhoneList() {
+		SaveDialog sd = new SaveDialog("applicationForms/Notfallliste.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+		try {
+			new WriterEmergencyList().run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
+			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
 		}
 	}
 
@@ -691,7 +629,7 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			progressBar.setValue(current);
 			String sb = "(" + current + "/" + count + ") " + member.getVorname() + " " + member.getNachname();
 			progressBar.setString(sb);
-			updateLists();
+			updateMembersList();
 		});
 	}
 
@@ -708,7 +646,6 @@ public class Window extends JFrame implements  ActionListener, Program.ProgramHa
 			progressBar.setMaximum(100);
 			progressBar.setValue(100);
 			progressBar.setString("Fertig nach " + timeMS / 1000 + "s.");
-			updateLists();
 		});
 	}
 
