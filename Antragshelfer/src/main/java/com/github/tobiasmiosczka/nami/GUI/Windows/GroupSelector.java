@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 
 /**
- * Created by Tobias on 25.09.2016.
- * JFrame to Select the Group(s) the user likes to work with
+ * JFrame to select either one group the user likes to work with or all groups
+ * @author Tobias Miosczka
  */
 public class GroupSelector extends JFrame implements ActionListener {
 

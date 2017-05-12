@@ -16,8 +16,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- * Created by Tobias on 25.09.2016.
  * Class with static methods to extend the functionality of JNami
+ * @author Tobias Miosczka
  */
 public class ExtendedJNaMi {
 
@@ -37,7 +37,6 @@ public class ExtendedJNaMi {
         NamiURIBuilder builder = con.getURIBuilder(URL_SCHULUNGEN);
         builder.appendPath(Integer.toString(mitgliedsID));
         builder.appendPath("/flist");
-        System.out.println(builder.build().toString());
         HttpGet httpGet = new HttpGet(builder.build());
         Type type = new TypeToken<NamiResponse<Collection<Schulung>>>() {
         }.getType();

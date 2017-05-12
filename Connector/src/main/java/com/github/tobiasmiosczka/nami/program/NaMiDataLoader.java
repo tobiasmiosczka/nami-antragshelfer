@@ -10,7 +10,7 @@ import nami.connector.namitypes.NamiMitgliedListElement;
 import nami.connector.namitypes.NamiSearchedValues;
 
 /**
- * Class for downloading Nami data packages in another thread.
+ * Class for downloading NaMi data packages in another thread.
  * 
  * @author Tobias Miosczka
  * 

@@ -71,8 +71,8 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     }
 
     private NamiConnector 	connector;
-    private final SortedList<NamiMitglied> members;
-    private final SortedList<NamiMitglied> participants;
+    private final SortedList<NamiMitglied> members = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
+    private final SortedList<NamiMitglied> participants = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
     private final ProgramHandler handler;
 
     /**
@@ -80,8 +80,6 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      */
     public Program(ProgramHandler handler){
         this.handler = handler;
-        members = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
-        participants = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
     }
 
     /**
@@ -97,7 +95,6 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         connector = new NamiConnector(NamiServer.LIVESERVER, credentials);
         connector.namiLogin();
     }
-
 
     /**
      * loads data from the nami database and displays it in the main frame
