@@ -10,10 +10,9 @@ import java.util.List;
 
 import javax.swing.*;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class UserInputDialog implements ActionListener{
+public class UserInputDialog{
 
 	private static final int INPUTFIELD_WIDTH = 120;
 
@@ -30,8 +29,12 @@ public class UserInputDialog implements ActionListener{
 			parent.add(label);
 		}
 		
-		public void showError(){
-			label.setForeground(Color.RED);
+		public void showError(boolean error){
+			if (error) {
+				label.setForeground(Color.RED);
+			} else {
+				label.setForeground(Color.BLACK);
+			}
 		}
 
 		public int getWidth() {
@@ -217,7 +220,7 @@ public class UserInputDialog implements ActionListener{
 
 		@Override
 		public String toString() {
-			return null;
+			return String.valueOf(checkBox.isSelected());
 		}
 		
 	}
@@ -227,9 +230,6 @@ public class UserInputDialog implements ActionListener{
 
 	private final List<Input> inputList = new LinkedList<>();
 	private boolean isOK;
-	
-	private final JButton btnOK;
-	private final JButton btnCancel;
 		
 	/**
 	 * Create the panel.
@@ -248,13 +248,21 @@ public class UserInputDialog implements ActionListener{
 		
 		JPanel panelOkCancel = new JPanel();
 		dialog.getContentPane().add(panelOkCancel, BorderLayout.SOUTH);
-		
-		btnOK = new JButton("Fertig");
-		btnOK.addActionListener(this);
+
+		JButton btnOK = new JButton("Fertig");
+		btnOK.addActionListener((ActionEvent e) -> {
+			if(check()){
+				isOK = true;
+				dialog.setVisible(false);
+			}
+		});
 		panelOkCancel.add(btnOK);
-		
-		btnCancel = new JButton("Abbrechen");
-		btnCancel.addActionListener(this);
+
+		JButton btnCancel = new JButton("Abbrechen");
+		btnCancel.addActionListener((ActionEvent e) -> {
+			isOK = false;
+			dialog.setVisible(false);
+		});
 		panelOkCancel.add(btnCancel);
 	}
 
@@ -312,26 +320,13 @@ public class UserInputDialog implements ActionListener{
 		boolean valid = true;
 		for (Input input : inputList) {
 			if(!input.check()){
-				input.showError();
+				input.showError(true);
 				valid = false;
+			} else {
+				input.showError(false);
 			}
 		}
 		return valid;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-		if(source == btnOK){
-			if(check()){
-				isOK = true;
-				dialog.setVisible(false);
-			}
-		}
-		if(source == btnCancel){
-			isOK = false;
-			dialog.setVisible(false);
-		}
 	}
 
 	private int getOptionCount() {
