@@ -1,0 +1,1 @@
+Der Nami-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der DPSG. Die benötigten Mitgliederdaten können aus der Nami-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und das Land exportiert werden.
