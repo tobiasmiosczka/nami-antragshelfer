@@ -1,6 +1,6 @@
 NaMi-Antragshelfer
 ======================================================================
-Der Nami-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der DPSG. Die benötigten Mitgliederdaten können aus der Nami-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und der Diözese Münster exportiert werden.
+Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der DPSG. Die benötigten Mitgliederdaten können aus der Nami-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und der Diözese Münster exportiert werden.
 
 ![picture alt](https://raw.githubusercontent.com/TobiasMiosczka/NaMi/master/pictures/preview.PNG "Benutzeroberfläche der Version 3.0")
 
@@ -10,7 +10,7 @@ Die aktuelle Version des NaMi-Antragsgelfers kann [hier][1] heruntergeladen werd
 
 Systemvorraussetzungen:
 ----------------------------------------------------------------------
-Zum Ausführen des Nami-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][2].
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][2].
 
 
 Lizenz:
