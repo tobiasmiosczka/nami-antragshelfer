@@ -1,16 +1,16 @@
 NaMi-Antragshelfer
 ======================================================================
-Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der DPSG. Die benötigten Mitgliederdaten können aus der Nami-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und der Diözese Münster exportiert werden.
+Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der DPSG. Die benötigten Mitgliederdaten können aus der [NaMi][1]-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und der Diözese Münster exportiert werden.
 
 ![picture alt](https://raw.githubusercontent.com/TobiasMiosczka/NaMi/master/pictures/preview.PNG "Benutzeroberfläche der Version 3.0")
 
 Download
 ----------------------------------------------------------------------
-Die aktuelle Version des NaMi-Antragsgelfers kann [hier][1] heruntergeladen werden.
+Die aktuelle Version des NaMi-Antragsgelfers kann [hier][2] heruntergeladen werden.
 
 Systemvorraussetzungen:
 ----------------------------------------------------------------------
-Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][2].
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][3].
 
 
 Lizenz:
@@ -34,6 +34,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
-
-[1]:https://github.com/TobiasMiosczka/NaMi/releases
-[2]:https://java.com/de/download/
+[1]:https://nami.dpsg.de/
+[2]:https://github.com/TobiasMiosczka/NaMi/releases
+[3]:https://java.com/de/download/
