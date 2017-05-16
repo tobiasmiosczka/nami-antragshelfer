@@ -17,16 +17,16 @@ public class WriterAntragLand extends Writer {
 							ort,
 							land;
 
-	private final boolean keinDatum;
+	private final boolean noDate;
 
 	private final Date 	datumVon,
 						datumBis;
 
-	public WriterAntragLand(String mitgliedsVerband, String träger, boolean keinDatum, Date datumVon, Date datumBis, String plz, String ort, String land) {
+	public WriterAntragLand(String mitgliedsVerband, String träger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.träger = träger;
-		this.keinDatum = keinDatum;
+		this.noDate = noDate;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
 		this.plz = plz;
@@ -46,7 +46,7 @@ public class WriterAntragLand extends Writer {
 		//event data
 		Table tEvent = odtDoc.getHeader().getTableList().get(1);
 		//Datum (von-bis)
-		if (!keinDatum) {
+		if (!noDate) {
 			tEvent.getCellByPosition(2, 0).setStringValue(TimeHelp.getDateString(datumVon) + " - " + TimeHelp.getDateString(datumBis));
 		}
 		//PLZ Ort
@@ -75,7 +75,7 @@ public class WriterAntragLand extends Writer {
 			//w=weibl. m=männl.
 			row.getCellByIndex(4).setStringValue("" + participant.getGeschlecht().getCharacter());
 			//Alter
-			if (!keinDatum) {
+			if (!noDate) {
 				row.getCellByIndex(5).setStringValue(TimeHelp.calcAgeRange(participant.getGeburtsDatum(), datumVon, datumBis));
 			}
 			Row r = tParticipants.appendRow();

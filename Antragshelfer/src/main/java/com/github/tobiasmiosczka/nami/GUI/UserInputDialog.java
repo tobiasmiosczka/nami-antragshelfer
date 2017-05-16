@@ -11,11 +11,10 @@ import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class UserInput implements ActionListener{
+public class UserInputDialog implements ActionListener{
 
 	abstract class Input<T>{
 		private final JLabel label;
@@ -40,7 +39,7 @@ public class UserInput implements ActionListener{
 		public InputString(JPanel parent, int index, String description, String preview) {
 			super(parent, index, description);
 			textField = new JTextField(preview);
-			textField.setBounds(150,  11+(index*30), 220,  20);
+			textField.setBounds(150,  11 + (index * 30), 220,  20);
 			parent.add(textField);
 		}
 
@@ -65,7 +64,7 @@ public class UserInput implements ActionListener{
 		public InputInteger(JPanel parent, int index, String description, int preview) {
 			super(parent, index, description);
 			textField = new JTextField(preview);
-			textField.setBounds(150,  11+(index*30), 220,  20);
+			textField.setBounds(150,  11 + (index * 30), 220,  20);
 			parent.add(textField);
 		}
 
@@ -155,7 +154,7 @@ public class UserInput implements ActionListener{
 	private final JDialog dialog;
 	private final JPanel panel;
 
-	private final List<Input> inputList;
+	private final List<Input> inputList = new LinkedList<>();
 	private boolean isOK;
 	
 	private final JButton btnOK;
@@ -164,15 +163,13 @@ public class UserInput implements ActionListener{
 	/**
 	 * Create the panel.
 	 */
-	public UserInput(JFrame owner) {	
-		
-		dialog = new JDialog(owner, true);
-		isOK = false;
-		dialog.setTitle("Optionen");
+	public UserInputDialog(JFrame owner) {
+		dialog = new JDialog(owner, "Optionen", true);
 		dialog.setResizable(false);
-		inputList = new LinkedList<>();
 		dialog.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
+		isOK = false;
+
 		panel = new JPanel();
 		dialog.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -188,25 +185,29 @@ public class UserInput implements ActionListener{
 		btnCancel.addActionListener(this);
 		panelOkCancel.add(btnCancel);
 	}
+
+	private void updateBounds() {
+		dialog.setBounds(0, 0, 400, (inputList.size() * 30) + 80);
+	}
 	
 	public void addStringOption(String description, String preview){
 		inputList.add(new InputString(panel, inputList.size(), description, preview));
-		dialog.setBounds(0, 0, 400, (inputList.size() * 30) + 80);
+		updateBounds();
 	}
 	
 	public void addIntegerOption(String description, int preview){
 		inputList.add(new InputInteger(panel, inputList.size(), description, preview));
-		dialog.setBounds(0, 0, 400, (inputList.size() * 30) + 80);
+		updateBounds();
 	}
 
 	public void addDateOption(String description, Date preview){
 		inputList.add(new InputDate(panel, inputList.size(), description, preview));
-		dialog.setBounds(0, 0, 400, (inputList.size() * 30) + 80);
+		updateBounds();
 	}
 	
 	public void addBooleanOption(String description, boolean preview){
 		inputList.add(new InputBoolean(panel, inputList.size(), description, preview));
-		dialog.setBounds(0, 0, 400, (inputList.size() * 30) + 80);
+		updateBounds();
 	}
 	
 	public boolean showModal(){

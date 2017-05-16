@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Sorted List, multithreaded
+ * @param <T> type of the list
+ * @author Tobias Miosczka
+ */
+
 public class SortedList<T> extends ArrayList<T> {
     private Comparator<T> comparator;
 
@@ -11,6 +17,7 @@ public class SortedList<T> extends ArrayList<T> {
         this.comparator = comparator;
     }
 
+    //TODO: implement insertionsort since its faster
     public synchronized boolean add(T n) {
         super.add(n);
         update();
@@ -26,7 +33,7 @@ public class SortedList<T> extends ArrayList<T> {
         Collections.sort(this, this.comparator);
     }
 
-    public Comparator<T> getComparator() {
+    public synchronized Comparator<T> getComparator() {
         return comparator;
     }
 }

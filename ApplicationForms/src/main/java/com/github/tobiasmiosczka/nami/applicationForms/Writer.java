@@ -68,23 +68,20 @@ public abstract class Writer {
 	 * 				List of all participants
 	 */
 	public void run(String output, List<NamiMitglied> participants) throws Exception, NoParticipantsException {
-		int pages = (int) Math.ceil((double)(participants.size()) / (double)(getMaxParticipantsPerPage()));
-		if(pages == 0){
-			//no pages to export
+		if (participants.size() == 0)
 			throw new NoParticipantsException();
-		}
+		int pages = (int) Math.ceil((double)(participants.size()) / (double)(getMaxParticipantsPerPage()));
         //get info
 		if(getMaxParticipantsPerPage() == 0){
 			runOneDoc(output, participants);
 		} else {
-			for(int i = 0; i < pages; i++){
+			for(int i = 0; i < pages; ++i){
 				int from = i * getMaxParticipantsPerPage();
 				int to = ((i + 1) * getMaxParticipantsPerPage());
 				runOneDoc(convertPathString(output, i + 1), participants.subList(from, to > participants.size() ? participants.size() : to));
 			}
 		}
 	}
-	
 		
 	/**
 	 * Returns the number of participants on one page of the application form.

@@ -477,36 +477,36 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		List<NamiMitglied> selected = listParticipants.getSelectedValuesList();
 
 		dlmParticipants.removeAllElements();
-		for(NamiMitglied m : program.getParticipants()){
-			dlmParticipants.addElement(m);
+		for(NamiMitglied member : program.getParticipants()){
+			dlmParticipants.addElement(member);
 		}
 
 		int[] selectedIndices = new int[selected.size()];
-		for(int i = 0; i < selected.size(); ++i) {
-			selectedIndices[i] = dlmParticipants.indexOf(selected.get(i));
+		int i = 0;
+		for(NamiMitglied member : selected) {
+			selectedIndices[i++] = dlmParticipants.indexOf(member);
 		}
 		listParticipants.setSelectedIndices(selectedIndices);
 	}
 
-	private void updateMembersList(){ //TODO: make it faster
+	private void updateMembersList(){
 		List<NamiMitglied> selected = listFiltered.getSelectedValuesList();
-
 		dlmFiltered.removeAllElements();
 		for(NamiMitglied m : program.getMember()){
-			if (checkFilter(m)) {
+			if (checkFilter(m))
 				dlmFiltered.addElement(m);
-			}
 		}
 
 		int[] selectedIndices = new int[selected.size()];
-		for (int i = 0; i < selected.size(); ++i) {
-			selectedIndices[i] = dlmFiltered.indexOf(selected.get(i));
+		int i = 0;
+		for (NamiMitglied member : selected) {
+			selectedIndices[i++] = dlmFiltered.indexOf(member);
 		}
 		listFiltered.setSelectedIndices(selectedIndices);
 	}
 
 	private void applicationMuenster() {
-		UserInput ui = new UserInput(this);
+		UserInputDialog ui = new UserInputDialog(this);
 		ui.addBooleanOption("Datum freilassen", false);
 		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
 		if(!ui.showModal()) {
@@ -537,7 +537,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private void applicationMuensterGroupLeader() {
-		UserInput ui = new UserInput(this);
+		UserInputDialog ui = new UserInputDialog(this);
 		ui.addBooleanOption("Datum freilassen", false);
 		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
 		if(!ui.showModal()) {
@@ -568,7 +568,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private void applicationTown() {
-		UserInput ui = new UserInput(this);
+		UserInputDialog ui = new UserInputDialog(this);
 		ui.addStringOption("Maßnahme" , "");
 		ui.addBooleanOption("Datum freilassen", false);
 		ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
