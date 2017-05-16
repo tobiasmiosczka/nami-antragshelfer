@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.github.tobiasmiosczka.nami</groupId>
         <artifactId>nami</artifactId>
-        <version>3.1</version>
+        <version>3.2</version>
     </parent>
 
     <artifactId>antragshelfer</artifactId>
