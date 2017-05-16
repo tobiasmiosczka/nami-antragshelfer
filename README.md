@@ -8,6 +8,10 @@ Download
 ----------------------------------------------------------------------
 Die aktuelle Version des NaMi-Antragsgelfers kann [hier][1] heruntergeladen werden.
 
+Systemvorraussetzungen:
+----------------------------------------------------------------------
+Zum Ausführen des Nami-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][2].
+
 
 Lizenz:
 ----------------------------------------------------------------------
@@ -32,3 +36,4 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
 
 [1]:https://github.com/TobiasMiosczka/NaMi/releases
+[2]:https://java.com/de/download/
