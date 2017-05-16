@@ -70,7 +70,12 @@ public class WindowChangelog extends JFrame {
 			+ "\t Es kann nun nach Vor- und Nachnamen sortiert      \r\n"
 			+ "\t werden.                                           \r\n"
 			+ "\t Vor dem Download können nun eine oder alle        \r\n"
-			+ "\t Gruppierungen ausgewählt werden.                  \r\n");
+			+ "\t Gruppierungen ausgewählt werden.                  \r\n"
+		  	+ "\t                                                   \r\n"
+			+ "3.1 \t Überarbeitung der Benutzeroberfläche.         \r\n"
+			+ "\t Fehler in Anträgen behoben.                       \r\n"
+			+ "3.2 \t Liste mit Bankdaten für den Bankeinzug der    \r\n"
+			+ "\t Halbjahresbeiträge hinzugefügt.                   \r\n");
 		contentPane.add(txtpnBenutzungbenutzernamemitgliedsnummer, BorderLayout.CENTER);
 	}
 

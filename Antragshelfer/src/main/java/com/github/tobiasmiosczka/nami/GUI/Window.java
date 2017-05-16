@@ -32,7 +32,7 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
-	private static final int VERSION_MINOR = 1;
+	private static final int VERSION_MINOR = 2;
 	private static final int lastUpdate = 2017;
 
 	private static final Color colorSuccess = Color.decode("0x009900");
@@ -124,7 +124,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		mnNewMenu.add(mntmExit);
 
 		/*Anträge*/
-		JMenu mAntrag = new JMenu("Anträge");
+		JMenu mAntrag = new JMenu("Anträge/Listen");
 		menuBar.add(mAntrag);
 
 		JMenuItem mntmAntragStadt = new JMenuItem("Antrag an Stadt");
@@ -142,6 +142,10 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		JMenuItem mntmNotfallliste = new JMenuItem("Notfallliste");
 		mntmNotfallliste.addActionListener((ActionEvent e) -> emergencyPhoneList());
 		mAntrag.add(mntmNotfallliste);
+
+		JMenuItem mntmBankData = new JMenuItem("Bankdaten");
+		mntmBankData.addActionListener((ActionEvent e) -> bankData());
+		mAntrag.add(mntmBankData);
 
 		/*Einstellungen*/
 		JMenu mProperties = new JMenu("Einstellungen");
@@ -599,6 +603,27 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		}
 		try {
 			new WriterEmergencyList().run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
+			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		}
+	}
+
+	private void bankData() {
+		UserInputDialog ui = new UserInputDialog(this);
+		ui.addFloatOption("Voller Beitrag [€](Dezimalpunkt)", 0.0f);
+		ui.addFloatOption("Familienermäßigter Beitrag [€](Dezimalpunkt)", 0.0f);
+		ui.addFloatOption("Sozialermäßigter Beitrag [€](Dezimalpunkt)", 0.0f);
+		if(!ui.showModal()) {
+			return;
+		}
+		SaveDialog sd = new SaveDialog("applicationForms/Bankdaten.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+		try {
+			new WriterBankData((Float)ui.getOption(0), (Float)ui.getOption(1), (Float)ui.getOption(2)).run(sd.getAbsolutePath(), program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
