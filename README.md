@@ -10,8 +10,18 @@ Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werd
 
 Systemvorraussetzungen:
 ----------------------------------------------------------------------
-Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” benötigt. Die Aktuelle Version des JREs gibt es [hier][4].
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” (JRE) benötigt. Die Aktuelle Version des JREs gibt es [hier][4].
 
+Unterstützte Formulare
+----------------------------------------------------------------------
+* Diözese Münster
+  * Teilnehmerliste (Formular 2)
+  * Anmeldung Freizeit
+* Stadt Dinslaken
+  * Teilnehmerliste
+* Diverse
+  * Notfall-Telefonliste
+  * Bankdatenliste zum Einzug der Halbjahresbeiträge
 
 Lizenz:
 ----------------------------------------------------------------------
@@ -34,7 +44,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
-[1]:https://dpsg.de/
-[2]:https://nami.dpsg.de/
-[3]:https://github.com/TobiasMiosczka/NaMi/releases
-[4]:https://java.com/de/download/
+[1]: https://dpsg.de/
+[2]: https://nami.dpsg.de/
+[3]: https://github.com/TobiasMiosczka/NaMi/releases
+[4]: https://java.com/de/download/
