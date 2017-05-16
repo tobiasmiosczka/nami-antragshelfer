@@ -4,6 +4,10 @@ Der Nami-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen 
 
 ![picture alt](https://raw.githubusercontent.com/TobiasMiosczka/NaMi/master/pictures/preview.PNG "Benutzeroberfläche der Version 3.0")
 
+Download
+----------------------------------------------------------------------
+Die aktuelle Version des NaMi-Antragsgelfers kann [hier][1] heruntergeladen werden.
+
 
 Lizenz:
 ----------------------------------------------------------------------
@@ -26,3 +30,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
+
+[1]:https://github.com/TobiasMiosczka/NaMi/releases
