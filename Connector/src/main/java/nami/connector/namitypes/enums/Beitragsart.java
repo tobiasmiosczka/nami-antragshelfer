@@ -28,7 +28,7 @@ public enum Beitragsart {
     SOZIALERMAESSIGUNG_STIFTUNGSEURO("Sozialermäßigt - Stiftungseuro"),
 
     //Personen, die keinen Mitgliedsbeitrag bezahlen müssen
-    KEIN_BEITRAG("(keine Beitragsarten zugeordnet)");
+    KEIN_BEITRAG("NICHT_MITGLIEDER");
 
     private String tag;
 

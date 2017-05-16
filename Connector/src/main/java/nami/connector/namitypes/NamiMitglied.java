@@ -67,6 +67,30 @@ public class NamiMitglied extends NamiAbstractMitglied{
 
         private Integer zahlungsKonditionId;
         private String zahlungsKondition;
+
+        public String getKontoinhaber() {
+            return kontoinhaber;
+        }
+
+        public String getInstitut() {
+            return institut;
+        }
+
+        public String getKontonummer() {
+            return kontonummer;
+        }
+
+        public String getBankleitzahl() {
+            return bankleitzahl;
+        }
+
+        public String getIban() {
+            return iban;
+        }
+
+        public String getBic() {
+            return bic;
+        }
     }
 
     private Integer id;
@@ -194,49 +218,28 @@ public class NamiMitglied extends NamiAbstractMitglied{
         return version;
     }
 
-    /**
-     * Liefert die Beitragsart des Mitglieds.
-     *
-     * @return Beitragsart
-     */
     public Beitragsart getBeitragsart() {
         return Beitragsart.fromString(beitragsart);
     }
 
-    /**
-     * Liefert das Eintrittsdatum des Mitglieds.
-     *
-     * @return Eintrittsdatum
-     */
     public Date getEintrittsdatum() {
         return eintrittsdatum;
     }
 
-    /**
-     * Liefert die Straße der Wohnung des Mitglieds.
-     *
-     * @return Straße
-     */
     public String getStrasse() {
         return strasse;
     }
 
-    /**
-     * Liefert die PLZ der Wohnung des Mitglieds.
-     *
-     * @return PLZ
-     */
     public String getPlz() {
         return plz;
     }
 
-    /**
-     * Liefert den Ort der Wohnung des Mitglieds.
-     *
-     * @return Ort
-     */
     public String getOrt() {
         return ort;
+    }
+
+    public Kontoverbindung getKontoverbindung() {
+        return kontoverbindung;
     }
 
     /**
