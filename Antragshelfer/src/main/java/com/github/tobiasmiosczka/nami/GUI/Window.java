@@ -295,7 +295,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		cRover.setSelected(true);
 		pStufe.add(cRover);
 
-		cAndere = new JCheckBox("Andere");
+		cAndere = new JCheckBox("Keine/Andere");
 		cAndere.addActionListener(e -> updateMembersList());
 		pStufe.add(cAndere);
 
