@@ -9,7 +9,7 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-public class WriterBankData extends Writer {
+public class WriterBankData extends TextDocumentWriter {
 
     private final float vollerBeitrag,
                         familienermaessigt,

@@ -20,9 +20,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odftoolkit</groupId>
+            <groupId>org.apache.odftoolkit</groupId>
             <artifactId>simple-odf</artifactId>
-            <version>0.6.6</version>
+            <version>0.8.2-incubating</version>
         </dependency>
     </dependencies>
 </project>

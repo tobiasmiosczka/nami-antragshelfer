@@ -11,7 +11,7 @@ import org.odftoolkit.simple.table.Table;
 
 import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateString;
 
-public class WriterEmergencyList extends Writer {
+public class WriterEmergencyList extends TextDocumentWriter {
 
 	public WriterEmergencyList() {
 		super();

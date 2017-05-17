@@ -10,12 +10,12 @@ import org.odftoolkit.simple.TextDocument;
 
 
 /**
- * abstract class to generate and output application form.
+ * abstract class to generate and output application form as a text document.
  * 
  * @author Tobias Miosczka
  *
  */
-public abstract class Writer {
+public abstract class TextDocumentWriter {
 
 	static {
 		// set loglevel off

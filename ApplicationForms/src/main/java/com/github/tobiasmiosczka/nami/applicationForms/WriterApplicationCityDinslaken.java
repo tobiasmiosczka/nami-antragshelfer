@@ -14,7 +14,7 @@ import org.odftoolkit.simple.table.Table;
 
 
 
-public class WriterAntragStadtDinslaken extends Writer {
+public class WriterApplicationCityDinslaken extends TextDocumentWriter {
 
 	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
 	private static final double height = 0.7;
@@ -25,7 +25,7 @@ public class WriterAntragStadtDinslaken extends Writer {
 	private final Date		datumVon,
 							datumBis;
 
-	public WriterAntragStadtDinslaken(String massnahme, boolean keinDatum, Date datumVon, Date datumBis, String ort) {
+	public WriterApplicationCityDinslaken(String massnahme, boolean keinDatum, Date datumVon, Date datumBis, String ort) {
 		super();
 		this.massnahme = massnahme;
 		this.keinDatum = keinDatum;

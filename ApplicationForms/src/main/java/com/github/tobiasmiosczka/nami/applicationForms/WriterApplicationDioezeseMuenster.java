@@ -9,7 +9,7 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-public class WriterAntragLand extends Writer {
+public class WriterApplicationDioezeseMuenster extends TextDocumentWriter {
 
 	private final String 	mitgliedsVerband,
 							träger,
@@ -22,7 +22,7 @@ public class WriterAntragLand extends Writer {
 	private final Date 	datumVon,
 						datumBis;
 
-	public WriterAntragLand(String mitgliedsVerband, String träger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
+	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String träger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.träger = träger;

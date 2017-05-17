@@ -17,7 +17,7 @@ import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.calcAge;
 import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateYearString;
 
 
-public class WriterAntragLandLeiter extends Writer {
+public class WriterApplicationDioezeseMuensterGroupLeader extends TextDocumentWriter {
 
 	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
 	private static final double height = 0.7;
@@ -26,7 +26,7 @@ public class WriterAntragLandLeiter extends Writer {
 	private final Date datum;
 	private final List<SchulungenMap> schulungen;
 
-	public WriterAntragLandLeiter(List<SchulungenMap> schulungen, boolean keinDatum, Date datum) {
+	public WriterApplicationDioezeseMuensterGroupLeader(List<SchulungenMap> schulungen, boolean keinDatum, Date datum) {
 		super();
 		this.schulungen = schulungen;
 		this.keinDatum = keinDatum;

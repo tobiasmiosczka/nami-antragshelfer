@@ -128,15 +128,15 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		menuBar.add(mAntrag);
 
 		JMenuItem mntmAntragStadt = new JMenuItem("Antrag an Stadt");
-		mntmAntragStadt.addActionListener((ActionEvent e) -> applicationTown());
+		mntmAntragStadt.addActionListener((ActionEvent e) -> applicationCityDinslaken());
 		mAntrag.add(mntmAntragStadt);
 
 		JMenuItem mntmAntragLand = new JMenuItem("Antrag an Diözese Münster");
-		mntmAntragLand.addActionListener((ActionEvent e) -> applicationMuenster());
+		mntmAntragLand.addActionListener((ActionEvent e) -> applicationDioezeseMuenster());
 		mAntrag.add(mntmAntragLand);
 
 		JMenuItem mntmAntragLandLeiter = new JMenuItem("Antrag an Diözese Münster (Leiter)");
-		mntmAntragLandLeiter.addActionListener((ActionEvent e) -> applicationMuensterGroupLeader());
+		mntmAntragLandLeiter.addActionListener((ActionEvent e) -> applicationDioezeseMuensterGroupLeader());
 		mAntrag.add(mntmAntragLandLeiter);
 
 		JMenuItem mntmNotfallliste = new JMenuItem("Notfallliste");
@@ -509,7 +509,45 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		listFiltered.setSelectedIndices(selectedIndices);
 	}
 
-	private void applicationMuenster() {
+	private void applicationDioezeseMuenster() {
+		UserInputDialog ui = new UserInputDialog(this);
+		ui.addStringOption("Mitgliedsverband", "");
+		ui.addStringOption("Träger", "");
+		ui.addBooleanOption("Datum freilassen", false);
+		ui.addDateOption("Datum von (tt.mm.jjjj)", new Date());
+		ui.addDateOption("Datum bis (tt.mm.jjjj)", new Date());
+		ui.addStringOption("PLZ","");
+		ui.addStringOption("Ort","");
+		ui.addStringOption("Land","");
+
+		if(!ui.showModal()) {
+			return;
+		}
+
+		SaveDialog sd = new SaveDialog("Land Ausgefüllt.odt");
+		if(!sd.showDialog()) {
+			return;
+		}
+
+		try {
+			new WriterApplicationDioezeseMuenster(
+					(String)ui.getOption(0),
+					(String)ui.getOption(1),
+					(Boolean)ui.getOption(2),
+					(Date)ui.getOption(3),
+					(Date)ui.getOption(4),
+					(String)ui.getOption(5),
+					(String)ui.getOption(6),
+					(String)ui.getOption(7)
+				).run(sd.getAbsolutePath(), program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e1) {
+			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		}
+	}
+
+	private void applicationDioezeseMuensterGroupLeader() {
 		UserInputDialog ui = new UserInputDialog(this);
 		ui.addBooleanOption("Datum freilassen", false);
 		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
@@ -532,7 +570,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		}
 
 		try {
-			new WriterAntragLandLeiter(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
@@ -540,38 +578,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		}
 	}
 
-	private void applicationMuensterGroupLeader() {
-		UserInputDialog ui = new UserInputDialog(this);
-		ui.addBooleanOption("Datum freilassen", false);
-		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
-		if(!ui.showModal()) {
-			return;
-		}
-
-		// load courses of selected members
-		List<SchulungenMap> schulungen;
-		try {
-			schulungen = program.loadSchulungen(program.getParticipants());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			return;
-		}
-
-		SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
-		if(!sd.showDialog()) {
-			return;
-		}
-
-		try {
-			new WriterAntragLandLeiter(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
-		}
-	}
-
-	private void applicationTown() {
+	private void applicationCityDinslaken() {
 		UserInputDialog ui = new UserInputDialog(this);
 		ui.addStringOption("Maßnahme" , "");
 		ui.addBooleanOption("Datum freilassen", false);
@@ -588,7 +595,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		}
 
 		try {
-			new WriterAntragStadtDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(sd.getAbsolutePath(), program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
