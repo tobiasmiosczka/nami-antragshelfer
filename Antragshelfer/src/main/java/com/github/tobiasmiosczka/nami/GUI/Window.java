@@ -32,7 +32,7 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
-	private static final int VERSION_MINOR = 2;
+	private static final int VERSION_MINOR = 3;
 	private static final int lastUpdate = 2017;
 
 	private static final Color colorSuccess = Color.decode("0x009900");

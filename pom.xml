@@ -6,7 +6,7 @@
 
     <groupId>com.github.tobiasmiosczka.nami</groupId>
     <artifactId>nami</artifactId>
-    <version>3.2</version>
+    <version>3.3</version>
     <packaging>pom</packaging>
 
     <properties>
