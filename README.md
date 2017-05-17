@@ -25,7 +25,7 @@ Unterstützte Formulare
   
 Danksagung:
 ----------------------------------------------------------------------
-Ein großes an [Fabian Lipp][5], der die Klassen des NaMi-Connectors programmiert hat.
+Ein großes an [Fabian Lipp][5], der ursprünglichen Klassen des NaMi-Connectors programmiert hat.
 
 Lizenz:
 ----------------------------------------------------------------------
