@@ -22,6 +22,10 @@ Unterstützte Formulare
 * Diverse
   * Notfall-Telefonliste
   * Bankdatenliste zum Einzug der Halbjahresbeiträge
+  
+Danksagung:
+----------------------------------------------------------------------
+Ein großes an [Fabian Lipp][5], der die Klassen des NaMi-Connectors programmiert hat.
 
 Lizenz:
 ----------------------------------------------------------------------
@@ -48,3 +52,4 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 [2]: https://nami.dpsg.de/
 [3]: https://github.com/TobiasMiosczka/NaMi/releases
 [4]: https://java.com/de/download/
+[5]: https://github.com/fabianlipp
