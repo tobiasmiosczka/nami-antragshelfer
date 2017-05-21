@@ -70,4 +70,4 @@ Changelog
  
 3.4
 -----------------------------------------------------------
-- Möglichkeit verschiedene Zugänge/Server auszuwähen.(Testserver, Liveserver mit und ohne API)
+- Möglichkeit hinzugefügt, verschiedene Zugänge/Server auszuwähen.(Testserver, Liveserver mit und ohne API)
