@@ -74,6 +74,6 @@ Land "Land (Leiter)" hinzugefügt.
 Liste mit Bankdaten für den Bankeinzug der
  Halbjahresbeiträge hinzugefügt. 
  
-3.5 
+3.4
 -----------------------------------------------------------
 Möglichkeit verschiedene Zugänge/Server auszuwähen.(Testserver, Liveserver mit und ohne API)
