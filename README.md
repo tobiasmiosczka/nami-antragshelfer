@@ -27,9 +27,14 @@ Danksagung:
 ----------------------------------------------------------------------
 Ein besonderer Dank geht an [Fabian Lipp][5], der ursprünglichen Klassen des NaMi-Connectors programmiert hat.
 
+Changelog:
+----------------------------------------------------------------------
+Alle Änderungen sind in [CHANGELOG.md][6] dokumentiert.
+
+
 Lizenz:
 ----------------------------------------------------------------------
-Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in LICENSE.
+Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in [LICENSE][7].
 
 
 ```
@@ -53,3 +58,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 [3]: https://github.com/TobiasMiosczka/NaMi/releases
 [4]: https://java.com/de/download/
 [5]: https://github.com/fabianlipp
+[6]: https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md
+[7]: https://github.com/TobiasMiosczka/NaMi/blob/master/LICENSE
