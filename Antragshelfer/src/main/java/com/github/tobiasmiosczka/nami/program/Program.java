@@ -90,9 +90,9 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      * @param pass
      * 				valid password
      */
-    public void login(String user, String pass) throws NamiLoginException, IOException{
+    public void login(String user, String pass, NamiServer server) throws NamiLoginException, IOException{
         NamiCredentials credentials = new NamiCredentials(user, pass);
-        connector = new NamiConnector(NamiServer.LIVESERVER, credentials);
+        connector = new NamiConnector(server, credentials);
         connector.namiLogin();
     }
 

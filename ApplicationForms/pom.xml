@@ -7,7 +7,7 @@
     <parent>
         <artifactId>nami</artifactId>
         <groupId>com.github.tobiasmiosczka.nami</groupId>
-        <version>3.3</version>
+        <version>3.4</version>
     </parent>
 
     <artifactId>application-forms</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.github.tobiasmiosczka.nami</groupId>
             <artifactId>connector</artifactId>
-            <version>3.3</version>
+            <version>3.4</version>
         </dependency>
 
         <dependency>

@@ -1,12 +1,16 @@
 package com.github.tobiasmiosczka.nami.GUI.Windows;
 
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  * Window to display the change log
@@ -26,57 +30,33 @@ public class WindowChangelog extends JFrame {
 		setResizable(false);
 		setTitle("Hilfe");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 400, 700);
+		setBounds(100, 100, 500, 100);
 		JPanel contentPane = new JPanel();
 		contentPane.setToolTipText("Changelog");
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);		
-		JTextPane txtpnBenutzungbenutzernamemitgliedsnummer = new JTextPane();
-		txtpnBenutzungbenutzernamemitgliedsnummer.setBackground(UIManager.getColor("Panel.background"));
-		txtpnBenutzungbenutzernamemitgliedsnummer.setEditable(false);
-		txtpnBenutzungbenutzernamemitgliedsnummer.setText(
-			  "Changelog                                            \r\n"
-			+ "                                                     \r\n"
-			+ "0.7 \t Erste version                                 \r\n"
-			+ "1.0 \t Antrag Land hinzugefügt                       \r\n"
-			+ "\t Antrag Stadt hinzugefügt                          \r\n"
-			+ "1.1 \t Formatierungsfehler behoben (utf-8).          \r\n"
-			+ "1.3 \t Antragsvorlagen in .jar gespeichert.          \r\n"
-			+ "1.4 \t Antrag an die Stadt Dinslaken aktualisiert.   \r\n"
-			+ "\t Unbenutzte externe Libraries entfernt.            \r\n"
-			+ "\t ->Größe der .jar um 4/5 reduziert!                \r\n"
-			+ "\t Benutzereingaben zu jedem Antrag hinzugefügt.     \r\n"
-			+ "1.5 \t Bug durch Nami-Version 2.1 wurde behoben.     \r\n"
-			+ "\t Fehler bei Benutzereingaben und Filter behoben.   \r\n"
-			+ "1.6 \t Option hinzugefügt um das Datum               \r\n"
-			+ "\t eines Antrags freizulassen.                       \r\n"
-			+ "\t Speicherort eines Antrags kann nun selbst bestimmt\r\n"
-			+ "\t werden.                                           \r\n"
-			+ "\t                                                   \r\n"
-			+ "2.0 \t Funktion zur Erstellung von Notfalllisten     \r\n"
-			+ "\t hinzugefügt.                                      \r\n"
-			+ "\t Formatierungsfehler beseitigt.                    \r\n"
-			+ "\t Bugfixes.                                         \r\n"
-			+ "2.1 \t Geburtsdaten und Alter werden richtig         \r\n"
-			+ "\t angezeigt.                                        \r\n"
-			+ "\t                                                   \r\n"
-			+ "2.2 \t Fehler wurde behoben: Login-Fehlermeldungen   \r\n"
-			+ "\t werden nun richtig angezeigt.                     \r\n"
-			+ "\t                                                   \r\n"
-			+ "3.0 \t Neues Formblatt für die Abrechnung mit dem    \r\n"
-			+ "Land \t\"Land (Leiter)\" hinzugefügt.                \r\n"
-			+ "\t Nurnoch eine Datei pro Formblatt.                 \r\n"
-			+ "\t Es kann nun nach Vor- und Nachnamen sortiert      \r\n"
-			+ "\t werden.                                           \r\n"
-			+ "\t Vor dem Download können nun eine oder alle        \r\n"
-			+ "\t Gruppierungen ausgewählt werden.                  \r\n"
-		  	+ "\t                                                   \r\n"
-			+ "3.1 \t Überarbeitung der Benutzeroberfläche.         \r\n"
-			+ "\t Fehler in Anträgen behoben.                       \r\n"
-			+ "3.2 \t Liste mit Bankdaten für den Bankeinzug der    \r\n"
-			+ "\t Halbjahresbeiträge hinzugefügt.                   \r\n");
-		contentPane.add(txtpnBenutzungbenutzernamemitgliedsnummer, BorderLayout.CENTER);
+		setContentPane(contentPane);
+
+		JTextPane link = new JTextPane();
+		link.setContentType("text/html");
+		link.setText("<html><a href=\"https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md\">https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md</a></html>"); // showing off
+		link.setEditable(false);
+		link.setBackground(null);
+		link.addHyperlinkListener(e -> {
+			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				if(Desktop.isDesktopSupported())
+				{
+					try {
+						Desktop.getDesktop().browse(e.getURL().toURI());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		contentPane.add(link, BorderLayout.CENTER);
 	}
 
 }

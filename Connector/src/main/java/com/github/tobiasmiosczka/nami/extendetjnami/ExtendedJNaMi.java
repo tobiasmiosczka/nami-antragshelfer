@@ -21,8 +21,8 @@ import java.util.Collection;
  */
 public class ExtendedJNaMi {
 
-    private static final String URL_GRUPPIERUNGEN = "/nami/gruppierungen/filtered-for-navigation/gruppierung/node/";
-    private static final String URL_SCHULUNGEN = "/nami/mitglied-ausbildung/filtered-for-navigation/mitglied/mitglied/";
+    private static final String URL_GRUPPIERUNGEN = "/nami/gruppierungen/filtered-for-navigation/gruppierung/node";
+    private static final String URL_SCHULUNGEN = "/nami/mitglied-ausbildung/filtered-for-navigation/mitglied/mitglied";
 
     public static Collection<Gruppierung> getGruppierungen(NamiConnector con) throws IOException, NamiApiException {
         NamiURIBuilder builder = con.getURIBuilder(URL_GRUPPIERUNGEN);

@@ -18,7 +18,6 @@ public class NamiURIBuilder extends URIBuilder {
      * URL, die zum Login in NaMi verwendet wird.
      */
     private static final String URL_NAMI_STARTUP = "/rest/nami/auth/manual/sessionStartup";
-
     /**
      * URL, mit der die Root-Gruppierung und die Kinder für jede Gruppierung
      * abgefragt werden.
@@ -96,7 +95,7 @@ public class NamiURIBuilder extends URIBuilder {
         if (restUrl) {
             appendPath("rest");
             if (server.useApiAccess()) {
-                appendPath("api/1/2/service");
+                appendPath("api/2/2/service");
             }
         }
 

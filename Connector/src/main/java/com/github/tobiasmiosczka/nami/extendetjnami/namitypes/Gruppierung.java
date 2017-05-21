@@ -1,9 +1,5 @@
 package com.github.tobiasmiosczka.nami.extendetjnami.namitypes;
 
-/**
- * Created by Tobias on 25.09.2016.
- * Representation of a Group
- */
 public class Gruppierung {
 
     private String descriptor;

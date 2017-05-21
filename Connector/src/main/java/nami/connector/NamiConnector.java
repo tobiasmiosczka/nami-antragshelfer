@@ -3,7 +3,6 @@ package nami.connector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.gson.reflect.TypeToken;
 import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
@@ -91,32 +91,39 @@ public class NamiConnector {
 
         HttpPost httpPost = new HttpPost(NamiURIBuilder.getLoginURIBuilder(server).build());
         List<NameValuePair> nvps = new ArrayList<>();
-
         nvps.add(new BasicNameValuePair("username", credentials.getApiUser()));
         nvps.add(new BasicNameValuePair("password", credentials.getApiPass()));
+        nvps.add(new BasicNameValuePair("redirectTo", "app.jsp"));
 
-        if (server.useApiAccess()) {
+        if (server.useApiAccess()) { //API-Login
             nvps.add(new BasicNameValuePair("Login", "API"));
-            nvps.add(new BasicNameValuePair("redirectTo", "./pages/loggedin.jsp"));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             HttpResponse response = execute(httpPost);
-            HttpEntity responseEntity = response.getEntity();
-
-            Type type = NamiApiResponse.getType(Object.class);
-            NamiApiResponse<Object> resp = JsonHelp.fromJson(new InputStreamReader(responseEntity.getContent()), type);
-
-            if (resp.getStatusCode() == 0) {
-                isAuthenticated = true;
-                log.info("Authenticated to NaMi-Server using API.");
-                // SessionToken wird automatisch als Cookie im HttpClient
-                // gespeichert
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+                // need to follow one redirect
+                Header locationHeader = response.getFirstHeader("Location");
+                EntityUtils.consume(response.getEntity());
+                if (locationHeader != null) {
+                    String redirectUrl = locationHeader.getValue();
+                    HttpGet httpGet = new HttpGet(redirectUrl);
+                    response = execute(httpGet);
+                    statusCode = response.getStatusLine().getStatusCode();
+                    log.info("Got redirect to: " + redirectUrl);
+                    if (statusCode == HttpStatus.SC_OK) {
+                        EntityUtils.consume(response.getEntity());
+                        isAuthenticated = true;
+                        log.info("Authenticated to NaMi-Server with API.");
+                    }
+                }
             } else {
-                // Fehler beim Verbinden (3000 z.B. bei falschem Passwort)
-                isAuthenticated = false;
-                throw new NamiLoginException(resp);
+                //login failed
+                Type type = new TypeToken<NamiResponse<Object>>(){}.getType();
+                NamiResponse<Object> namiResponse = JsonHelp.fromJson(new InputStreamReader(response.getEntity().getContent()), type);
+                String e = namiResponse.getStatusMessage();
+                throw new NamiLoginException(e);
             }
-        } else {
-            nvps.add(new BasicNameValuePair("redirectTo", "app.jsp"));
+        } else { //Non-API-Login
             nvps.add(new BasicNameValuePair("Login", "Anmelden"));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             HttpResponse response = execute(httpPost);
@@ -132,7 +139,6 @@ public class NamiConnector {
                     response = execute(httpGet);
                     statusCode = response.getStatusLine().getStatusCode();
                     log.info("Got redirect to: " + redirectUrl);
-                    System.out.println(statusCode);
                     if (statusCode == HttpStatus.SC_OK) {
                         // login successful
                         EntityUtils.consume(response.getEntity());
@@ -282,6 +288,7 @@ public class NamiConnector {
      */
     public <T> T executeApiRequest(HttpUriRequest request, final Type typeOfT) throws IOException, NamiApiException {
         log.info("HTTP Call: " + request.getURI().toString());
+
         if (!isAuthenticated) {
             throw new NamiApiException("Did not login before API Request.");
         }
@@ -293,19 +300,7 @@ public class NamiConnector {
         checkResponse(response, responseEntity, "application/json");
 
         // Decodiere geliefertes JSON
-        Reader respReader = new InputStreamReader(responseEntity.getContent());
-        if (server.useApiAccess()) {
-            Type type = NamiApiResponse.getType(typeOfT);
-            NamiApiResponse<T> resp = JsonHelp.fromJson(respReader, type);
-
-            if (resp.getStatusCode() != 0) {
-                throw new NamiApiException(resp);
-            }
-            return resp.getResponse();
-        } else {
-
-            return JsonHelp.fromJson(respReader, typeOfT);
-        }
+        return JsonHelp.fromJson(new InputStreamReader(responseEntity.getContent()), typeOfT);
     }
 
     /**

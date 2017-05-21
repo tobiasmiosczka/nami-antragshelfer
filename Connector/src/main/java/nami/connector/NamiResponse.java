@@ -13,7 +13,7 @@ public class NamiResponse<DataT> {
     private boolean success;
     private DataT data;
     private int totalEntries;
-    private String message;
+    private String statusMessage;
     // private String responseType;
 
     /**
@@ -48,7 +48,7 @@ public class NamiResponse<DataT> {
      * 
      * @return Fehlermeldung
      */
-    public String getMessage() {
-        return message;
+    public String getStatusMessage() {
+        return statusMessage;
     }
 }

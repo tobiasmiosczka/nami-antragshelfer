@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.github.tobiasmiosczka.nami</groupId>
         <artifactId>nami</artifactId>
-        <version>3.3</version>
+        <version>3.4</version>
     </parent>
 
     <artifactId>antragshelfer</artifactId>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.github.tobiasmiosczka.nami</groupId>
             <artifactId>application-forms</artifactId>
-            <version>3.3</version>
+            <version>3.4</version>
         </dependency>
     </dependencies>
 

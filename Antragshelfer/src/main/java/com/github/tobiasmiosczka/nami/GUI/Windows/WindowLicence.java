@@ -1,5 +1,7 @@
 package com.github.tobiasmiosczka.nami.GUI.Windows;
 
+import com.github.tobiasmiosczka.nami.GUI.Window;
+
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -36,7 +38,7 @@ public class WindowLicence extends JFrame {
 		JTextPane txtpnBenutzungbenutzernamemitgliedsnummer = new JTextPane();
 		txtpnBenutzungbenutzernamemitgliedsnummer.setEditable(false);
 		txtpnBenutzungbenutzernamemitgliedsnummer.setBackground(UIManager.getColor("Panel.background"));
-		txtpnBenutzungbenutzernamemitgliedsnummer.setText("Der Code unterliegt der GNU GPL. Der vollst\u00E4ndige Lizenztext befindet sich in LICENSE.\r\n\r\n    Copyright (C) \t2013 - 2016 Tobias Miosczka\r\n\r\n    This program is free software: you can redistribute it and/or modify\r\n    it under the terms of the GNU General Public License as published by\r\n    the Free Software Foundation, either version 3 of the License, or\r\n    (at your option) any later version.\r\n\r\n    This program is distributed in the hope that it will be useful,\r\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\r\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\r\n    GNU General Public License for more details.\r\n\r\n    You should have received a copy of the GNU General Public License\r\n    along with this program. If not, see <http://www.gnu.org/licenses/>.\r\n\r\nDanke an Fabian Lipp, der die NamiConnector-Klassen programmiert und ver\u00F6ffentlicht hat.");
+		txtpnBenutzungbenutzernamemitgliedsnummer.setText("Der Code unterliegt der GNU GPL. Der vollst\u00E4ndige Lizenztext befindet sich in LICENSE.\r\n\r\n    Copyright (C) \t2013 - " + Window.lastUpdate + " Tobias Miosczka\r\n\r\n    This program is free software: you can redistribute it and/or modify\r\n    it under the terms of the GNU General Public License as published by\r\n    the Free Software Foundation, either version 3 of the License, or\r\n    (at your option) any later version.\r\n\r\n    This program is distributed in the hope that it will be useful,\r\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\r\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\r\n    GNU General Public License for more details.\r\n\r\n    You should have received a copy of the GNU General Public License\r\n    along with this program. If not, see <http://www.gnu.org/licenses/>.\r\n\r\nDanke an Fabian Lipp, der die NamiConnector-Klassen programmiert und ver\u00F6ffentlicht hat.");
 		contentPane.add(txtpnBenutzungbenutzernamemitgliedsnummer, BorderLayout.CENTER);
 	}
 

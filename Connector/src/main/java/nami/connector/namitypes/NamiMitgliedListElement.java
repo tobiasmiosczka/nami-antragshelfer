@@ -177,7 +177,7 @@ public class NamiMitgliedListElement extends NamiAbstractMitglied implements Com
             return resp.getData();
         } else {
             throw new NamiApiException("Could not get member list from Nami: "
-                    + resp.getMessage());
+                    + resp.getStatusMessage());
         }
 
     }

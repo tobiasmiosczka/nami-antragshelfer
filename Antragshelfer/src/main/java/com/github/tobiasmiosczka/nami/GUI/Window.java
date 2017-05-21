@@ -22,6 +22,7 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.Program;
+import nami.connector.NamiServer;
 import nami.connector.namitypes.enums.Geschlecht;
 import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.namitypes.enums.Stufe;
@@ -32,8 +33,8 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
-	private static final int VERSION_MINOR = 3;
-	private static final int lastUpdate = 2017;
+	private static final int VERSION_MINOR = 4;
+	public static final int lastUpdate = 2017;
 
 	private static final Color colorSuccess = Color.decode("0x009900");
 	private static final Color colorFailed = Color.decode("0xCC0000");
@@ -85,6 +86,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	private final WindowChangelog windowChangelog = new WindowChangelog();
 
 	private final Program program;
+	private NamiServer server = NamiServer.LIVESERVER_WITH_API;
 
 	public static void main(String[] args) {
 		try {
@@ -151,6 +153,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		JMenu mProperties = new JMenu("Einstellungen");
 		menuBar.add(mProperties);
 
+		/*Sortierung*/
 		JMenu mSortation = new JMenu("Sortierung");
 		mProperties.add(mSortation);
 
@@ -172,6 +175,29 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		mSortation.add(rbmiSortByAge);
 
 		rbmiSortByLastname.setSelected(true);
+
+		/*Server*/
+		JMenu mServer = new JMenu("Server");
+		mProperties.add(mServer);
+
+		ButtonGroup serverRadioButtonGroup = new ButtonGroup();
+
+		JRadioButtonMenuItem rbmiServerLiveServer = new JRadioButtonMenuItem("Live-Server ohne API");
+		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER);
+		serverRadioButtonGroup.add(rbmiSortByAge);
+		mServer.add(rbmiServerLiveServer);
+
+		JRadioButtonMenuItem rbmiServerLiveServerWithApi = new JRadioButtonMenuItem("Live-Server mit API");
+		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER_WITH_API);
+		serverRadioButtonGroup.add(rbmiSortByAge);
+		mServer.add(rbmiServerLiveServerWithApi);
+
+		JRadioButtonMenuItem rbmiServerTestServer= new JRadioButtonMenuItem("Testserver");
+		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.TESTSERVER);
+		serverRadioButtonGroup.add(rbmiSortByAge);
+		mServer.add(rbmiServerTestServer);
+
+		rbmiServerLiveServerWithApi.setSelected(true);
 
 		/*Hilfe*/
 		JMenu mHelp = new JMenu("Hilfe");
@@ -641,17 +667,28 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	private void login() {
 		String user = tfUsername.getText();
 		String pass = String.copyValueOf(pfPassword.getPassword());
+
 		try{
-			program.login(user, pass);
-			program.loadData();
+			program.login(user, pass, server);
 		} catch (IOException e) {
 			this.showPassResult(false, "Keine Verbindung zum Server: " + e.getMessage());
+			e.printStackTrace();
 			return;
 		} catch (NamiApiException e) {
 			this.showPassResult(false, e.getMessage());
+			e.printStackTrace();
 			return;
 		}
 		showPassResult(true, "Angemeldet als " + user);
+		try {
+			program.loadData();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "Keine Verbindung zum Server: " + e.getMessage());
+			e.printStackTrace();
+		} catch (NamiApiException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	@Override
