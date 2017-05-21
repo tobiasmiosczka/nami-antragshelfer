@@ -183,18 +183,18 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ButtonGroup serverRadioButtonGroup = new ButtonGroup();
 
 		JRadioButtonMenuItem rbmiServerLiveServer = new JRadioButtonMenuItem("Live-Server ohne API");
-		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER);
-		serverRadioButtonGroup.add(rbmiSortByAge);
+		rbmiServerLiveServer.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER);
+		serverRadioButtonGroup.add(rbmiServerLiveServer);
 		mServer.add(rbmiServerLiveServer);
 
 		JRadioButtonMenuItem rbmiServerLiveServerWithApi = new JRadioButtonMenuItem("Live-Server mit API");
-		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER_WITH_API);
-		serverRadioButtonGroup.add(rbmiSortByAge);
+		rbmiServerLiveServerWithApi.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER_WITH_API);
+		serverRadioButtonGroup.add(rbmiServerLiveServerWithApi);
 		mServer.add(rbmiServerLiveServerWithApi);
 
 		JRadioButtonMenuItem rbmiServerTestServer= new JRadioButtonMenuItem("Testserver");
-		rbmiSortByAge.addActionListener((ActionEvent e) -> this.server = NamiServer.TESTSERVER);
-		serverRadioButtonGroup.add(rbmiSortByAge);
+		rbmiServerTestServer.addActionListener((ActionEvent e) -> this.server = NamiServer.TESTSERVER);
+		serverRadioButtonGroup.add(rbmiServerTestServer);
 		mServer.add(rbmiServerTestServer);
 
 		rbmiServerLiveServerWithApi.setSelected(true);
