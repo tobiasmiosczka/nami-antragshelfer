@@ -30,22 +30,24 @@ public class WriterBankData extends TextDocumentWriter {
         for (NamiMitglied m : participants){
             Row row = tParticipants.appendRow();
             if (m != null) {
+                //Mitgliedsnummer
+                row.getCellByIndex(0).setStringValue(String.valueOf(m.getMitgliedsnummer()));
                 //Vorname
-                row.getCellByIndex(0).setStringValue(m.getVorname());
+                row.getCellByIndex(1).setStringValue(m.getVorname());
                 //Nachname
-                row.getCellByIndex(1).setStringValue(m.getNachname());
+                row.getCellByIndex(2).setStringValue(m.getNachname());
                 //Stufe
-                row.getCellByIndex(2).setStringValue(getStufeAsString(m.getStufe()));
+                row.getCellByIndex(3).setStringValue(getStufeAsString(m.getStufe()));
                 //Kontoinhaber
-                row.getCellByIndex(3).setStringValue(m.getKontoverbindung().getKontoinhaber());
+                row.getCellByIndex(4).setStringValue(m.getKontoverbindung().getKontoinhaber());
                 //IBAN
-                row.getCellByIndex(4).setStringValue(m.getKontoverbindung().getIban());
+                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getIban());
                 //BIC
-                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getBic());
+                row.getCellByIndex(6).setStringValue(m.getKontoverbindung().getBic());
                 //Beitragsart
-                row.getCellByIndex(6).setStringValue(m.getBeitragsart().getTag());
+                row.getCellByIndex(7).setStringValue(m.getBeitragsart().getTag());
                 //Beitragshöhe
-                row.getCellByIndex(7).setStringValue(String.valueOf(getBeitragshöhe(m.getBeitragsart())));
+                row.getCellByIndex(8).setStringValue(String.valueOf(getBeitragshöhe(m.getBeitragsart())));
             }
         }
     }
