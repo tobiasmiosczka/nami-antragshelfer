@@ -38,16 +38,22 @@ public class WriterBankData extends TextDocumentWriter {
                 row.getCellByIndex(2).setStringValue(m.getNachname());
                 //Stufe
                 row.getCellByIndex(3).setStringValue(getStufeAsString(m.getStufe()));
+
                 //Kontoinhaber
                 row.getCellByIndex(4).setStringValue(m.getKontoverbindung().getKontoinhaber());
+                //KontoNr.
+                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getKontonummer());
+                //BLZ
+                row.getCellByIndex(6).setStringValue(m.getKontoverbindung().getBankleitzahl());
                 //IBAN
-                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getIban());
+                row.getCellByIndex(7).setStringValue(m.getKontoverbindung().getIban());
                 //BIC
-                row.getCellByIndex(6).setStringValue(m.getKontoverbindung().getBic());
+                row.getCellByIndex(8).setStringValue(m.getKontoverbindung().getBic());
+                
                 //Beitragsart
-                row.getCellByIndex(7).setStringValue(m.getBeitragsart().getTag());
+                row.getCellByIndex(9).setStringValue(m.getBeitragsart().getTag());
                 //Beitragshöhe
-                row.getCellByIndex(8).setStringValue(String.valueOf(getBeitragshöhe(m.getBeitragsart())));
+                row.getCellByIndex(10).setStringValue(String.valueOf(getBeitragshöhe(m.getBeitragsart())));
             }
         }
     }
