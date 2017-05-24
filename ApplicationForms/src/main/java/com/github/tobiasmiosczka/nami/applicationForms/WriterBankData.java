@@ -4,6 +4,7 @@ import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.enums.Beitragsart;
+import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.namitypes.enums.Stufe;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
@@ -39,21 +40,23 @@ public class WriterBankData extends TextDocumentWriter {
                 //Stufe
                 row.getCellByIndex(3).setStringValue(getStufeAsString(m.getStufe()));
 
+                //Mitgliedstyp
+                row.getCellByIndex(4).setStringValue(m.getMitgliedstyp().getTag());
+
                 //Kontoinhaber
-                row.getCellByIndex(4).setStringValue(m.getKontoverbindung().getKontoinhaber());
+                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getKontoinhaber());
                 //KontoNr.
-                row.getCellByIndex(5).setStringValue(m.getKontoverbindung().getKontonummer());
+                row.getCellByIndex(6).setStringValue(m.getKontoverbindung().getKontonummer());
                 //BLZ
-                row.getCellByIndex(6).setStringValue(m.getKontoverbindung().getBankleitzahl());
+                row.getCellByIndex(7).setStringValue(m.getKontoverbindung().getBankleitzahl());
                 //IBAN
-                row.getCellByIndex(7).setStringValue(m.getKontoverbindung().getIban());
+                row.getCellByIndex(8).setStringValue(m.getKontoverbindung().getIban());
                 //BIC
-                row.getCellByIndex(8).setStringValue(m.getKontoverbindung().getBic());
-                
+                row.getCellByIndex(9).setStringValue(m.getKontoverbindung().getBic());
                 //Beitragsart
-                row.getCellByIndex(9).setStringValue(m.getBeitragsart().getTag());
+                row.getCellByIndex(10).setStringValue(m.getBeitragsart().getTag());
                 //Beitragshöhe
-                row.getCellByIndex(10).setStringValue(String.valueOf(getBeitragshöhe(m.getBeitragsart())));
+                row.getCellByIndex(11).setStringValue(String.valueOf(getBeitragshöhe(m.getMitgliedstyp(), m.getBeitragsart())));
             }
         }
     }
@@ -65,7 +68,10 @@ public class WriterBankData extends TextDocumentWriter {
         else return stufe.toString();
     }
 
-    public float getBeitragshöhe(Beitragsart beitragsart) {
+    public float getBeitragshöhe(Mitgliedstyp mitgliedstyp,Beitragsart beitragsart) {
+        if (mitgliedstyp != Mitgliedstyp.MITGLIED) {
+            return 0.0f;
+        }
         switch (beitragsart) {
             case KEIN_BEITRAG:
                 return 0.0f;
