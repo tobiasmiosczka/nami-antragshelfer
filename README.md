@@ -8,7 +8,7 @@ Download
 ----------------------------------------------------------------------
 Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werden.
 
-Systemvorraussetzungen:
+Systemvorraussetzungen
 ----------------------------------------------------------------------
 Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” (JRE) benötigt. Die Aktuelle Version des JREs gibt es [hier][4].
 
@@ -23,16 +23,16 @@ Unterstützte Formulare
   * Notfall-Telefonliste
   * Bankdatenliste zum Einzug der Halbjahresbeiträge
   
-Danksagung:
+Danksagung
 ----------------------------------------------------------------------
 Ein besonderer Dank geht an [Fabian Lipp][5], der ursprünglichen Klassen des NaMi-Connectors programmiert hat.
 
-Changelog:
+Changelog
 ----------------------------------------------------------------------
 Alle Änderungen sind in [CHANGELOG.md][6] dokumentiert.
 
 
-Lizenz:
+Lizenz
 ----------------------------------------------------------------------
 Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in [LICENSE][7].
 
