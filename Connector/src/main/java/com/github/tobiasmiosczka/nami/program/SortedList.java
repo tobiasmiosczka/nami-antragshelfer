@@ -30,7 +30,7 @@ public class SortedList<T> extends ArrayList<T> {
     }
 
     private void update() {
-        Collections.sort(this, this.comparator);
+        this.sort(this.comparator);
     }
 
     public synchronized Comparator<T> getComparator() {

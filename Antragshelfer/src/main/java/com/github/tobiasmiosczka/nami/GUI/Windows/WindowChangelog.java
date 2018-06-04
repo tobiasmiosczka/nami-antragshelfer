@@ -7,10 +7,8 @@ import java.net.URISyntaxException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 /**
  * Window to display the change log
@@ -48,12 +46,10 @@ public class WindowChangelog extends JFrame {
 				{
 					try {
 						Desktop.getDesktop().browse(e.getURL().toURI());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					} catch (URISyntaxException e1) {
+					} catch (IOException | URISyntaxException e1) {
 						e1.printStackTrace();
 					}
-				}
+                }
 			}
 		});
 		contentPane.add(link, BorderLayout.CENTER);

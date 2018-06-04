@@ -23,7 +23,7 @@ public class GroupSelector extends JFrame implements ActionListener {
     private Gruppierung group = null;
 
     public GroupSelector(JFrame owner, Collection<Gruppierung> groups) {
-        this.groups = groups.toArray(new Gruppierung[groups.size()]);
+        this.groups = groups.toArray(new Gruppierung[0]);
         dialog = new JDialog(owner, true);
         dialog.setTitle("Gruppierung");
         dialog.setResizable(false);
