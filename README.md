@@ -8,6 +8,10 @@ Download
 ----------------------------------------------------------------------
 Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werden.
 
+Compilierung
+----------------------------------------------------------------------
+Zum compilieren benötigt das Projekt das JDK 1.8.
+
 Systemvorraussetzungen
 ----------------------------------------------------------------------
 Zum Ausführen des NaMi-Antragshelfers wird eine Installation des aktuellen “Java Runtime Enviroments” (JRE) benötigt. Die Aktuelle Version des JREs gibt es [hier][4].
