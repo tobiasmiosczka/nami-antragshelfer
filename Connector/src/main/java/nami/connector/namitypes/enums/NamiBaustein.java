@@ -1,6 +1,6 @@
 package nami.connector.namitypes.enums;
 
-public enum Baustein {
+public enum NamiBaustein {
     MLK("Abgeschlossene Modulausbildung"),
     WBK("Woodbadge-Kurs oder Woodbadge-Kurs II"),
     BAUSTEIN_1A("Baustein 1a"),
@@ -22,7 +22,7 @@ public enum Baustein {
 
     final String name;
 
-    Baustein(String name) {
+    NamiBaustein(String name) {
         this.name = name;
     }
 
@@ -30,8 +30,8 @@ public enum Baustein {
         return name;
     }
 
-    public static Baustein fromString(String baustein) {
-        for (Baustein b : Baustein.values()) {
+    public static NamiBaustein fromString(String baustein) {
+        for (NamiBaustein b : NamiBaustein.values()) {
             if (b.getName().equals(baustein)) {
                 return b;
             }

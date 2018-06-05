@@ -1,7 +1,7 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.enums.Baustein;
+import nami.connector.namitypes.enums.NamiBaustein;
 import nami.connector.namitypes.NamiSchulungenMap;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
@@ -70,28 +70,28 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 			//Funktion im Stamm
 
 			//MLK(Jahr)
-			if(schulungen.get(i).containsKey(Baustein.MLK)) {
-				row.getCellByIndex(6).setStringValue(getDateYearString(s.get(Baustein.MLK).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.MLK)) {
+				row.getCellByIndex(6).setStringValue(getDateYearString(s.get(NamiBaustein.MLK).getDate()));
 			}
 			//WBK(Jahr/Stufe)
-			if(schulungen.get(i).containsKey(Baustein.WBK)) {
-				row.getCellByIndex(6).setStringValue(getDateYearString(s.get(Baustein.WBK).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.WBK)) {
+				row.getCellByIndex(6).setStringValue(getDateYearString(s.get(NamiBaustein.WBK).getDate()));
 			}
 			//1b
-			if(schulungen.get(i).containsKey(Baustein.BAUSTEIN_1B)) {
-				row.getCellByIndex(7).setStringValue(getDateYearString(s.get(Baustein.BAUSTEIN_1B).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_1B)) {
+				row.getCellByIndex(7).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_1B).getDate()));
 			}
 			//2d(+)
-			if(schulungen.get(i).containsKey(Baustein.BAUSTEIN_2D)) {
-				row.getCellByIndex(8).setStringValue(getDateYearString(s.get(Baustein.BAUSTEIN_2D).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_2D)) {
+				row.getCellByIndex(8).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_2D).getDate()));
 			}
 			//3b
-			if(schulungen.get(i).containsKey(Baustein.BAUSTEIN_3B)) {
-				row.getCellByIndex(9).setStringValue(getDateYearString(s.get(Baustein.BAUSTEIN_3B).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3B)) {
+				row.getCellByIndex(9).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_3B).getDate()));
 			}
 			//3c
-			if(schulungen.get(i).containsKey(Baustein.BAUSTEIN_3C)) {
-				row.getCellByIndex(10).setStringValue(getDateYearString(s.get(Baustein.BAUSTEIN_3C).getDate()));
+			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3C)) {
+				row.getCellByIndex(10).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_3C).getDate()));
 			}
 		}
 	}

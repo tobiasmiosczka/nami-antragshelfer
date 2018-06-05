@@ -2,11 +2,11 @@ package nami.connector.namitypes;
 
 import java.util.Date;
 
-import nami.connector.namitypes.enums.Beitragsart;
-import nami.connector.namitypes.enums.Geschlecht;
-import nami.connector.namitypes.enums.MitgliedStatus;
-import nami.connector.namitypes.enums.Mitgliedstyp;
-import nami.connector.namitypes.enums.Stufe;
+import nami.connector.namitypes.enums.NamiBeitragsart;
+import nami.connector.namitypes.enums.NamiGeschlecht;
+import nami.connector.namitypes.enums.NamiMitgliedStatus;
+import nami.connector.namitypes.enums.NamiMitgliedstyp;
+import nami.connector.namitypes.enums.NamiStufe;
 
 /**
  * Stellt ein Mitglied der DPSG dar.
@@ -39,7 +39,7 @@ public class NamiMitglied {
         return telefax;
     }
 
-    public Stufe getStufe() {
+    public NamiStufe getStufe() {
         return stufe;
     }
 
@@ -49,7 +49,7 @@ public class NamiMitglied {
     private String vorname;
     private String nachname;
     private String geschlechtId;
-    private Geschlecht geschlecht;
+    private NamiGeschlecht geschlecht;
     private Date geburtsDatum;
 
     private String strasse;
@@ -73,7 +73,7 @@ public class NamiMitglied {
     private String emailVertretungsberechtigter;
 
     private String mglTypeId; // ENUM?? z.B. NICHT_MITGLIED
-    private Mitgliedstyp mglType;
+    private NamiMitgliedstyp mglType;
 
     private String ersteTaetigkeitId;
     private String ersteTaetigkeit;
@@ -86,8 +86,8 @@ public class NamiMitglied {
     private boolean zeitschriftenversand;
     private boolean wiederverwendenFlag;
 
-    private MitgliedStatus status;
-    private Stufe stufe;
+    private NamiMitgliedStatus status;
+    private NamiStufe stufe;
     private Integer gruppierungId;
     private String gruppierung;
 
@@ -133,15 +133,15 @@ public class NamiMitglied {
         return mitgliedsNummer;
     }
 
-    public MitgliedStatus getStatus() {
+    public NamiMitgliedStatus getStatus() {
         return status;
     }
 
-    public Mitgliedstyp getMitgliedstyp() {
+    public NamiMitgliedstyp getMitgliedstyp() {
         return mglType;
     }
 
-    public Geschlecht getGeschlecht() {
+    public NamiGeschlecht getGeschlecht() {
         return geschlecht;
     }
 
@@ -157,8 +157,8 @@ public class NamiMitglied {
         return version;
     }
 
-    public Beitragsart getBeitragsart() {
-        return Beitragsart.fromString(beitragsart);
+    public NamiBeitragsart getBeitragsart() {
+        return NamiBeitragsart.fromString(beitragsart);
     }
 
     public Date getEintrittsdatum() {

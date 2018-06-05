@@ -7,7 +7,7 @@ package nami.connector.namitypes.enums;
  *
  * 
  */
-public enum MitgliedStatus {
+public enum NamiMitgliedStatus {
     // Die Werte des Enums entsprechen genau den Mitgliedsstatus-Konstanten aus
     // NaMi (müssen so von der toString-Methode geliefert werden, da sie
     // beispielsweise direkt in Suchanfragen eingefügt werden)
@@ -22,7 +22,7 @@ public enum MitgliedStatus {
 
     private String tag;
 
-    MitgliedStatus(String tag) {
+    NamiMitgliedStatus(String tag) {
         this.tag = tag;
     }
 
@@ -38,11 +38,11 @@ public enum MitgliedStatus {
      * @return entsprechender Mitgliedstyp; <code>null</code>, wenn der String
      *         nicht umgesetzt werden kann
      */
-    public static MitgliedStatus fromString(String str) {
+    public static NamiMitgliedStatus fromString(String str) {
         if (str == null ||str.equals("")) {
             throw new IllegalArgumentException("Unexpected String for MitgliedStatus: " + str);
         }
-        for (MitgliedStatus mitgliedStatus : MitgliedStatus.values()) {
+        for (NamiMitgliedStatus mitgliedStatus : NamiMitgliedStatus.values()) {
             if (mitgliedStatus.getTag().equals(str)) {
                 return mitgliedStatus;
             }

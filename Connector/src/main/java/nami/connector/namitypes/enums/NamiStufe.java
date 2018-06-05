@@ -6,7 +6,7 @@ package nami.connector.namitypes.enums;
  * @author Tobias Miosczka
  *
  */
-public enum Stufe {
+public enum NamiStufe {
 
     WOELFLING("Wölfling"),
     JUNGPFADFINDER("Jungpfadfinder"),
@@ -16,7 +16,7 @@ public enum Stufe {
 
     private final String stufe;
 
-    Stufe(String stufe) {
+    NamiStufe(String stufe) {
         this.stufe = stufe;
     }
 
@@ -25,11 +25,11 @@ public enum Stufe {
         return stufe;
     }
 
-    public static Stufe fromString(String string) {
+    public static NamiStufe fromString(String string) {
         if(string == null) {
             return ANDERE;
         }
-        for(Stufe stufe : Stufe.values()) {
+        for(NamiStufe stufe : NamiStufe.values()) {
             if(stufe.toString().equals(string)) {
                 return stufe;
             }

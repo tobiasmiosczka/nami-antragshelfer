@@ -24,7 +24,11 @@ import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 import java.io.IOException;
@@ -49,9 +53,9 @@ import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.Program;
 import nami.connector.NamiServer;
-import nami.connector.namitypes.enums.Geschlecht;
-import nami.connector.namitypes.enums.Mitgliedstyp;
-import nami.connector.namitypes.enums.Stufe;
+import nami.connector.namitypes.enums.NamiGeschlecht;
+import nami.connector.namitypes.enums.NamiMitgliedstyp;
+import nami.connector.namitypes.enums.NamiStufe;
 import nami.connector.exception.NamiApiException;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 
@@ -500,10 +504,10 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private boolean checkFilter(NamiMitglied m) {
-		boolean bIsWlf = (m.getStufe() == Stufe.WOELFLING);
-		boolean bIsJng = (m.getStufe() == Stufe.JUNGPFADFINDER);
-		boolean bIsPfd = (m.getStufe() == Stufe.PFADFINDER);
-		boolean bIsRvr = (m.getStufe() == Stufe.ROVER);
+		boolean bIsWlf = (m.getStufe() == NamiStufe.WOELFLING);
+		boolean bIsJng = (m.getStufe() == NamiStufe.JUNGPFADFINDER);
+		boolean bIsPfd = (m.getStufe() == NamiStufe.PFADFINDER);
+		boolean bIsRvr = (m.getStufe() == NamiStufe.ROVER);
 		boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
 		//check stufe
 		if(!(   (bIsWlf && cWoelflinge.isSelected()) ||
@@ -515,14 +519,14 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			return false;
 		}
 		//check Aktiv
-		if(!(   (cMitglied.isSelected()			 && m.getMitgliedstyp() == Mitgliedstyp.MITGLIED) ||
-				(cSchnuppermitglied.isSelected() && m.getMitgliedstyp() == Mitgliedstyp.SCHNUPPER_MITGLIED) ||
-				(cNichtmitglied.isSelected()	 && m.getMitgliedstyp() == Mitgliedstyp.NICHT_MITGLIED))) {
+		if(!(   (cMitglied.isSelected()			 && m.getMitgliedstyp() == NamiMitgliedstyp.MITGLIED) ||
+				(cSchnuppermitglied.isSelected() && m.getMitgliedstyp() == NamiMitgliedstyp.SCHNUPPER_MITGLIED) ||
+				(cNichtmitglied.isSelected()	 && m.getMitgliedstyp() == NamiMitgliedstyp.NICHT_MITGLIED))) {
 			return false;
 		}
 		//check gender
-		if(!(   (cWeiblich.isSelected()  && m.getGeschlecht() == Geschlecht.WEIBLICH) ||
-				(cMaennlich.isSelected() && m.getGeschlecht() == Geschlecht.MAENNLICH))) {
+		if(!(   (cWeiblich.isSelected()  && m.getGeschlecht() == NamiGeschlecht.WEIBLICH) ||
+				(cMaennlich.isSelected() && m.getGeschlecht() == NamiGeschlecht.MAENNLICH))) {
 			return false;
 		}
 		//check Name

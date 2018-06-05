@@ -2,7 +2,7 @@ package nami.connector.namitypes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import nami.connector.namitypes.enums.Baustein;
+import nami.connector.namitypes.enums.NamiBaustein;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class NamiSchulung {
     private String veranstaltungsname;
     @SerializedName("entries_baustein")
     @Expose
-    private Baustein baustein;
+    private NamiBaustein baustein;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -36,7 +36,7 @@ public class NamiSchulung {
     @Expose
     private String entriesMitglied;
 
-    public Baustein getBaustein() {
+    public NamiBaustein getBaustein() {
         return baustein;
     }
 

@@ -3,9 +3,9 @@ package com.github.tobiasmiosczka.nami.applicationforms;
 import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.enums.Beitragsart;
-import nami.connector.namitypes.enums.Mitgliedstyp;
-import nami.connector.namitypes.enums.Stufe;
+import nami.connector.namitypes.enums.NamiBeitragsart;
+import nami.connector.namitypes.enums.NamiMitgliedstyp;
+import nami.connector.namitypes.enums.NamiStufe;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
@@ -61,15 +61,15 @@ public class WriterBankData extends AbstractTextDocumentWriter {
         }
     }
 
-    private String getStufeAsString(Stufe stufe) {
-        if (stufe == null || stufe == Stufe.ANDERE) {
+    private String getStufeAsString(NamiStufe stufe) {
+        if (stufe == null || stufe == NamiStufe.ANDERE) {
             return "";
         }
         else return stufe.toString();
     }
 
-    public float getBeitragshoehe(Mitgliedstyp mitgliedstyp,Beitragsart beitragsart) {
-        if (mitgliedstyp != Mitgliedstyp.MITGLIED) {
+    public float getBeitragshoehe(NamiMitgliedstyp mitgliedstyp, NamiBeitragsart beitragsart) {
+        if (mitgliedstyp != NamiMitgliedstyp.MITGLIED) {
             return 0.0f;
         }
         switch (beitragsart) {

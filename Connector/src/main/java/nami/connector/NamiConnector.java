@@ -20,8 +20,15 @@ import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
 
 import nami.connector.json.JsonHelp;
-import nami.connector.namitypes.*;
-import nami.connector.namitypes.enums.Ebene;
+import nami.connector.namitypes.NamiBeitragszahlung;
+import nami.connector.namitypes.NamiEnum;
+import nami.connector.namitypes.NamiGruppierung;
+import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.NamiSchulung;
+import nami.connector.namitypes.NamiSchulungenMap;
+import nami.connector.namitypes.NamiSearchedValues;
+import nami.connector.namitypes.NamiTaetigkeitAssignment;
+import nami.connector.namitypes.enums.NamiEbene;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -59,13 +66,8 @@ public class NamiConnector {
 
     private final CloseableHttpClient httpclient = HttpClientBuilder.create().build();
     private static final Logger log = Logger.getLogger(NamiConnector.class.getName());
-    /**
-     * Maximale Anzahl der gefundenen Datensätze, wenn kein Limit vorgegeben
-     * wird.
-     */
-    // transient bewirkt, dass die Variable nicht in die JSON-Darstellung
-    // aufgenommen wird
-    private static final int INITIAL_LIMIT = 1000;
+
+    private static final int INITIAL_LIMIT = 1000; // Maximale Anzahl der gefundenen Datensätze, wenn kein Limit vorgegeben wird.
     private static final int MAX_TAETIGKEITEN = 1000;
 
     /**
@@ -647,7 +649,7 @@ public class NamiConnector {
             activeChildren.add(child);
             // Kinder brauchen nur abgefragt werden, wenn es sich nicht um
             // einen Stamm handelt (denn Stämme haben keine Kinder)
-            if (child.getEbene() == Ebene.STAMM) {
+            if (child.getEbene() == NamiEbene.STAMM) {
                 child.setChildren(new LinkedList<>());
             } else {
                 child.setChildren(getChildGruppierungen(child.getId()));

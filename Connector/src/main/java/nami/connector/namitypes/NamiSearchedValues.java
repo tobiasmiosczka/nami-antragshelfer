@@ -1,7 +1,7 @@
 package nami.connector.namitypes;
 
-import nami.connector.namitypes.enums.MitgliedStatus;
-import nami.connector.namitypes.enums.Mitgliedstyp;
+import nami.connector.namitypes.enums.NamiMitgliedStatus;
+import nami.connector.namitypes.enums.NamiMitgliedstyp;
 import org.jdom2.Element;
 
 /**
@@ -96,7 +96,7 @@ public class NamiSearchedValues {
      * @param status
      *            .
      */
-    public void setMitgliedStatus(MitgliedStatus status) {
+    public void setMitgliedStatus(NamiMitgliedStatus status) {
         this.mglStatusId = status.toString();
     }
 
@@ -106,7 +106,7 @@ public class NamiSearchedValues {
      * @param mgltype
      *            .
      */
-    public void setMitgliedstyp(Mitgliedstyp mgltype) {
+    public void setMitgliedstyp(NamiMitgliedstyp mgltype) {
         this.mglTypeId = mgltype.toString();
     }
 
@@ -174,13 +174,13 @@ public class NamiSearchedValues {
         // Mitgliedstyp
         el = namiSearchEl.getChild("mitgliedstyp");
         if (el != null) {
-            res.setMitgliedstyp(Mitgliedstyp.fromString(el.getAttributeValue("id")));
+            res.setMitgliedstyp(NamiMitgliedstyp.fromString(el.getAttributeValue("id")));
         }
 
         // MitgliedStatus
         el = namiSearchEl.getChild("mitgliedStatus");
         if (el != null) {
-            res.setMitgliedStatus(MitgliedStatus.fromString(el.getAttributeValue("id")));
+            res.setMitgliedStatus(NamiMitgliedStatus.fromString(el.getAttributeValue("id")));
         }
 
         return res;

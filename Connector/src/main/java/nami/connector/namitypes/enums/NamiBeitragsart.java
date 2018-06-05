@@ -7,7 +7,7 @@ package nami.connector.namitypes.enums;
  * @author Fabian Lipp
  * 
  */
-public enum Beitragsart {
+public enum NamiBeitragsart {
 
     //Normaler Beitragssatz
     VOLLER_BEITRAG("Voller Beitrag"),
@@ -32,7 +32,7 @@ public enum Beitragsart {
 
     private String tag;
 
-    Beitragsart(String tag) {
+    NamiBeitragsart(String tag) {
         this.tag = tag;
     }
 
@@ -48,11 +48,11 @@ public enum Beitragsart {
      * @return entsprechende Beitragsart; <code>null</code>, wenn keine
      *         Beitragsart angegeben ist
      */
-    public static Beitragsart fromString(String str) {
+    public static NamiBeitragsart fromString(String str) {
         if(str == null || str.equals("")) {
             return KEIN_BEITRAG;
         }
-        for(Beitragsart beitragsart : Beitragsart.values()) {
+        for(NamiBeitragsart beitragsart : NamiBeitragsart.values()) {
             if (beitragsart.getTag().equals(str)) {
                 return beitragsart;
             }

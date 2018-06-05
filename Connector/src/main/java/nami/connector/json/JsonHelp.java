@@ -1,8 +1,14 @@
 package nami.connector.json;
 
-import nami.connector.namitypes.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import nami.connector.namitypes.enums.NamiBaustein;
+import nami.connector.namitypes.enums.NamiBeitragsart;
+import nami.connector.namitypes.enums.NamiEbene;
+import nami.connector.namitypes.enums.NamiGeschlecht;
+import nami.connector.namitypes.enums.NamiMitgliedStatus;
+import nami.connector.namitypes.enums.NamiMitgliedstyp;
+import nami.connector.namitypes.enums.NamiStufe;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
@@ -13,12 +19,13 @@ public class JsonHelp {
 
             .registerTypeAdapter(Date.class, new DateDeserializer())
 
-            .registerTypeAdapter(Beitragsart.class, new BeitragsartDeserializer())
-            .registerTypeAdapter(Geschlecht.class, new GeschlechtDeserializer())
-            .registerTypeAdapter(MitgliedStatus.class, new MitgliedStatusDeserializer())
-            .registerTypeAdapter(Mitgliedstyp.class, new MitgliedstypDeserializer())
-            .registerTypeAdapter(Stufe.class, new StufeDeserializer())
-            .registerTypeAdapter(Baustein.class, new BausteinDeserializer())
+            .registerTypeAdapter(NamiEbene.class, new EbeneDeserializer())
+            .registerTypeAdapter(NamiBeitragsart.class, new BeitragsartDeserializer())
+            .registerTypeAdapter(NamiGeschlecht.class, new GeschlechtDeserializer())
+            .registerTypeAdapter(NamiMitgliedStatus.class, new MitgliedStatusDeserializer())
+            .registerTypeAdapter(NamiMitgliedstyp.class, new MitgliedstypDeserializer())
+            .registerTypeAdapter(NamiStufe.class, new StufeDeserializer())
+            .registerTypeAdapter(NamiBaustein.class, new BausteinDeserializer())
             .create();
 
     public static String toJson(Object o) {

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nami.connector.namitypes.enums.Ebene;
+import nami.connector.namitypes.enums.NamiEbene;
 
 /**
  * Beschreibt eine Gruppierung der DPSG.
@@ -85,10 +85,10 @@ public class NamiGruppierung {
      * @return Gruppierungsnummer der übergeordneten Ebene; <tt>null</tt>, falls
      *         eine niedrigere Ebene verlangt wird
      */
-    public String getParentId(Ebene targetE) {
+    public String getParentId(NamiEbene targetE) {
         // Gruppierungsnummer dieser Gruppierung
         String grpNum = getGruppierungsnummer();
-        Ebene thisE = Ebene.getFromGruppierungId(grpNum);
+        NamiEbene thisE = NamiEbene.getFromGruppierungId(grpNum);
         if (thisE.compareTo(targetE) < 0) {
             // Es wird eine niedrigere Ebene verlangt
             return null;
@@ -111,8 +111,8 @@ public class NamiGruppierung {
      * 
      * @return Ebene der Gruppierung
      */
-    public Ebene getEbene() {
-        return Ebene.getFromGruppierungId(id);
+    public NamiEbene getEbene() {
+        return NamiEbene.getFromGruppierungId(id);
     }
 
     /**

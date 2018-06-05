@@ -7,7 +7,7 @@ package nami.connector.namitypes.enums;
  * @author Tobias Miosczka
  * 
  */
-public enum Mitgliedstyp {
+public enum NamiMitgliedstyp {
     // Normale Mitgliedschaft.
     MITGLIED("Mitglied"),
 
@@ -19,7 +19,7 @@ public enum Mitgliedstyp {
 
     private final String tag;
 
-    Mitgliedstyp(String tag) {
+    NamiMitgliedstyp(String tag) {
         this.tag = tag;
     }
 
@@ -42,11 +42,11 @@ public enum Mitgliedstyp {
      * @return entsprechender Mitgliedstyp; <code>null</code>, wenn kein
      *         Mitgliedstyp angegeben ist
      */
-    public static Mitgliedstyp fromString(String str) {
+    public static NamiMitgliedstyp fromString(String str) {
         if (str == null) {
             throw new IllegalArgumentException("Unexpected String for Mitgliedstyp: null");
         }
-        for (Mitgliedstyp mitgliedstyp : Mitgliedstyp.values()) {
+        for (NamiMitgliedstyp mitgliedstyp : NamiMitgliedstyp.values()) {
             if (mitgliedstyp.getTag().equals(str)) {
                 return mitgliedstyp;
             }
