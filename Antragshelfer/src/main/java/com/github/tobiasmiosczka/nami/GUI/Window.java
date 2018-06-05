@@ -574,9 +574,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(!ui.showModal()) {
 			return;
 		}
-
-		SaveDialog sd = new SaveDialog("Land Ausgefüllt.odt");
-		if(!sd.showDialog()) {
+		String fileName = SaveDialog.getFilePath("Land Ausgefüllt.odt");
+		if(fileName == null) {
 			return;
 		}
 
@@ -590,7 +589,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 					(String)ui.getOption(5),
 					(String)ui.getOption(6),
 					(String)ui.getOption(7)
-				).run(sd.getAbsolutePath(), program.getParticipants());
+				).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
@@ -614,14 +613,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			e1.printStackTrace();
 			return;
 		}
-
-		SaveDialog sd = new SaveDialog("Land Leiter Ausgefüllt.odt");
-		if(!sd.showDialog()) {
+		String fileName = SaveDialog.getFilePath("Land Leiter Ausgefüllt.odt");
+		if(fileName == null) {
 			return;
 		}
 
 		try {
-			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
@@ -639,14 +637,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(!ui.showModal()) {
 			return;
 		}
-
-		SaveDialog sd = new SaveDialog("Stadt Ausgefüllt.odt");
-		if(!sd.showDialog()) {
+		String fileName = SaveDialog.getFilePath("Stadt Ausgefüllt.odt");
+		if(fileName == null) {
 			return;
 		}
 
 		try {
-			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
@@ -655,12 +652,12 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private void emergencyPhoneList() {
-		SaveDialog sd = new SaveDialog("applicationForms/Notfallliste.odt");
-		if(!sd.showDialog()) {
+		String fileName = SaveDialog.getFilePath("applicationForms/Notfallliste.odt");
+		if(fileName == null) {
 			return;
 		}
 		try {
-			new WriterEmergencyList().run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterEmergencyList().run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
@@ -676,12 +673,12 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(!ui.showModal()) {
 			return;
 		}
-		SaveDialog sd = new SaveDialog("applicationForms/Bankdaten.odt");
-		if(!sd.showDialog()) {
+		String fileName = SaveDialog.getFilePath("applicationForms/Bankdaten.odt");
+		if(fileName == null) {
 			return;
 		}
 		try {
-			new WriterBankData((Float)ui.getOption(0), (Float)ui.getOption(1), (Float)ui.getOption(2)).run(sd.getAbsolutePath(), program.getParticipants());
+			new WriterBankData((Float)ui.getOption(0), (Float)ui.getOption(1), (Float)ui.getOption(2)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
