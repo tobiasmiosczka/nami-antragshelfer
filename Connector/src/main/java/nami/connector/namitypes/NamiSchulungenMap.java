@@ -5,10 +5,10 @@ import nami.connector.namitypes.enums.Baustein;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class SchulungenMap extends HashMap<Baustein, Schulung> {
+public class NamiSchulungenMap extends HashMap<Baustein, NamiSchulung> {
 
-    public SchulungenMap(Collection<Schulung> schulungen) {
-        for(Schulung schulung : schulungen) {
+    public NamiSchulungenMap(Collection<NamiSchulung> schulungen) {
+        for(NamiSchulung schulung : schulungen) {
             if (schulung != null ) {
                 Baustein baustein = schulung.getBaustein();
                 if (baustein != null) {

@@ -12,14 +12,14 @@ import java.util.Date;
  * 
  * <p>
  * Auf diesen Objekten ist eine Ordnung definiert (mittels
- * {@link #compareTo(Halbjahr)}). Dabei bedeutet <tt>o1 &lt; o2</tt>, dass das
+ * {@link #compareTo(NamiHalbjahr)}). Dabei bedeutet <tt>o1 &lt; o2</tt>, dass das
  * Halbjahr o1 früher als das Halbjahr o2 ist.
  * </p>
  * 
  * @author Fabian Lipp
  * 
  */
-public class Halbjahr implements Comparable<Halbjahr> {
+public class NamiHalbjahr implements Comparable<NamiHalbjahr> {
     private int halbjahr;
     private int jahr;
 
@@ -31,7 +31,7 @@ public class Halbjahr implements Comparable<Halbjahr> {
      * @param jahr
      *            Jahr
      */
-    public Halbjahr(int halbjahr, int jahr) {
+    public NamiHalbjahr(int halbjahr, int jahr) {
         this.halbjahr = halbjahr;
         this.jahr = jahr;
     }
@@ -42,7 +42,7 @@ public class Halbjahr implements Comparable<Halbjahr> {
      * @param date
      *            Datum
      */
-    public Halbjahr(Date date) {
+    public NamiHalbjahr(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
@@ -55,20 +55,20 @@ public class Halbjahr implements Comparable<Halbjahr> {
     }
 
     @Override
-    public int compareTo(Halbjahr o) {
+    public int compareTo(NamiHalbjahr o) {
         if (this.jahr > o.jahr) {
             return 1;
-        } else if (this.jahr < o.jahr) {
-            return -1;
-        } else {
-            if (this.halbjahr > o.halbjahr) {
-                return 1;
-            } else if (this.halbjahr < o.halbjahr) {
-                return -1;
-            } else {
-                return 0;
-            }
         }
+        if (this.jahr < o.jahr) {
+            return -1;
+        }
+        if (this.halbjahr > o.halbjahr) {
+            return 1;
+        }
+        if (this.halbjahr < o.halbjahr) {
+            return -1;
+        }
+        return 0;
     }
 
     @Override

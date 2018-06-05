@@ -48,7 +48,7 @@ public class UserInputDialog{
 
 		public abstract void updateWidth(int width);
 		public abstract boolean check();
-		public abstract T getValue();
+		protected abstract T getValue();
 		public abstract String toString();
 	}
 	

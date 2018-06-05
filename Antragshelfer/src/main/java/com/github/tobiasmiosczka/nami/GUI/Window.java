@@ -43,7 +43,7 @@ import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.SchulungenMap;
+import nami.connector.namitypes.NamiSchulungenMap;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
@@ -185,19 +185,24 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ButtonGroup sortByRadioButtonGroup = new ButtonGroup();
 
 		JRadioButtonMenuItem rbmiSortByFirstname = new JRadioButtonMenuItem("Vorname");
-		rbmiSortByFirstname.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_FIRSTNAME));
+		rbmiSortByFirstname.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_FIRSTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByFirstname);
 		mSortation.add(rbmiSortByFirstname);
 
 		JRadioButtonMenuItem rbmiSortByLastname = new JRadioButtonMenuItem("Nachname");
-		rbmiSortByLastname.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_LASTNAME));
+		rbmiSortByLastname.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_LASTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByLastname);
 		mSortation.add(rbmiSortByLastname);
 
 		JRadioButtonMenuItem rbmiSortByAge = new JRadioButtonMenuItem("Alter");
-		rbmiSortByAge.addActionListener((ActionEvent e) -> program.sortBy(Program.Sortation.SORT_BY_AGE));
+		rbmiSortByAge.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_AGE));
 		sortByRadioButtonGroup.add(rbmiSortByAge);
 		mSortation.add(rbmiSortByAge);
+
+		JRadioButtonMenuItem rbmiSortById = new JRadioButtonMenuItem("ID");
+		rbmiSortById.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_ID));
+		sortByRadioButtonGroup.add(rbmiSortById);
+		mSortation.add(rbmiSortById);
 
 		rbmiSortByLastname.setSelected(true);
 
@@ -521,11 +526,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			return false;
 		}
 		//check Name
-		if (    !(m.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase())) ||
-				!(m.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase()))) {
-			return false;
-		}
-		return true;
+		return m.getVorname().toLowerCase().contains(tfFirstName.getText().toLowerCase()) && m.getNachname().toLowerCase().contains(tfLastName.getText().toLowerCase());
 	}
 
 	private void updateParticipantsList() {
@@ -606,7 +607,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		}
 
 		// load courses of selected members
-		List<SchulungenMap> schulungen;
+		List<NamiSchulungenMap> schulungen;
 		try {
 			schulungen = program.loadSchulungen(program.getParticipants());
 		} catch (Exception e1) {

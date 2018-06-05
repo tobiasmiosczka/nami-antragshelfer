@@ -8,7 +8,7 @@ import java.util.List;
 
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.SchulungenMap;
+import nami.connector.namitypes.NamiSchulungenMap;
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
 import nami.connector.credentials.NamiCredentials;
@@ -31,17 +31,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen);
     }
 
-    public List<SchulungenMap> loadSchulungen(List<NamiMitglied> participants) throws IOException, NamiApiException {
-        //TODO: make multithreaded
-        List<SchulungenMap> result = new ArrayList<>();
-        for (NamiMitglied participant : participants) {
-            SchulungenMap s = connector.getSchulungen(participant.getId());
-            result.add(s);
-        }
-        return result;
-    }
-
-    public enum Sortation{
+    public enum Sorting{
         SORT_BY_FIRSTNAME((n1, n2) -> {
             String s1 = n1.getVorname() + n1.getNachname();
             String s2 = n2.getVorname() + n2.getNachname();
@@ -57,7 +47,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
 
         private final Comparator<NamiMitglied> comparator;
 
-        Sortation(Comparator<NamiMitglied> comparator) {
+        Sorting(Comparator<NamiMitglied> comparator) {
             this.comparator = comparator;
         }
 
@@ -66,22 +56,32 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         }
     }
 
-    public void sortBy(Sortation sortation) {
-        Comparator<NamiMitglied> s = sortation.getComparator();
-        participants.setComparator(s);
-        members.setComparator(s);
-    }
-
-    private NamiConnector 	connector;
-    private final SortedList<NamiMitglied> members = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
-    private final SortedList<NamiMitglied> participants = new SortedList<>(Sortation.SORT_BY_LASTNAME.getComparator());
+    private NamiConnector connector;
+    private final SortedList<NamiMitglied> members = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
+    private final SortedList<NamiMitglied> participants = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
     private final ProgramHandler handler;
+
+    public List<NamiSchulungenMap> loadSchulungen(List<NamiMitglied> participants) throws IOException, NamiApiException {
+        //TODO: make multithreaded
+        List<NamiSchulungenMap> result = new ArrayList<>();
+        for (NamiMitglied participant : participants) {
+            NamiSchulungenMap s = connector.getSchulungen(participant.getId());
+            result.add(s);
+        }
+        return result;
+    }
 
     /**
      * Constructor for Program
      */
     public Program(ProgramHandler handler){
         this.handler = handler;
+    }
+
+    public void sortBy(Sorting sorting) {
+        Comparator<NamiMitglied> s = sorting.getComparator();
+        participants.setComparator(s);
+        members.setComparator(s);
     }
 
     /**

@@ -6,7 +6,7 @@ import nami.connector.namitypes.enums.Baustein;
 
 import java.util.Date;
 
-public class Schulung {
+public class NamiSchulung {
 
     @SerializedName("entries_vstgTag")
     @Expose

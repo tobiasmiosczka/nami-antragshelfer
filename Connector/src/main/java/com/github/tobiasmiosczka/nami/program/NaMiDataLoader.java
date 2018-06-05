@@ -36,11 +36,10 @@ public class NaMiDataLoader extends Thread {
 	private void load() throws NamiApiException, IOException{
 		long startTimeInMillis = System.currentTimeMillis();
 		Collection<NamiMitglied> result = connector.getAllResults(namiSearchedValues);
-		int i = 0,
-			items = result.size();
+		int i = 0;
 		for(NamiMitglied element : result){
 			NamiMitglied member = connector.getMitgliedById(element.getId());
-			handler.onUpdate(++i, items, member);
+			handler.onUpdate(++i, result.size(), member);
 		}
 		handler.onDone((System.currentTimeMillis() - startTimeInMillis));
 	}

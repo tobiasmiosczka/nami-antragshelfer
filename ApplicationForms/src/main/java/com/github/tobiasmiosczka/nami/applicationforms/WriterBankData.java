@@ -61,7 +61,7 @@ public class WriterBankData extends AbstractTextDocumentWriter {
         }
     }
 
-    public String getStufeAsString(Stufe stufe) {
+    private String getStufeAsString(Stufe stufe) {
         if (stufe == null || stufe == Stufe.ANDERE) {
             return "";
         }

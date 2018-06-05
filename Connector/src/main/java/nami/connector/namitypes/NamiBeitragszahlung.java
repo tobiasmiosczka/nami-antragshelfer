@@ -1,26 +1,13 @@
 package nami.connector.namitypes;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Properties;
-import java.util.regex.Pattern;
 
-import nami.connector.Halbjahr;
-import nami.connector.NamiConnector;
-import nami.connector.NamiURIBuilder;
-import nami.connector.exception.NamiApiException;
-
-import org.apache.http.client.methods.HttpGet;
-
-import com.google.gson.reflect.TypeToken;
+import nami.connector.NamiHalbjahr;
 
 /**
  * Beschreibt eine Beitragszahlung eines Mitglieds, wie sie in NaMi erfasst ist,
@@ -120,8 +107,8 @@ public class NamiBeitragszahlung {
      * 
      * @return Halbjahr
      */
-    public Halbjahr getZeitraum() {
-        return new Halbjahr(getHalbjahr(), getJahr());
+    public NamiHalbjahr getZeitraum() {
+        return new NamiHalbjahr(getHalbjahr(), getJahr());
     }
 
     /**
@@ -131,42 +118,5 @@ public class NamiBeitragszahlung {
      */
     public int getJahr() {
         return beitragBisCal().get(Calendar.YEAR);
-    }
-
-    /**
-     * Liefert die Liste der Beitragszahlungen eines Mitglieds.
-     * 
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @param mitgliedId
-     *            ID des Mitglieds
-     * @return in NaMi erfasste Beitragszahlungen des Mitglieds
-     * @throws NamiApiException
-     *             Fehler bei der Anfrage an NaMi
-     * @throws IOException
-     *             IOException
-     */
-    // TODO: was passiert, wenn Mitglied nicht vorhanden?
-    public static Collection<NamiBeitragszahlung> getBeitragszahlungen(
-            NamiConnector con, int mitgliedId) throws NamiApiException,
-            IOException {
-        NamiURIBuilder builder = con.getURIBuilder(
-                NamiURIBuilder.URL_BEITRAGSZAHLUNGEN, false);
-        builder.setParameter("id", Integer.toString(mitgliedId));
-        HttpGet httpGet = new HttpGet(builder.build());
-
-        Type type = new TypeToken<Collection<NamiBeitragszahlung>>() {
-        }.getType();
-
-        // Load Regular Expression
-        Properties regexpProp = new Properties();
-        InputStream propXml = NamiBeitragszahlung.class
-                .getResourceAsStream("regexp.xml");
-        regexpProp.loadFromXML(propXml);
-        String regex = regexpProp.getProperty("regex.beitragszahlungen");
-        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
-
-        return con.executeHtmlRequest(httpGet,
-                pattern, type);
     }
 }

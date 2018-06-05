@@ -1,17 +1,5 @@
 package nami.connector.namitypes;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-
-import nami.connector.NamiConnector;
-import nami.connector.NamiResponse;
-import nami.connector.NamiURIBuilder;
-import nami.connector.exception.NamiApiException;
-
-import org.apache.http.client.methods.HttpGet;
-
-import com.google.gson.reflect.TypeToken;
-
 /**
  * Stellt eine Tätigkeitszuordnung für ein Mitglied dar.
  * 
@@ -68,41 +56,5 @@ public class NamiTaetigkeitAssignment {
      */
     public boolean isAktiv() {
         return aktivBis.isEmpty();
-    }
-
-    /**
-     * Holt eine Tätigkeitszuordnung aus NaMi.
-     * 
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @param personId
-     *            ID des Mitglieds, dessen Tätigkeit abgefragt werden soll
-     * @param taetigkeitId
-     *            ID der Tätigkeitszuordnung
-     * @return Tätigkeits-Datensatz
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    public static NamiTaetigkeitAssignment getTaetigkeit(NamiConnector con,
-            int personId, int taetigkeitId) throws IOException,
-            NamiApiException {
-
-        NamiURIBuilder builder = con
-                .getURIBuilder(NamiURIBuilder.URL_NAMI_TAETIGKEIT);
-        builder.appendPath(Integer.toString(personId));
-        builder.appendPath(Integer.toString(taetigkeitId));
-        HttpGet httpGet = new HttpGet(builder.build());
-        Type type = new TypeToken<NamiResponse<NamiTaetigkeitAssignment>>() {
-        }.getType();
-        NamiResponse<NamiTaetigkeitAssignment> resp = con.executeApiRequest(
-                httpGet, type);
-
-        if (resp.isSuccess()) {
-            return resp.getData();
-        } else {
-            return null;
-        }
     }
 }

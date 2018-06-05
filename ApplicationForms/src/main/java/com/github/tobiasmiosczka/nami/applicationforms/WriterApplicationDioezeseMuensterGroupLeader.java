@@ -2,7 +2,7 @@ package com.github.tobiasmiosczka.nami.applicationforms;
 
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.enums.Baustein;
-import nami.connector.namitypes.SchulungenMap;
+import nami.connector.namitypes.NamiSchulungenMap;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.style.Font;
@@ -24,9 +24,9 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 
 	private final boolean keinDatum;
 	private final Date datum;
-	private final List<SchulungenMap> schulungen;
+	private final List<NamiSchulungenMap> schulungen;
 
-	public WriterApplicationDioezeseMuensterGroupLeader(List<SchulungenMap> schulungen, boolean keinDatum, Date datum) {
+	public WriterApplicationDioezeseMuensterGroupLeader(List<NamiSchulungenMap> schulungen, boolean keinDatum, Date datum) {
 		super();
 		this.schulungen = schulungen;
 		this.keinDatum = keinDatum;
@@ -53,7 +53,7 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 			}
 
 			NamiMitglied m = participants.get(i);
-			SchulungenMap s = schulungen.get(i);
+			NamiSchulungenMap s = schulungen.get(i);
 
 			//Name, Vorname
 			row.getCellByIndex(0).setStringValue(m.getNachname() + ", " + m.getVorname());

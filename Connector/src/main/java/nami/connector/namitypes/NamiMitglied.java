@@ -14,7 +14,7 @@ import nami.connector.namitypes.enums.Stufe;
  * @author Fabian Lipp
  *
  */
-public class NamiMitglied extends NamiAbstractMitglied{
+public class NamiMitglied {
     public String getPLZ() {
         return plz;
     }
@@ -41,50 +41,6 @@ public class NamiMitglied extends NamiAbstractMitglied{
 
     public Stufe getStufe() {
         return stufe;
-    }
-
-
-    /**
-     * Beschreibt die Bankverbindung eines Mitglieds.
-     */
-    public static class Kontoverbindung {
-        private Integer id;
-        private Integer mitgliedsNummer;
-
-        private String kontoinhaber;
-        private String institut;
-        private String kontonummer;
-        private String bankleitzahl;
-
-        private String iban;
-        private String bic;
-
-        private Integer zahlungsKonditionId;
-        private String zahlungsKondition;
-
-        public String getKontoinhaber() {
-            return kontoinhaber;
-        }
-
-        public String getInstitut() {
-            return institut;
-        }
-
-        public String getKontonummer() {
-            return kontonummer;
-        }
-
-        public String getBankleitzahl() {
-            return bankleitzahl;
-        }
-
-        public String getIban() {
-            return iban;
-        }
-
-        public String getBic() {
-            return bic;
-        }
     }
 
     private Integer id;
@@ -144,7 +100,7 @@ public class NamiMitglied extends NamiAbstractMitglied{
     private Integer beitragsartId;
     private String beitragsart;
 
-    private Kontoverbindung kontoverbindung;
+    private NamiKontoverbindung kontoverbindung;
 
     //private Object fixBeitrag;
     //private Object woelfling;
@@ -157,57 +113,46 @@ public class NamiMitglied extends NamiAbstractMitglied{
     //private boolean sonst02;
     //private Object spitzname;
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public String getVorname() {
         return vorname;
     }
 
-    @Override
     public String getNachname() {
         return nachname;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public int getMitgliedsnummer() {
         return mitgliedsNummer;
     }
 
-    @Override
     public MitgliedStatus getStatus() {
         return status;
     }
 
-    @Override
     public Mitgliedstyp getMitgliedstyp() {
         return mglType;
     }
 
-    @Override
     public Geschlecht getGeschlecht() {
         return geschlecht;
     }
 
-    @Override
     public int getGruppierungId() {
         return gruppierungId;
     }
 
-    @Override
     public String getGruppierung() {
         return gruppierung;
     }
 
-    @Override
     public int getVersion() {
         return version;
     }
@@ -232,8 +177,12 @@ public class NamiMitglied extends NamiAbstractMitglied{
         return ort;
     }
 
-    public Kontoverbindung getKontoverbindung() {
+    public NamiKontoverbindung getKontoverbindung() {
         return kontoverbindung;
     }
 
+    @Override
+    public final String toString() {
+        return String.format("%s %s", getVorname(), getNachname());
+    }
 }

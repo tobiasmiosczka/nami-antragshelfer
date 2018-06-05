@@ -5,15 +5,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nami.connector.namitypes.*;
 import com.google.gson.reflect.TypeToken;
 import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
@@ -21,8 +17,9 @@ import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
 
 import nami.connector.json.JsonHelp;
+import nami.connector.namitypes.*;
 import nami.connector.namitypes.enums.Ebene;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -544,14 +541,14 @@ public class NamiConnector {
         return (resp.isSuccess() ? resp.getData() : null);
     }
 
-    public SchulungenMap getSchulungen(int mitgliedsID) throws IOException, NamiApiException {
+    public NamiSchulungenMap getSchulungen(int mitgliedsID) throws IOException, NamiApiException {
         NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_SCHULUNGEN);
         builder.appendPath(Integer.toString(mitgliedsID));
         builder.appendPath("/flist");
         HttpGet httpGet = new HttpGet(builder.build());
-        Type type = new TypeToken<NamiResponse<Collection<Schulung>>>() {}.getType();
-        NamiResponse<Collection<Schulung>> resp = executeApiRequest(httpGet, type);
-        return new SchulungenMap(resp.getData());
+        Type type = new TypeToken<NamiResponse<Collection<NamiSchulung>>>() {}.getType();
+        NamiResponse<Collection<NamiSchulung>> resp = executeApiRequest(httpGet, type);
+        return new NamiSchulungenMap(resp.getData());
     }
 
     /**
@@ -732,5 +729,59 @@ public class NamiConnector {
         NamiGruppierung rootGrp = resp.getData().iterator().next();
         rootGrp.setChildren(null);
         return rootGrp;
+    }
+
+    /**
+     * Liefert die Liste der Beitragszahlungen eines Mitglieds.
+     *
+     * @param mitgliedId
+     *            ID des Mitglieds
+     * @return in NaMi erfasste Beitragszahlungen des Mitglieds
+     * @throws NamiApiException
+     *             Fehler bei der Anfrage an NaMi
+     * @throws IOException
+     *             IOException
+     */
+    // TODO: was passiert, wenn Mitglied nicht vorhanden?
+    public Collection<NamiBeitragszahlung> getBeitragszahlungen(int mitgliedId) throws NamiApiException, IOException {
+        NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_BEITRAGSZAHLUNGEN, false);
+        builder.setParameter("id", Integer.toString(mitgliedId));
+        HttpGet httpGet = new HttpGet(builder.build());
+        Type type = new TypeToken<Collection<NamiBeitragszahlung>>() {}.getType();
+
+        // Load Regular Expression
+        Properties regexpProp = new Properties();
+        InputStream propXml = NamiBeitragszahlung.class.getResourceAsStream("regexp.xml");
+        regexpProp.loadFromXML(propXml);
+        String regex = regexpProp.getProperty("regex.beitragszahlungen");
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        return executeHtmlRequest(httpGet, pattern, type);
+    }
+
+    /**
+     * Holt eine Tätigkeitszuordnung aus NaMi.
+     *
+     * @param personId
+     *            ID des Mitglieds, dessen Tätigkeit abgefragt werden soll
+     * @param taetigkeitId
+     *            ID der Tätigkeitszuordnung
+     * @return Tätigkeits-Datensatz
+     * @throws IOException
+     *             IOException
+     * @throws NamiApiException
+     *             API-Fehler beim Zugriff auf NaMi
+     */
+    public NamiTaetigkeitAssignment getTaetigkeit(int personId, int taetigkeitId) throws IOException, NamiApiException {
+        NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_NAMI_TAETIGKEIT);
+        builder.appendPath(Integer.toString(personId));
+        builder.appendPath(Integer.toString(taetigkeitId));
+        HttpGet httpGet = new HttpGet(builder.build());
+        Type type = new TypeToken<NamiResponse<NamiTaetigkeitAssignment>>() {}.getType();
+        NamiResponse<NamiTaetigkeitAssignment> resp = executeApiRequest(httpGet, type);
+        if (resp.isSuccess()) {
+            return resp.getData();
+        } else {
+            return null;
+        }
     }
 }
