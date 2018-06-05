@@ -32,19 +32,12 @@ public class NamiURIBuilder extends URIBuilder {
     // Am Ende der URL müsste eigentlich die GruppierungsID angegeben sein.
     // Scheinbar kann man aber auch immer "0" angeben und bekommt
     // trotzdem jedes Mitglied geliefert
-    public static final String URL_NAMI_MITGLIED = "/nami/mitglied/filtered-for-navigation/gruppierung/gruppierung/0";
+    public static final String URL_NAMI_MITGLIEDER = "/nami/mitglied/filtered-for-navigation/gruppierung/gruppierung/";
 
     /**
      * URL, mit der eine Tätigkeitszuordnung eines Mitglieds abgefragt wird.
      */
     public static final String URL_NAMI_TAETIGKEIT = "/nami/zugeordnete-taetigkeiten/filtered-for-navigation/gruppierung-mitglied/mitglied";
-
-    /**
-     * URL, mit der die Mitglieder ausgelesen werden können, die einer
-     * bestimmten Gruppierung angehören (entweder als Stammgruppierung oder sie
-     * üben dort eine Tätigkeit aus).
-     */
-    public static final String URL_MITGLIEDER_FROM_GRUPPIERUNG = "/nami/mitglied/filtered-for-navigation/gruppierung/gruppierung/%s/flist";
 
     /**
      * URL, mit der die Beitragszahlungen eines Mitglieds abgefragt werden

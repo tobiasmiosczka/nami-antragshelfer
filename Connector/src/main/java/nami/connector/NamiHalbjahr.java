@@ -62,13 +62,7 @@ public class NamiHalbjahr implements Comparable<NamiHalbjahr> {
         if (this.jahr < o.jahr) {
             return -1;
         }
-        if (this.halbjahr > o.halbjahr) {
-            return 1;
-        }
-        if (this.halbjahr < o.halbjahr) {
-            return -1;
-        }
-        return 0;
+        return Integer.compare(this.halbjahr, o.halbjahr);
     }
 
     @Override

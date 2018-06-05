@@ -23,7 +23,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.tobiasmiosczka.nami.GUI.Window</mainClass>
+                            <mainClass>com.github.tobiasmiosczka.nami.gui.Window</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

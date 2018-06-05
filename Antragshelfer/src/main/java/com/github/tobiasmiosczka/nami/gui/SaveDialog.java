@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.GUI;
+package com.github.tobiasmiosczka.nami.gui;
 
 import javax.swing.JFileChooser;
 import java.io.File;

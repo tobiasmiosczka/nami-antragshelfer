@@ -16,11 +16,17 @@ import java.util.regex.Pattern;
 import com.google.gson.reflect.TypeToken;
 import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
-import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
 
 import nami.connector.json.JsonHelp;
-import nami.connector.namitypes.*;
+import nami.connector.namitypes.NamiBeitragszahlung;
+import nami.connector.namitypes.NamiEnum;
+import nami.connector.namitypes.NamiGruppierung;
+import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.NamiSchulung;
+import nami.connector.namitypes.NamiSchulungenMap;
+import nami.connector.namitypes.NamiSearchedValues;
+import nami.connector.namitypes.NamiTaetigkeitAssignment;
 import nami.connector.namitypes.enums.NamiEbene;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.Header;
@@ -296,18 +302,12 @@ public class NamiConnector {
      */
     public <T> T executeApiRequest(HttpUriRequest request, final Type typeOfT) throws IOException, NamiApiException {
         log.info("HTTP Call: " + request.getURI().toString());
-
         if (!isAuthenticated) {
             throw new NamiApiException("Did not login before API Request.");
         }
-
-        // Sende Request an Server
         HttpResponse response = execute(request);
         HttpEntity responseEntity = response.getEntity();
-
         checkResponse(response, responseEntity, "application/json");
-
-        // Decodiere geliefertes JSON
         return JsonHelp.fromJson(new InputStreamReader(responseEntity.getContent()), typeOfT);
     }
 
@@ -438,20 +438,14 @@ public class NamiConnector {
     // TODO: Warum NamiResponse nötig
     // -> gebe stattdessen direkt die Collection zurück oder null, wenn kein
     // success
-    // TODO: wird hier überhaupt von außen zugegriffen oder reicht diese Methode
-    // private?
     public NamiResponse<Collection<NamiMitglied>> getSearchResult(NamiSearchedValues searchedValues, int limit, int page, int start) throws IOException, NamiApiException {
-
         NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_NAMI_SEARCH);
         builder.setParameter("limit", Integer.toString(limit));
         builder.setParameter("page", Integer.toString(page));
         builder.setParameter("start", Integer.toString(start));
         builder.setParameter("searchedValues", JsonHelp.toJson(searchedValues));
         HttpGet httpGet = new HttpGet(builder.build());
-
-        Type type = new TypeToken<NamiResponse<Collection<NamiMitglied>>>() {
-        }.getType();
-
+        Type type = new TypeToken<NamiResponse<Collection<NamiMitglied>>>() {}.getType();
         return executeApiRequest(httpGet, type);
     }
 
@@ -470,53 +464,10 @@ public class NamiConnector {
      */
     public Collection<NamiMitglied> getAllResults(NamiSearchedValues searchedValues) throws IOException, NamiApiException {
         NamiResponse<Collection<NamiMitglied>> resp = getSearchResult(searchedValues, INITIAL_LIMIT, 1, 0);
-
         if (resp.getTotalEntries() > INITIAL_LIMIT) {
             resp = getSearchResult(searchedValues, resp.getTotalEntries(), 1, 0);
         }
         return resp.getData();
-    }
-
-    /**
-     * Liefert die Anzahl der Mitglieder, die der Suchanfrage entsprechen.
-     *
-     * @param searchedValues
-     *            Suchparameter
-     * @return Anzahl gefundener Mitglieder
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    public int getCount(NamiSearchedValues searchedValues) throws IOException, NamiApiException {
-        NamiResponse<Collection<NamiMitglied>> resp = getSearchResult(searchedValues, 0, 1, 0);
-        return resp.getTotalEntries();
-    }
-
-    /**
-     * Fragt die ID eines Mitglieds anhand der Mitgliedsnummer ab.
-     *
-     * @param mitgliedsnummer
-     *            Mitgliedsnummer des Mitglieds
-     * @return Mitglieds-ID
-     * @throws IOException
-     *             IOException
-     * @throws NamiException
-     *             Fehler der bei der Anfrage an NaMi auftritt
-     */
-    public int getIdByMitgliedsnummer(String mitgliedsnummer) throws IOException, NamiException {
-        NamiSearchedValues search = new NamiSearchedValues();
-        NamiResponse<Collection<NamiMitglied>> resp = getSearchResult(search, 1, 1, 0);
-
-        if (resp.getTotalEntries() == 0) {
-            return -1;
-        } else if (resp.getTotalEntries() > 1) {
-            throw new NamiException("Mehr als ein Mitglied mit Mitgliedsnummer " + mitgliedsnummer);
-        } else {
-            // genau ein Ergebnis -> Hol das erste Element aus Liste
-            NamiMitglied result = resp.getData().iterator().next();
-            return result.getId();
-        }
     }
 
     /**
@@ -531,12 +482,17 @@ public class NamiConnector {
      *             API-Fehler beim Zugriff auf NaMi
      */
     public NamiMitglied getMitgliedById(int id) throws IOException, NamiApiException {
-        NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_NAMI_MITGLIED);
+        NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_NAMI_MITGLIEDER);
+        builder.appendPath("0");
         builder.appendPath(Integer.toString(id));
         HttpGet httpGet = new HttpGet(builder.build());
         Type type = new TypeToken<NamiResponse<NamiMitglied>>() {}.getType();
         NamiResponse<NamiMitglied> resp = executeApiRequest(httpGet, type);
         return (resp.isSuccess() ? resp.getData() : null);
+    }
+
+    public NamiSchulungenMap getSchulungen(NamiMitglied namiMitglied) throws IOException, NamiApiException {
+        return getSchulungen(namiMitglied.getId());
     }
 
     public NamiSchulungenMap getSchulungen(int mitgliedsID) throws IOException, NamiApiException {
@@ -595,9 +551,10 @@ public class NamiConnector {
      * @throws IOException
      *             IOException
      */
-    public Collection<NamiMitglied> getMitgliederFromGruppierung(String gruppierungsnummer) throws NamiApiException, IOException {
-        String url = String.format(NamiURIBuilder.URL_MITGLIEDER_FROM_GRUPPIERUNG, gruppierungsnummer);
-        NamiURIBuilder builder = getURIBuilder(url);
+    public Collection<NamiMitglied> getMitgliederFromGruppierung(int gruppierungsnummer) throws NamiApiException, IOException {
+        NamiURIBuilder builder = getURIBuilder(NamiURIBuilder.URL_NAMI_MITGLIEDER);
+        builder.appendPath(Integer.toString(gruppierungsnummer));
+        builder.appendPath("flist");
         builder.setParameter("limit", "5000");
         builder.setParameter("page", "1");
         builder.setParameter("start", "0");
@@ -607,8 +564,7 @@ public class NamiConnector {
         if (resp.isSuccess()) {
             return resp.getData();
         } else {
-            throw new NamiApiException("Could not get member list from Nami: "
-                    + resp.getStatusMessage());
+            throw new NamiApiException("Could not get member list from Nami: " + resp.getStatusMessage());
         }
     }
 

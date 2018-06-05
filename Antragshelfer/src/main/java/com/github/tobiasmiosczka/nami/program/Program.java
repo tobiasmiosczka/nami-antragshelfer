@@ -27,7 +27,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     public interface ProgramHandler {
         void onUpdate(int current, int count, NamiMitglied member);
         void onDone(long timeMS);
-        void onException(Exception e);
+        void onException(String message, Exception e);
         NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen);
     }
 
@@ -65,7 +65,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         //TODO: make multithreaded
         List<NamiSchulungenMap> result = new ArrayList<>();
         for (NamiMitglied participant : participants) {
-            NamiSchulungenMap s = connector.getSchulungen(participant.getId());
+            NamiSchulungenMap s = connector.getSchulungen(participant);
             result.add(s);
         }
         return result;
@@ -110,7 +110,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         NamiGruppierung group = handler.selectGruppierung(groups);
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null) {
-            namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getId()));
+            namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGruppierungsnummer()));
         }
         NaMiDataLoader dl = new NaMiDataLoader(connector, namiSearchedValues, this);
         dl.start();
@@ -178,9 +178,9 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(String message, Exception e) {
         synchronized (this) {
-            handler.onException(e);
+            handler.onException(message, e);
         }
     }
 }

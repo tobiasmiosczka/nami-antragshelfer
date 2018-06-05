@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.GUI;
+package com.github.tobiasmiosczka.nami.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -25,31 +25,29 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.GUI.Windows.GroupSelector;
 import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationCityDinslaken;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuenster;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuensterGroupLeader;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
+import com.github.tobiasmiosczka.nami.program.VersionHelper;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulungenMap;
-import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
-import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.Program;
 import nami.connector.NamiServer;
@@ -57,13 +55,12 @@ import nami.connector.namitypes.enums.NamiGeschlecht;
 import nami.connector.namitypes.enums.NamiMitgliedstyp;
 import nami.connector.namitypes.enums.NamiStufe;
 import nami.connector.exception.NamiApiException;
-import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 
 public class Window extends JFrame implements  Program.ProgramHandler {
 
-	private static final int VERSION_MAJOR = 3;
-	private static final int VERSION_MINOR = 4;
-	public static final int lastUpdate = 2018;
+	private static final int lastUpdate = 2018;
+
+	private static final Font fHeadline = new Font("Arial", Font.BOLD, 16);
 
 	private static final Color colorSuccess = Color.decode("0x009900");
 	private static final Color colorFailed = Color.decode("0xCC0000");
@@ -110,10 +107,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	private final DefaultListModel<NamiMitglied> 	dlmFiltered = new DefaultListModel<>(),
 													dlmParticipants = new DefaultListModel<>();
 
-	private final WindowHelp windowHelp = new WindowHelp();
-	private final WindowLicence windowLicence = new WindowLicence();
-	private final WindowChangelog windowChangelog = new WindowChangelog();
-
 	private final Program program;
 	private NamiServer server = NamiServer.LIVESERVER_WITH_API;
 
@@ -151,7 +144,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		menuBar.add(mnNewMenu);
 
 		JMenuItem mntmExit = new JMenuItem("Beenden");
-		mntmExit.addActionListener((ActionEvent e) -> System.exit(0));
+		mntmExit.addActionListener(e -> System.exit(0));
 		mnNewMenu.add(mntmExit);
 
 		/*Anträge*/
@@ -159,23 +152,23 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		menuBar.add(mAntrag);
 
 		JMenuItem mntmAntragStadt = new JMenuItem("Antrag an Stadt");
-		mntmAntragStadt.addActionListener((ActionEvent e) -> applicationCityDinslaken());
+		mntmAntragStadt.addActionListener(e -> applicationCityDinslaken());
 		mAntrag.add(mntmAntragStadt);
 
 		JMenuItem mntmAntragLand = new JMenuItem("Antrag an Diözese Münster");
-		mntmAntragLand.addActionListener((ActionEvent e) -> applicationDioezeseMuenster());
+		mntmAntragLand.addActionListener(e -> applicationDioezeseMuenster());
 		mAntrag.add(mntmAntragLand);
 
 		JMenuItem mntmAntragLandLeiter = new JMenuItem("Antrag an Diözese Münster (Leiter)");
-		mntmAntragLandLeiter.addActionListener((ActionEvent e) -> applicationDioezeseMuensterGroupLeader());
+		mntmAntragLandLeiter.addActionListener(e -> applicationDioezeseMuensterGroupLeader());
 		mAntrag.add(mntmAntragLandLeiter);
 
 		JMenuItem mntmNotfallliste = new JMenuItem("Notfallliste");
-		mntmNotfallliste.addActionListener((ActionEvent e) -> emergencyPhoneList());
+		mntmNotfallliste.addActionListener(e -> emergencyPhoneList());
 		mAntrag.add(mntmNotfallliste);
 
 		JMenuItem mntmBankData = new JMenuItem("Bankdaten");
-		mntmBankData.addActionListener((ActionEvent e) -> bankData());
+		mntmBankData.addActionListener(e -> bankData());
 		mAntrag.add(mntmBankData);
 
 		/*Einstellungen*/
@@ -217,17 +210,17 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ButtonGroup serverRadioButtonGroup = new ButtonGroup();
 
 		JRadioButtonMenuItem rbmiServerLiveServer = new JRadioButtonMenuItem("Live-Server ohne API");
-		rbmiServerLiveServer.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER);
+		rbmiServerLiveServer.addActionListener(e -> this.server = NamiServer.LIVESERVER);
 		serverRadioButtonGroup.add(rbmiServerLiveServer);
 		mServer.add(rbmiServerLiveServer);
 
 		JRadioButtonMenuItem rbmiServerLiveServerWithApi = new JRadioButtonMenuItem("Live-Server mit API");
-		rbmiServerLiveServerWithApi.addActionListener((ActionEvent e) -> this.server = NamiServer.LIVESERVER_WITH_API);
+		rbmiServerLiveServerWithApi.addActionListener(e -> this.server = NamiServer.LIVESERVER_WITH_API);
 		serverRadioButtonGroup.add(rbmiServerLiveServerWithApi);
 		mServer.add(rbmiServerLiveServerWithApi);
 
 		JRadioButtonMenuItem rbmiServerTestServer= new JRadioButtonMenuItem("Testserver");
-		rbmiServerTestServer.addActionListener((ActionEvent e) -> this.server = NamiServer.TESTSERVER);
+		rbmiServerTestServer.addActionListener(e -> this.server = NamiServer.TESTSERVER);
 		serverRadioButtonGroup.add(rbmiServerTestServer);
 		mServer.add(rbmiServerTestServer);
 
@@ -237,17 +230,27 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		JMenu mHelp = new JMenu("Hilfe");
 		menuBar.add(mHelp);
 
-		JMenuItem mntmHelp = new JMenuItem("Hilfe");
-		mntmHelp.addActionListener((ActionEvent e) -> windowHelp.setVisible(true));
-		mHelp.add(mntmHelp);
+		JMenuItem mntmHomepage = new JMenuItem("Homepage");
+		mntmHomepage.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi"));
+		mHelp.add(mntmHomepage);
 
 		JMenuItem mntmLicence = new JMenuItem("Lizenz");
-		mntmLicence.addActionListener((ActionEvent e) -> windowLicence.setVisible(true));
+		mntmLicence.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi/blob/master/LICENSE"));
 		mHelp.add(mntmLicence);
 
 		JMenuItem mntmChangelog = new JMenuItem("Changelog");
-		mntmChangelog.addActionListener((ActionEvent e) -> windowChangelog.setVisible(true));
+		mntmChangelog.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md"));
 		mHelp.add(mntmChangelog);
+	}
+
+	private void openUrl(String url) {
+		try {
+			Desktop desktop = java.awt.Desktop.getDesktop();
+			URI oURL = new URI(url);
+			desktop.browse(oURL);
+		} catch (Exception e) {
+			onException("Fehler beim Öffnen einer URL. ", e);
+		}
 	}
 
 	private void initLoginPane(JPanel pOptions) {
@@ -257,6 +260,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		pLogin.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Login", SwingConstants.CENTER);
+		lblNewLabel.setFont(fHeadline);
 		lblNewLabel.setBounds(0, 0, 180, 25);
 		pLogin.add(lblNewLabel);
 
@@ -282,12 +286,12 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 		bLogin = new JButton("Login");
 		bLogin.addActionListener(e -> login());
-		bLogin.setBounds(49, 77, 89, 23);
+		bLogin.setBounds(0, 77, 180, 23);
 		pLogin.add(bLogin);
 
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setBounds(10, 114, 180, 14);
+		progressBar.setBounds(10, 114, 180, 23);
 		pOptions.add(progressBar);
 
 		lbUser = new JLabel("", SwingConstants.CENTER);
@@ -302,6 +306,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		pOptions.add(pFilterOptions);
 
 		JLabel lblFilter = new JLabel("Filter");
+		lblFilter.setFont(fHeadline);
 		lblFilter.setBounds(64, 0, 46, 25);
 		pFilterOptions.add(lblFilter);
 
@@ -380,7 +385,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		cNichtmitglied.addActionListener(e -> updateMembersList());
 		pAktiv.add(cNichtmitglied);
 
-
 		/*Geschlecht*/
 		JPanel pGeschlecht = new JPanel();
 		pGeschlecht.setBorder(BorderFactory.createTitledBorder("Geschlecht"));
@@ -418,6 +422,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		pListFiltered.setLayout(null);
 
 		JLabel lblMitglieder = new JLabel("Mitglieder", SwingConstants.CENTER);
+		lblMitglieder.setFont(fHeadline);
 		lblMitglieder.setBounds(0, 10, 200, 25);
 		pListFiltered.add(lblMitglieder);
 
@@ -429,8 +434,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		spListFiltered.setViewportView(listFiltered);
 		pListFiltered.add(spListFiltered);
 
-		JButton bAdd = new JButton("Hinzufügen =>");
-		bAdd.addActionListener((ActionEvent e) -> {
+		JButton bAdd = new JButton("Hinzufügen");
+		bAdd.addActionListener(e -> {
 			listFiltered.getSelectedValuesList().forEach(program::putMemberToParticipants);
 			updateMembersList();
 			updateParticipantsList();
@@ -445,6 +450,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		pParticipants.setLayout(null);
 
 		JLabel lblTeilnehmer = new JLabel("Teilnehmer", SwingConstants.CENTER);
+		lblTeilnehmer.setFont(fHeadline);
 		lblTeilnehmer.setBounds(0, 10, 200, 25);
 		pParticipants.add(lblTeilnehmer);
 		
@@ -456,8 +462,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		spListParticipants.setViewportView(listParticipants);
 		pParticipants.add(spListParticipants);
 
-		JButton bRemove = new JButton("<= Entfernen");
-		bRemove.addActionListener((ActionEvent e) -> {
+		JButton bRemove = new JButton("Entfernen");
+		bRemove.addActionListener(e -> {
 			listParticipants.getSelectedValuesList().forEach(program::putParticipantToMember);
 			updateMembersList();
 			updateParticipantsList();
@@ -468,7 +474,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private void initialize() {
 		setResizable(false);
-		setTitle("Nami Antragshelfer " + String.valueOf(VERSION_MAJOR) + "." + String.valueOf(VERSION_MINOR));
+		setTitle("Nami Antragshelfer " + VersionHelper.VERSION);
 		setSize(600, 700);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		loadWindowIcon();
@@ -487,7 +493,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private void showPassResult(boolean success, String text){
-		if(success){
+		if (success) {
 			tfUsername.setBackground(colorSuccess);
 			pfPassword.setBackground(colorSuccess);
 			progressBar.setString("");
@@ -495,7 +501,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			bLogin.setEnabled(false);
 			tfUsername.setEnabled(false);
 			pfPassword.setEnabled(false);
-		}else{
+		} else {
 			tfUsername.setBackground(colorFailed);
 			pfPassword.setBackground(colorFailed);
 			JOptionPane.showMessageDialog(this, text);
@@ -504,13 +510,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private boolean checkFilter(NamiMitglied m) {
-		boolean bIsWlf = (m.getStufe() == NamiStufe.WOELFLING);
-		boolean bIsJng = (m.getStufe() == NamiStufe.JUNGPFADFINDER);
-		boolean bIsPfd = (m.getStufe() == NamiStufe.PFADFINDER);
-		boolean bIsRvr = (m.getStufe() == NamiStufe.ROVER);
-		boolean bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
+		boolean bIsWlf = (m.getStufe() == NamiStufe.WOELFLING),
+		 		bIsJng = (m.getStufe() == NamiStufe.JUNGPFADFINDER),
+		 		bIsPfd = (m.getStufe() == NamiStufe.PFADFINDER),
+		 		bIsRvr = (m.getStufe() == NamiStufe.ROVER),
+		 		bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
 		//check stufe
-		if(!(   (bIsWlf && cWoelflinge.isSelected()) ||
+		if (!(  (bIsWlf && cWoelflinge.isSelected()) ||
 				(bIsJng && cJungpfadfinder.isSelected()) ||
 				(bIsPfd && cPfadfinder.isSelected()) ||
 				(bIsRvr && cRover.isSelected()) ||
@@ -519,13 +525,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			return false;
 		}
 		//check Aktiv
-		if(!(   (cMitglied.isSelected()			 && m.getMitgliedstyp() == NamiMitgliedstyp.MITGLIED) ||
+		if (!(  (cMitglied.isSelected()			 && m.getMitgliedstyp() == NamiMitgliedstyp.MITGLIED) ||
 				(cSchnuppermitglied.isSelected() && m.getMitgliedstyp() == NamiMitgliedstyp.SCHNUPPER_MITGLIED) ||
 				(cNichtmitglied.isSelected()	 && m.getMitgliedstyp() == NamiMitgliedstyp.NICHT_MITGLIED))) {
 			return false;
 		}
 		//check gender
-		if(!(   (cWeiblich.isSelected()  && m.getGeschlecht() == NamiGeschlecht.WEIBLICH) ||
+		if (!(  (cWeiblich.isSelected()  && m.getGeschlecht() == NamiGeschlecht.WEIBLICH) ||
 				(cMaennlich.isSelected() && m.getGeschlecht() == NamiGeschlecht.MAENNLICH))) {
 			return false;
 		}
@@ -535,12 +541,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private void updateParticipantsList() {
 		List<NamiMitglied> selected = listParticipants.getSelectedValuesList();
-
 		dlmParticipants.removeAllElements();
-		for(NamiMitglied member : program.getParticipants()){
-			dlmParticipants.addElement(member);
-		}
-
+		program.getParticipants().forEach(dlmParticipants::addElement);
 		int[] selectedIndices = new int[selected.size()];
 		int i = 0;
 		for(NamiMitglied member : selected) {
@@ -552,11 +554,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	private void updateMembersList(){
 		List<NamiMitglied> selected = listFiltered.getSelectedValuesList();
 		dlmFiltered.removeAllElements();
-		for(NamiMitglied m : program.getMember()){
-			if (checkFilter(m))
-				dlmFiltered.addElement(m);
-		}
-
+		program.getMember().stream().filter(this::checkFilter).forEach(dlmFiltered::addElement);
 		int[] selectedIndices = new int[selected.size()];
 		int i = 0;
 		for (NamiMitglied member : selected) {
@@ -575,7 +573,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ui.addStringOption("PLZ","");
 		ui.addStringOption("Ort","");
 		ui.addStringOption("Land","");
-
 		if(!ui.showModal()) {
 			return;
 		}
@@ -583,7 +580,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(fileName == null) {
 			return;
 		}
-
 		try {
 			new WriterApplicationDioezeseMuenster(
 					(String)ui.getOption(0),
@@ -609,7 +605,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(!ui.showModal()) {
 			return;
 		}
-
 		// load courses of selected members
 		List<NamiSchulungenMap> schulungen;
 		try {
@@ -622,7 +617,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		if(fileName == null) {
 			return;
 		}
-
 		try {
 			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
@@ -639,14 +633,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
 		ui.addDateOption("Ende (tt.mm.jjjj)", new Date());
 		ui.addStringOption("Ort", "");
-		if(!ui.showModal()) {
+		if (!ui.showModal()) {
 			return;
 		}
 		String fileName = SaveDialog.getFilePath("Stadt Ausgefüllt.odt");
-		if(fileName == null) {
+		if (fileName == null) {
 			return;
 		}
-
 		try {
 			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
@@ -658,7 +651,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private void emergencyPhoneList() {
 		String fileName = SaveDialog.getFilePath("applicationForms/Notfallliste.odt");
-		if(fileName == null) {
+		if (fileName == null) {
 			return;
 		}
 		try {
@@ -675,11 +668,11 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ui.addFloatOption("Voller Beitrag [€](Dezimalpunkt)", 0.0f);
 		ui.addFloatOption("Familienermäßigter Beitrag [€](Dezimalpunkt)", 0.0f);
 		ui.addFloatOption("Sozialermäßigter Beitrag [€](Dezimalpunkt)", 0.0f);
-		if(!ui.showModal()) {
+		if (!ui.showModal()) {
 			return;
 		}
 		String fileName = SaveDialog.getFilePath("applicationForms/Bankdaten.odt");
-		if(fileName == null) {
+		if (fileName == null) {
 			return;
 		}
 		try {
@@ -694,16 +687,13 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	private void login() {
 		String user = tfUsername.getText();
 		String pass = String.copyValueOf(pfPassword.getPassword());
-
-		try{
+		try {
 			program.login(user, pass, server);
 		} catch (IOException e) {
 			this.showPassResult(false, "Keine Verbindung zum Server: " + e.getMessage());
-			e.printStackTrace();
 			return;
 		} catch (NamiApiException e) {
 			this.showPassResult(false, e.getMessage());
-			e.printStackTrace();
 			return;
 		}
 		showPassResult(true, "Angemeldet als " + user);
@@ -711,10 +701,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			program.loadData();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, "Keine Verbindung zum Server: " + e.getMessage());
-			e.printStackTrace();
 		} catch (NamiApiException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -729,14 +717,12 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	@Override
-	public void onException(Exception e) {
-		//TODO: do something meaningfull, handle Exception, show it on GUI
-		JOptionPane.showMessageDialog(this, "Beim laden der Mitgliedsdaten ist ein Fehler aufgetreten.");
-		e.printStackTrace();
+	public void onException(String message, Exception e) {
+		JOptionPane.showMessageDialog(this, message + " " + e.getMessage());
 	}
 
 	@Override
-	public  void onDone(long timeMS) {
+	public void onDone(long timeMS) {
 		EventQueue.invokeLater(() -> {
 			progressBar.setMaximum(100);
 			progressBar.setValue(100);

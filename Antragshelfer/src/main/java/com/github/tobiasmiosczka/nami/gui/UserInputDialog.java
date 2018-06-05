@@ -1,16 +1,22 @@
-package com.github.tobiasmiosczka.nami.GUI;
+package com.github.tobiasmiosczka.nami.gui;
 
 import com.github.tobiasmiosczka.nami.applicationforms.TimeHelp;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FontMetrics;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class UserInputDialog{
 
@@ -229,7 +235,7 @@ public class UserInputDialog{
 	private final JPanel panel;
 
 	private final List<Input> inputList = new LinkedList<>();
-	private boolean isOK;
+	private boolean isOK = false;
 		
 	/**
 	 * Create the panel.
@@ -239,18 +245,14 @@ public class UserInputDialog{
 		dialog.setBounds(owner.getX(), owner.getY(), dialog.getWidth(), dialog.getHeight());
 		dialog.setResizable(false);
 		dialog.getContentPane().setLayout(new BorderLayout(0, 0));
-
-		isOK = false;
-
 		panel = new JPanel();
 		dialog.getContentPane().add(panel);
 		panel.setLayout(null);
-		
 		JPanel panelOkCancel = new JPanel();
 		dialog.getContentPane().add(panelOkCancel, BorderLayout.SOUTH);
 
 		JButton btnOK = new JButton("Fertig");
-		btnOK.addActionListener((ActionEvent e) -> {
+		btnOK.addActionListener(e -> {
 			if(check()){
 				isOK = true;
 				dialog.setVisible(false);
@@ -259,7 +261,7 @@ public class UserInputDialog{
 		panelOkCancel.add(btnOK);
 
 		JButton btnCancel = new JButton("Abbrechen");
-		btnCancel.addActionListener((ActionEvent e) -> {
+		btnCancel.addActionListener(e -> {
 			isOK = false;
 			dialog.setVisible(false);
 		});
@@ -319,7 +321,7 @@ public class UserInputDialog{
 	private boolean check(){
 		boolean valid = true;
 		for (Input input : inputList) {
-			if(!input.check()){
+			if (!input.check()) {
 				input.showError(true);
 				valid = false;
 			} else {

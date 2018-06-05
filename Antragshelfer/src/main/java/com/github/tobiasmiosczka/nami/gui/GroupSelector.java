@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.GUI.Windows;
+package com.github.tobiasmiosczka.nami.gui;
 
 import nami.connector.namitypes.NamiGruppierung;
 

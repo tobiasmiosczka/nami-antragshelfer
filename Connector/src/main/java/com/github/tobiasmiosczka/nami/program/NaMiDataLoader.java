@@ -19,7 +19,7 @@ public class NaMiDataLoader extends Thread {
 	public interface NamiDataLoaderHandler{
 		void onUpdate(int current, int count, NamiMitglied e);
 		void onDone(long time);
-		void onException(Exception e);
+		void onException(String message, Exception e);
 	}
 	
 	private final NamiDataLoaderHandler handler;
@@ -49,7 +49,7 @@ public class NaMiDataLoader extends Thread {
 		try {
 			load();
 		} catch (NamiApiException | IOException e) {
-			handler.onException(e);
+			handler.onException("Beim laden der Mitgliedsdaten ist ein Fehler aufgetreten.", e);
 		}
 	}	
 }
