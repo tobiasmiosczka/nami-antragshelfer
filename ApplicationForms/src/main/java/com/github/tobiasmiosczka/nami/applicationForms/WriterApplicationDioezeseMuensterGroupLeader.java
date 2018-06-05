@@ -1,8 +1,8 @@
 package com.github.tobiasmiosczka.nami.applicationForms;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Baustein;
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.SchulungenMap;
 import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.enums.Baustein;
+import nami.connector.namitypes.SchulungenMap;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.style.Font;
@@ -13,8 +13,8 @@ import org.odftoolkit.simple.table.Table;
 import java.util.Date;
 import java.util.List;
 
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.calcAge;
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateYearString;
+import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.calcAge;
+import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.getDateYearString;
 
 
 public class WriterApplicationDioezeseMuensterGroupLeader extends TextDocumentWriter {

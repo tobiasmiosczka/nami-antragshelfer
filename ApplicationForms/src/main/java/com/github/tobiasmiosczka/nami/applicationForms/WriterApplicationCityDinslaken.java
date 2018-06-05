@@ -3,7 +3,6 @@ package com.github.tobiasmiosczka.nami.applicationForms;
 import java.util.Date;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;

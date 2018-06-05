@@ -1,8 +1,12 @@
 package com.github.tobiasmiosczka.nami.GUI.Windows;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
+import nami.connector.namitypes.NamiGruppierung;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -16,14 +20,14 @@ public class GroupSelector extends JFrame implements ActionListener {
     private final JDialog dialog;
     private final JButton   btnOne,
                             btnAll;
-    private final JComboBox<Gruppierung> cbGroupSelect;
+    private final JComboBox<NamiGruppierung> cbGroupSelect;
 
-    private final Gruppierung[] groups;
+    private final NamiGruppierung[] groups;
 
-    private Gruppierung group = null;
+    private NamiGruppierung group = null;
 
-    public GroupSelector(JFrame owner, Collection<Gruppierung> groups) {
-        this.groups = groups.toArray(new Gruppierung[0]);
+    public GroupSelector(JFrame owner, Collection<NamiGruppierung> groups) {
+        this.groups = groups.toArray(new NamiGruppierung[0]);
         dialog = new JDialog(owner, true);
         dialog.setTitle("Gruppierung");
         dialog.setResizable(false);
@@ -51,7 +55,7 @@ public class GroupSelector extends JFrame implements ActionListener {
         dialog.getContentPane().add(btnAll);
     }
 
-    public Gruppierung showModal(){
+    public NamiGruppierung showModal(){
         dialog.setVisible(true);
         return group;
     }

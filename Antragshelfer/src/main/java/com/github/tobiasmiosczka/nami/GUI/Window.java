@@ -1,7 +1,26 @@
 package com.github.tobiasmiosczka.nami.GUI;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -11,13 +30,20 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.github.tobiasmiosczka.nami.GUI.Windows.GroupSelector;
-import com.github.tobiasmiosczka.nami.applicationForms.*;
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.SchulungenMap;
+import com.github.tobiasmiosczka.nami.applicationForms.NoParticipantsException;
+import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationCityDinslaken;
+import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationDioezeseMuenster;
+import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationDioezeseMuensterGroupLeader;
+import com.github.tobiasmiosczka.nami.applicationForms.WriterBankData;
+import com.github.tobiasmiosczka.nami.applicationForms.WriterEmergencyList;
+import nami.connector.namitypes.NamiGruppierung;
+import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.SchulungenMap;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowHelp;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowLicence;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
@@ -27,14 +53,13 @@ import nami.connector.namitypes.enums.Geschlecht;
 import nami.connector.namitypes.enums.Mitgliedstyp;
 import nami.connector.namitypes.enums.Stufe;
 import nami.connector.exception.NamiApiException;
-import nami.connector.namitypes.NamiMitglied;
 import com.github.tobiasmiosczka.nami.GUI.Windows.WindowChangelog;
 
 public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private static final int VERSION_MAJOR = 3;
 	private static final int VERSION_MINOR = 4;
-	public static final int lastUpdate = 2017;
+	public static final int lastUpdate = 2018;
 
 	private static final Color colorSuccess = Color.decode("0x009900");
 	private static final Color colorFailed = Color.decode("0xCC0000");
@@ -696,8 +721,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		EventQueue.invokeLater(() -> {
 			progressBar.setMaximum(count);
 			progressBar.setValue(current);
-			String sb = "(" + current + "/" + count + ") " + member.getVorname() + " " + member.getNachname();
-			progressBar.setString(sb);
+			progressBar.setString("(" + current + "/" + count + ") " + member.getVorname() + " " + member.getNachname());
 			updateMembersList();
 		});
 	}
@@ -719,7 +743,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	@Override
-	public Gruppierung selectGruppierung(Collection<Gruppierung> gruppierungen) {
+	public NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen) {
 		GroupSelector gs = new GroupSelector(this, gruppierungen);
 		return gs.showModal();
 	}

@@ -1,17 +1,19 @@
 package com.github.tobiasmiosczka.nami.program;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.ExtendedJNaMi;
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Gruppierung;
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.SchulungenMap;
+import nami.connector.namitypes.NamiGruppierung;
+import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.SchulungenMap;
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
 import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
-import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSearchedValues;
 
 /**
@@ -26,14 +28,14 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         void onUpdate(int current, int count, NamiMitglied member);
         void onDone(long timeMS);
         void onException(Exception e);
-        Gruppierung selectGruppierung(Collection<Gruppierung> gruppierungen);
+        NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen);
     }
 
     public List<SchulungenMap> loadSchulungen(List<NamiMitglied> participants) throws IOException, NamiApiException {
         //TODO: make multithreaded
         List<SchulungenMap> result = new ArrayList<>();
         for (NamiMitglied participant : participants) {
-            SchulungenMap s = ExtendedJNaMi.getSchulungen(connector, participant.getId());
+            SchulungenMap s = connector.getSchulungen(participant.getId());
             result.add(s);
         }
         return result;
@@ -104,8 +106,8 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     public void loadData() throws IOException, NamiApiException {
         members.clear();
         participants.clear();
-        Collection<Gruppierung> groups = ExtendedJNaMi.getGruppierungen(connector);
-        Gruppierung group = handler.selectGruppierung(groups);
+        Collection<NamiGruppierung> groups = connector.getGruppierungenFromUser();
+        NamiGruppierung group = handler.selectGruppierung(groups);
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null) {
             namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getId()));

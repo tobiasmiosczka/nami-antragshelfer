@@ -1,6 +1,6 @@
 package com.github.tobiasmiosczka.nami.GUI;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
+import com.github.tobiasmiosczka.nami.applicationForms.TimeHelp;
 
 import java.awt.*;
 import java.text.ParseException;

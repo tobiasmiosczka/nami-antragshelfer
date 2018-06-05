@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.extendetjnami.namitypes;
+package nami.connector.namitypes.enums;
 
 public enum Baustein {
     MLK("Abgeschlossene Modulausbildung"),

@@ -1,7 +1,6 @@
 package com.github.tobiasmiosczka.nami.program;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 /**

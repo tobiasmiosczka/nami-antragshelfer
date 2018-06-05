@@ -1,7 +1,8 @@
-package com.github.tobiasmiosczka.nami.extendetjnami.namitypes;
+package nami.connector.namitypes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import nami.connector.namitypes.enums.Baustein;
 
 import java.util.Date;
 

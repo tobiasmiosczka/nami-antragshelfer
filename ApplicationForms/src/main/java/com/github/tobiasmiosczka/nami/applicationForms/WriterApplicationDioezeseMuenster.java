@@ -3,7 +3,6 @@ package com.github.tobiasmiosczka.nami.applicationForms;
 import java.util.Date;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
@@ -12,7 +11,7 @@ import org.odftoolkit.simple.table.Table;
 public class WriterApplicationDioezeseMuenster extends TextDocumentWriter {
 
 	private final String 	mitgliedsVerband,
-							träger,
+							traeger,
 							plz,
 							ort,
 							land;
@@ -22,10 +21,10 @@ public class WriterApplicationDioezeseMuenster extends TextDocumentWriter {
 	private final Date 	datumVon,
 						datumBis;
 
-	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String träger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
+	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String traeger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
-		this.träger = träger;
+		this.traeger = traeger;
 		this.noDate = noDate;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
@@ -41,7 +40,7 @@ public class WriterApplicationDioezeseMuenster extends TextDocumentWriter {
 		//Mitgliedsverband
 		tAssociation.getCellByPosition(2, 0).setStringValue(mitgliedsVerband);
 		//Träger
-		tAssociation.getCellByPosition(2, 1).setStringValue(träger);
+		tAssociation.getCellByPosition(2, 1).setStringValue(traeger);
 		
 		//event data
 		Table tEvent = odtDoc.getHeader().getTableList().get(1);

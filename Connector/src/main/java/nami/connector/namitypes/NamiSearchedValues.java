@@ -1,21 +1,8 @@
 package nami.connector.namitypes;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Collection;
-
 import nami.connector.namitypes.enums.MitgliedStatus;
 import nami.connector.namitypes.enums.Mitgliedstyp;
-import nami.connector.NamiConnector;
-import nami.connector.NamiResponse;
-import nami.connector.NamiURIBuilder;
-import nami.connector.exception.NamiApiException;
-
-import nami.connector.json.JsonHelp;
-import org.apache.http.client.methods.HttpGet;
 import org.jdom2.Element;
-
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Beschreibt eine Anfrage für die Suchfunktion in NaMi.
@@ -23,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
  * @author Fabian Lipp
  * 
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class NamiSearchedValues {
     private String vorname = "";
     private String nachname = "";
@@ -52,14 +38,6 @@ public class NamiSearchedValues {
 
     private String id = "";
     private String searchName = "";
-
-    /**
-     * Maximale Anzahl der gefundenen Datensätze, wenn kein Limit vorgegeben
-     * wird.
-     */
-    // transient bewirkt, dass die Variable nicht in die JSON-Darstellung
-    // aufgenommen wird
-    private static final transient int INITIAL_LIMIT = 1000;
 
     /**
      * Setzt die Mitgliedsnummer, nach der gesucht werden soll.
@@ -206,95 +184,5 @@ public class NamiSearchedValues {
         }
 
         return res;
-    }
-
-    /**
-     * Liefert ein Suchobjekt, das alle Mitglieder findet, die eine gegebene
-     * Gruppierung als Stammgruppierung besitzen.
-     * 
-     * @param gruppierungsnummer
-     *            Nummer der Gruppierung, deren Mitglieder gesucht werden
-     * @return ein Suchobjekt, das die gewünschte Anfrage in NaMi ausführt
-     */
-    public static NamiSearchedValues withStammgruppierung(String gruppierungsnummer) {
-        NamiSearchedValues search = new NamiSearchedValues();
-        search.setGruppierungsnummer(gruppierungsnummer);
-        return search;
-    }
-
-    /**
-     * Liefert einen Teil der Mitglieder, die der Suchanfrage entsprechen.
-     * 
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @param limit
-     *            maximale Anzahl an gelieferten Ergebnissen
-     * @param page
-     *            Seite
-     * @param start
-     *            Index des ersten zurückgegeben Datensatzes in der gesamten
-     *            Ergebnismenge
-     * @return gefundene Mitglieder //TODO: stimmt momentan nicht exakt wegen
-     *         NamiRepsonse
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    // TODO: Warum NamiResponse nötig
-    // -> gebe stattdessen direkt die Collection zurück oder null, wenn kein
-    // success
-    // TODO: wird hier überhaupt von außen zugegriffen oder reicht diese Methode
-    // private?
-    public NamiResponse<Collection<NamiMitgliedListElement>> getSearchResult(NamiConnector con, int limit, int page, int start) throws IOException, NamiApiException {
-
-        NamiURIBuilder builder = con.getURIBuilder(NamiURIBuilder.URL_NAMI_SEARCH);
-        builder.setParameter("limit", Integer.toString(limit));
-        builder.setParameter("page", Integer.toString(page));
-        builder.setParameter("start", Integer.toString(start));
-        builder.setParameter("searchedValues", JsonHelp.toJson(this));
-        HttpGet httpGet = new HttpGet(builder.build());
-
-        Type type = new TypeToken<NamiResponse<Collection<NamiMitgliedListElement>>>() {
-        }.getType();
-
-        return con.executeApiRequest(httpGet, type);
-    }
-
-    // TODO: Teste was passiert, wenn es keine Treffer gibt bzw. die Suchanfrage ungültig ist
-    /**
-     * Liefert alle Mitglieder, die der Suchanfrage entsprechen.
-     * 
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @return gefundene Mitglieder
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    public Collection<NamiMitgliedListElement> getAllResults(NamiConnector con) throws IOException, NamiApiException {
-        NamiResponse<Collection<NamiMitgliedListElement>> resp = getSearchResult(con, INITIAL_LIMIT, 1, 0);
-
-        if (resp.getTotalEntries() > INITIAL_LIMIT) {
-            resp = getSearchResult(con, resp.getTotalEntries(), 1, 0);
-        }
-        return resp.getData();
-    }
-
-    /**
-     * Liefert die Anzahl der Mitglieder, die der Suchanfrage entsprechen.
-     * 
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @return Anzahl gefundener Mitglieder
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    public int getCount(NamiConnector con) throws IOException, NamiApiException {
-        NamiResponse<Collection<NamiMitgliedListElement>> resp = getSearchResult(con, 0, 1, 0);
-        return resp.getTotalEntries();
     }
 }

@@ -6,7 +6,6 @@ import java.util.Collection;
 import nami.connector.NamiConnector;
 import nami.connector.exception.NamiApiException;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.NamiMitgliedListElement;
 import nami.connector.namitypes.NamiSearchedValues;
 
 /**
@@ -36,11 +35,11 @@ public class NaMiDataLoader extends Thread {
 	
 	private void load() throws NamiApiException, IOException{
 		long startTimeInMillis = System.currentTimeMillis();
-		Collection<NamiMitgliedListElement> result = namiSearchedValues.getAllResults(connector);
+		Collection<NamiMitglied> result = connector.getAllResults(namiSearchedValues);
 		int i = 0,
 			items = result.size();
-		for(NamiMitgliedListElement element : result){
-			NamiMitglied member = element.getFullData(connector);
+		for(NamiMitglied element : result){
+			NamiMitglied member = connector.getMitgliedById(element.getId());
 			handler.onUpdate(++i, items, member);
 		}
 		handler.onDone((System.currentTimeMillis() - startTimeInMillis));

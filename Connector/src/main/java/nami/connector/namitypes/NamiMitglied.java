@@ -1,18 +1,12 @@
 package nami.connector.namitypes;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Date;
 
-import nami.connector.*;
-import nami.connector.exception.NamiApiException;
-import nami.connector.exception.NamiException;
-
-import nami.connector.namitypes.enums.*;
-import org.apache.http.client.methods.HttpGet;
-
-import com.google.gson.reflect.TypeToken;
+import nami.connector.namitypes.enums.Beitragsart;
+import nami.connector.namitypes.enums.Geschlecht;
+import nami.connector.namitypes.enums.MitgliedStatus;
+import nami.connector.namitypes.enums.Mitgliedstyp;
+import nami.connector.namitypes.enums.Stufe;
 
 /**
  * Stellt ein Mitglied der DPSG dar.
@@ -242,53 +236,4 @@ public class NamiMitglied extends NamiAbstractMitglied{
         return kontoverbindung;
     }
 
-    /**
-     * Holt den Datensatz eines Mitglieds aus NaMi.
-     *
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @param id
-     *            ID des Mitglieds
-     * @return Mitgliedsdatensatz
-     * @throws IOException
-     *             IOException
-     * @throws NamiApiException
-     *             API-Fehler beim Zugriff auf NaMi
-     */
-    public static NamiMitglied getMitgliedById(NamiConnector con, int id) throws IOException, NamiApiException {
-        NamiURIBuilder builder = con.getURIBuilder(NamiURIBuilder.URL_NAMI_MITGLIED);
-        builder.appendPath(Integer.toString(id));
-        HttpGet httpGet = new HttpGet(builder.build());
-        Type type = new TypeToken<NamiResponse<NamiMitglied>>() {}.getType();
-        NamiResponse<NamiMitglied> resp = con.executeApiRequest(httpGet, type);
-        return (resp.isSuccess() ? resp.getData() : null);
-    }
-
-    /**
-     * Fragt die ID eines Mitglieds anhand der Mitgliedsnummer ab.
-     *
-     * @param con
-     *            Verbindung zum NaMi-Server
-     * @param mitgliedsnummer
-     *            Mitgliedsnummer des Mitglieds
-     * @return Mitglieds-ID
-     * @throws IOException
-     *             IOException
-     * @throws NamiException
-     *             Fehler der bei der Anfrage an NaMi auftritt
-     */
-    public static int getIdByMitgliedsnummer(NamiConnector con, String mitgliedsnummer) throws IOException, NamiException {
-        NamiSearchedValues search = new NamiSearchedValues();
-        NamiResponse<Collection<NamiMitgliedListElement>> resp = search.getSearchResult(con, 1, 1, 0);
-
-        if (resp.getTotalEntries() == 0) {
-            return -1;
-        } else if (resp.getTotalEntries() > 1) {
-            throw new NamiException("Mehr als ein Mitglied mit Mitgliedsnummer " + mitgliedsnummer);
-        } else {
-            // genau ein Ergebnis -> Hol das erste Element aus Liste
-            NamiMitgliedListElement result = resp.getData().iterator().next();
-            return result.getId();
-        }
-    }
 }

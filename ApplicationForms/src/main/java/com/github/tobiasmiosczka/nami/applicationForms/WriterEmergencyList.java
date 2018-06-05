@@ -9,7 +9,7 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.extendetjnami.TimeHelp.getDateString;
+import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.getDateString;
 
 public class WriterEmergencyList extends TextDocumentWriter {
 

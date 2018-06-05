@@ -1,6 +1,6 @@
 package nami.connector.json;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Baustein;
+import nami.connector.namitypes.enums.Baustein;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

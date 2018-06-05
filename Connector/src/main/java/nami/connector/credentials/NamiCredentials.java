@@ -68,17 +68,14 @@ public class NamiCredentials {
      *             Fehler beim Erzeugen des Credentials-Objekts
      * @return Erzeugtes <tt>NamiCredentials</tt>-Objekt
      */
-    public static NamiCredentials getCredentialsFromClassname(String className,
-            String username) throws CredentialsInitiationException {
+    public static NamiCredentials getCredentialsFromClassname(String className, String username) throws CredentialsInitiationException {
         String fullClassname = "nami.connector.credentials." + className;
         try {
             Class<? extends NamiCredentials> credClass;
-            credClass = Class.forName(fullClassname).asSubclass(
-                    NamiCredentials.class);
+            credClass = Class.forName(fullClassname).asSubclass(NamiCredentials.class);
             Constructor<? extends NamiCredentials> constr;
 
             // find suitable constructor
-
             if (username != null) {
                 // Konstruktor mit einem String-Parameter
                 constr = credClass.getConstructor(String.class);
@@ -88,17 +85,12 @@ public class NamiCredentials {
                 constr = credClass.getConstructor();
                 return constr.newInstance();
             }
-
         } catch (ClassNotFoundException e) {
-            throw new CredentialsInitiationException(
-                    "Could not find requested credentials class: "
-                            + fullClassname, e);
+            throw new CredentialsInitiationException("Could not find requested credentials class: " + fullClassname, e);
         } catch (NoSuchMethodException e) {
-            throw new CredentialsInitiationException(
-                    "Credentials class doesn't have supported constructor", e);
+            throw new CredentialsInitiationException("Credentials class doesn't have supported constructor", e);
         } catch (InvocationTargetException e) {
-            throw new CredentialsInitiationException(
-                    "Exception in constructor", e);
+            throw new CredentialsInitiationException("Exception in constructor", e);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new CredentialsInitiationException(e);
         }
@@ -122,8 +114,7 @@ public class NamiCredentials {
      *             Fehler beim Erzeugen des Credentials-Objekts
      * @return Erzeugtes <tt>NamiCredentials</tt>-Objekt
      */
-    public static NamiCredentials getCredentialsFromProperties(Properties p)
-            throws CredentialsInitiationException {
+    public static NamiCredentials getCredentialsFromProperties(Properties p) throws CredentialsInitiationException {
         String className = p.getProperty("nami.credentialsType");
         String username = p.getProperty("nami.username");
         return getCredentialsFromClassname(className, username);

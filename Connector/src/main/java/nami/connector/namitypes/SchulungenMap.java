@@ -1,4 +1,6 @@
-package com.github.tobiasmiosczka.nami.extendetjnami.namitypes;
+package nami.connector.namitypes;
+
+import nami.connector.namitypes.enums.Baustein;
 
 import java.util.Collection;
 import java.util.HashMap;

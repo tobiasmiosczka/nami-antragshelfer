@@ -1,9 +1,8 @@
 package nami.connector.json;
 
-import com.github.tobiasmiosczka.nami.extendetjnami.namitypes.Baustein;
+import nami.connector.namitypes.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import nami.connector.namitypes.enums.*;
 
 import java.io.Reader;
 import java.lang.reflect.Type;

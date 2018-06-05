@@ -18,11 +18,12 @@ public class NamiURIBuilder extends URIBuilder {
      * URL, die zum Login in NaMi verwendet wird.
      */
     private static final String URL_NAMI_STARTUP = "/rest/nami/auth/manual/sessionStartup";
+
     /**
      * URL, mit der die Root-Gruppierung und die Kinder für jede Gruppierung
      * abgefragt werden.
      */
-    public static final String URL_NAMI_GRP = "/nami/gruppierungen/filtered-for-navigation/gruppierung/node";
+    public static final String URL_GRUPPIERUNGEN = "/nami/gruppierungen/filtered-for-navigation/gruppierung/node";
 
     /**
      * URL, mit der der Datensatz eines Mitglieds (identifiziert durch seine ID)
@@ -66,6 +67,7 @@ public class NamiURIBuilder extends URIBuilder {
      */
     public static final String URL_UNTERGLIEDERUNGEN = "/orgadmin/untergliederung";
 
+    public static final String URL_SCHULUNGEN = "/nami/mitglied-ausbildung/filtered-for-navigation/mitglied/mitglied";
 
     /**
      * Erzeugt einen URIBuilder für den gegebenen Server und hängt sofort einen
@@ -83,14 +85,12 @@ public class NamiURIBuilder extends URIBuilder {
      */
     public NamiURIBuilder(NamiServer server, String path, boolean restUrl) {
         super();
-
         if (server.getUseSsl()) {
             setScheme("https");
         } else {
             setScheme("http");
         }
         setHost(server.getNamiServer());
-
         setPath("/" + server.getNamiDeploy());
         if (restUrl) {
             appendPath("rest");
@@ -98,7 +98,6 @@ public class NamiURIBuilder extends URIBuilder {
                 appendPath("api/2/2/service");
             }
         }
-
         appendPath(path);
     }
 
@@ -114,9 +113,7 @@ public class NamiURIBuilder extends URIBuilder {
         if (path.isEmpty()) {
             path = "/";
         }
-
-        if ((path.charAt(path.length() - 1) != '/')
-                && (pathAppendix.charAt(0) != '/')) {
+        if ((path.charAt(path.length() - 1) != '/') && (pathAppendix.charAt(0) != '/')) {
             setPath(path + "/" + pathAppendix);
         } else {
             setPath(path + pathAppendix);

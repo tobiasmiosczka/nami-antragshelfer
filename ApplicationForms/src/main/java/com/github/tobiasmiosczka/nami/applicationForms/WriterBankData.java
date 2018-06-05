@@ -56,7 +56,7 @@ public class WriterBankData extends TextDocumentWriter {
                 //Beitragsart
                 row.getCellByIndex(10).setStringValue(m.getBeitragsart().getTag());
                 //Beitragshöhe
-                row.getCellByIndex(11).setStringValue(String.valueOf(getBeitragshöhe(m.getMitgliedstyp(), m.getBeitragsart())));
+                row.getCellByIndex(11).setStringValue(String.valueOf(getBeitragshoehe(m.getMitgliedstyp(), m.getBeitragsart())));
             }
         }
     }
@@ -68,7 +68,7 @@ public class WriterBankData extends TextDocumentWriter {
         else return stufe.toString();
     }
 
-    public float getBeitragshöhe(Mitgliedstyp mitgliedstyp,Beitragsart beitragsart) {
+    public float getBeitragshoehe(Mitgliedstyp mitgliedstyp,Beitragsart beitragsart) {
         if (mitgliedstyp != Mitgliedstyp.MITGLIED) {
             return 0.0f;
         }
