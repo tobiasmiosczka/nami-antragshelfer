@@ -742,7 +742,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	@Override
 	public NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen) {
-		GroupSelector gs = new GroupSelector(this, gruppierungen);
-		return gs.showModal();
+		return GroupSelector.selectGruppierung(this, gruppierungen);
 	}
 }

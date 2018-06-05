@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -750,10 +753,8 @@ public class NamiConnector {
         Type type = new TypeToken<Collection<NamiBeitragszahlung>>() {}.getType();
 
         // Load Regular Expression
-        Properties regexpProp = new Properties();
-        InputStream propXml = NamiBeitragszahlung.class.getResourceAsStream("regexp.xml");
-        regexpProp.loadFromXML(propXml);
-        String regex = regexpProp.getProperty("regex.beitragszahlungen");
+        //^\s*var zahlungenStore = Ext.create\('Ext.data.Store',\{data:\{items:(.*)\},fields:\["id","rechnungsNummer","rechnungsPosition","buchungsText","beitragsSatz","value","beitragBis","status","beitragsKonto"\],proxy:\{type: 'memory',reader: \{type: 'json',root: 'items'\}\}\}\);$
+        String regex = "^\\s*var zahlungenStore = Ext.create\\('Ext.data.Store',\\{data:\\{items:(.*)\\},fields:\\[\"id\",\"rechnungsNummer\",\"rechnungsPosition\",\"buchungsText\",\"beitragsSatz\",\"value\",\"beitragBis\",\"status\",\"beitragsKonto\"\\],proxy:\\{type: 'memory',reader: \\{type: 'json',root: 'items'\\}\\}\\}\\);$";
         Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         return executeHtmlRequest(httpGet, pattern, type);
     }

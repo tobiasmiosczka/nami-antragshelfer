@@ -8,14 +8,13 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 
 /**
  * JFrame to select either one group the user likes to work with or all groups
  * @author Tobias Miosczka
  */
-public class GroupSelector extends JFrame implements ActionListener {
+public class GroupSelector{
 
     private final JDialog dialog;
     private final JButton   btnOne,
@@ -26,7 +25,7 @@ public class GroupSelector extends JFrame implements ActionListener {
 
     private NamiGruppierung group = null;
 
-    public GroupSelector(JFrame owner, Collection<NamiGruppierung> groups) {
+    private GroupSelector(JFrame owner, Collection<NamiGruppierung> groups) {
         this.groups = groups.toArray(new NamiGruppierung[0]);
         dialog = new JDialog(owner, true);
         dialog.setTitle("Gruppierung");
@@ -46,28 +45,28 @@ public class GroupSelector extends JFrame implements ActionListener {
 
         btnOne = new JButton("Auswählen");
         btnOne.setBounds(10, 100, 180, 30);
-        btnOne.addActionListener(this);
+        btnOne.addActionListener(e -> {
+            group = this.groups[cbGroupSelect.getSelectedIndex()];
+            dialog.setVisible(false);
+        });
         dialog.getContentPane().add(btnOne);
 
         btnAll = new JButton("Alle Auswählen");
         btnAll.setBounds(210, 100, 200, 30);
-        btnAll.addActionListener(this);
+        btnAll.addActionListener(e -> {
+            group = null;
+            dialog.setVisible(false);
+        });
         dialog.getContentPane().add(btnAll);
     }
 
-    public NamiGruppierung showModal(){
+    private NamiGruppierung showModal(){
         dialog.setVisible(true);
         return group;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnAll){
-            group = null;
-        }
-        if(e.getSource() == btnOne){
-            group = groups[cbGroupSelect.getSelectedIndex()];
-        }
-        dialog.setVisible(false);
+    public static NamiGruppierung selectGruppierung(JFrame owner, Collection<NamiGruppierung> gruppierungen) {
+        GroupSelector groupSelector = new GroupSelector(owner, gruppierungen);
+        return groupSelector.showModal();
     }
 }
