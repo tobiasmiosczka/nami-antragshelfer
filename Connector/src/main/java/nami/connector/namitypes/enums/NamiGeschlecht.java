@@ -22,10 +22,10 @@ public enum NamiGeschlecht {
      */
     KEINE_ANGABE("", ' ');
 
-    private String tag;
-    private char character;
+    private final String tag;
+    private final char character;
 
-    private NamiGeschlecht(String tag, char character) {
+    NamiGeschlecht(String tag, char character) {
         this.tag = tag;
         this.character = character;
     }

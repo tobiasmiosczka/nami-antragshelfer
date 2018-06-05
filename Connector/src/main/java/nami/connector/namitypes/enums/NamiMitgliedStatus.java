@@ -20,7 +20,7 @@ public enum NamiMitgliedStatus {
      */
     INAKTIV("Inaktiv");
 
-    private String tag;
+    private final String tag;
 
     NamiMitgliedStatus(String tag) {
         this.tag = tag;

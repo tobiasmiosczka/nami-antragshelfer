@@ -7,7 +7,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 /**
@@ -17,8 +16,6 @@ import java.util.Collection;
 public class GroupSelector{
 
     private final JDialog dialog;
-    private final JButton   btnOne,
-                            btnAll;
     private final JComboBox<NamiGruppierung> cbGroupSelect;
 
     private final NamiGruppierung[] groups;
@@ -43,7 +40,7 @@ public class GroupSelector{
         cbGroupSelect.setBounds(10, 50, 400, 30);
         dialog.getContentPane().add(cbGroupSelect);
 
-        btnOne = new JButton("Auswählen");
+        JButton btnOne = new JButton("Auswählen");
         btnOne.setBounds(10, 100, 180, 30);
         btnOne.addActionListener(e -> {
             group = this.groups[cbGroupSelect.getSelectedIndex()];
@@ -51,7 +48,7 @@ public class GroupSelector{
         });
         dialog.getContentPane().add(btnOne);
 
-        btnAll = new JButton("Alle Auswählen");
+        JButton btnAll = new JButton("Alle Auswählen");
         btnAll.setBounds(210, 100, 200, 30);
         btnAll.addActionListener(e -> {
             group = null;

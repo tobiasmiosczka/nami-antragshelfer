@@ -20,8 +20,8 @@ import java.util.Date;
  * 
  */
 public class NamiHalbjahr implements Comparable<NamiHalbjahr> {
-    private int halbjahr;
-    private int jahr;
+    private final int halbjahr;
+    private final int jahr;
 
     /**
      * Erzeugt ein neues Halbjahr, gegeben durch Halbjahr (1/2) und Jahr.

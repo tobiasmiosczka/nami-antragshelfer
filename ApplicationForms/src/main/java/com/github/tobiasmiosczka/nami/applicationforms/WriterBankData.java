@@ -68,7 +68,7 @@ public class WriterBankData extends AbstractTextDocumentWriter {
         else return stufe.toString();
     }
 
-    public float getBeitragshoehe(NamiMitgliedstyp mitgliedstyp, NamiBeitragsart beitragsart) {
+    private float getBeitragshoehe(NamiMitgliedstyp mitgliedstyp, NamiBeitragsart beitragsart) {
         if (mitgliedstyp != NamiMitgliedstyp.MITGLIED) {
             return 0.0f;
         }

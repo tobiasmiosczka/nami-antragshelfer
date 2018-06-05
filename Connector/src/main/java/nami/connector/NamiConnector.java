@@ -20,14 +20,7 @@ import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
 
 import nami.connector.json.JsonHelp;
-import nami.connector.namitypes.NamiBeitragszahlung;
-import nami.connector.namitypes.NamiEnum;
-import nami.connector.namitypes.NamiGruppierung;
-import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.NamiSchulung;
-import nami.connector.namitypes.NamiSchulungenMap;
-import nami.connector.namitypes.NamiSearchedValues;
-import nami.connector.namitypes.NamiTaetigkeitAssignment;
+import nami.connector.namitypes.*;
 import nami.connector.namitypes.enums.NamiEbene;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.Header;

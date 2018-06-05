@@ -30,7 +30,7 @@ public enum NamiBeitragsart {
     //Personen, die keinen Mitgliedsbeitrag bezahlen müssen
     KEIN_BEITRAG("NICHT_MITGLIEDER");
 
-    private String tag;
+    private final String tag;
 
     NamiBeitragsart(String tag) {
         this.tag = tag;
