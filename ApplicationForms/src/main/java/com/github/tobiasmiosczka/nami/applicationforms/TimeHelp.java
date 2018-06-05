@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

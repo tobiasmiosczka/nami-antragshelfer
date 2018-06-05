@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.util.Date;
 import java.util.List;
@@ -11,9 +11,7 @@ import org.odftoolkit.simple.style.StyleTypeDefinitions;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-
-
-public class WriterApplicationCityDinslaken extends TextDocumentWriter {
+public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 
 	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
 	private static final double height = 0.7;

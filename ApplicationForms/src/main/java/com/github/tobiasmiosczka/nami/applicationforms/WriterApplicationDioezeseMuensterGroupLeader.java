@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.enums.Baustein;
@@ -13,11 +13,11 @@ import org.odftoolkit.simple.table.Table;
 import java.util.Date;
 import java.util.List;
 
-import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.calcAge;
-import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.getDateYearString;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.calcAge;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.getDateYearString;
 
 
-public class WriterApplicationDioezeseMuensterGroupLeader extends TextDocumentWriter {
+public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDocumentWriter {
 
 	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
 	private static final double height = 0.7;

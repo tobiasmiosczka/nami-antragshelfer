@@ -1,13 +1,13 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
-
 
 /**
  * abstract class to generate and output application form as a text document.
@@ -15,7 +15,7 @@ import org.odftoolkit.simple.TextDocument;
  * @author Tobias Miosczka
  *
  */
-public abstract class TextDocumentWriter {
+public abstract class AbstractTextDocumentWriter {
 
 	static {
 		// set loglevel off

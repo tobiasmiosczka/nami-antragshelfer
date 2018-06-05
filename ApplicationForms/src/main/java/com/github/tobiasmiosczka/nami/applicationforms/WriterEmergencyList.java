@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.applicationForms.TimeHelp.getDateString;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.getDateString;
 
-public class WriterEmergencyList extends TextDocumentWriter {
+public class WriterEmergencyList extends AbstractTextDocumentWriter {
 
 	public WriterEmergencyList() {
 		super();

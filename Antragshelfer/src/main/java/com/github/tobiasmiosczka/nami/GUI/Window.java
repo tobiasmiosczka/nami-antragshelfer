@@ -35,12 +35,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.tobiasmiosczka.nami.GUI.Windows.GroupSelector;
-import com.github.tobiasmiosczka.nami.applicationForms.NoParticipantsException;
-import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationCityDinslaken;
-import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationDioezeseMuenster;
-import com.github.tobiasmiosczka.nami.applicationForms.WriterApplicationDioezeseMuensterGroupLeader;
-import com.github.tobiasmiosczka.nami.applicationForms.WriterBankData;
-import com.github.tobiasmiosczka.nami.applicationForms.WriterEmergencyList;
+import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationCityDinslaken;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuenster;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuensterGroupLeader;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.SchulungenMap;

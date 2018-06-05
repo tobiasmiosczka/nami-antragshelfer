@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationForms;
+package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-public class WriterBankData extends TextDocumentWriter {
+public class WriterBankData extends AbstractTextDocumentWriter {
 
     private final float vollerBeitrag,
                         familienermaessigt,

@@ -1,6 +1,6 @@
 package com.github.tobiasmiosczka.nami.GUI;
 
-import com.github.tobiasmiosczka.nami.applicationForms.TimeHelp;
+import com.github.tobiasmiosczka.nami.applicationforms.TimeHelp;
 
 import java.awt.*;
 import java.text.ParseException;
@@ -283,7 +283,7 @@ public class UserInputDialog{
 		inputList.add(new InputString(panel, inputList.size(), description, preview));
 		updateBounds();
 	}
-	
+
 	public void addIntegerOption(String description, int preview) {
 		inputList.add(new InputInteger(panel, inputList.size(), description, preview));
 		updateBounds();
@@ -298,7 +298,7 @@ public class UserInputDialog{
 		inputList.add(new InputDate(panel, inputList.size(), description, preview));
 		updateBounds();
 	}
-	
+
 	public void addBooleanOption(String description, boolean preview) {
 		inputList.add(new InputBoolean(panel, inputList.size(), description, preview));
 		updateBounds();
