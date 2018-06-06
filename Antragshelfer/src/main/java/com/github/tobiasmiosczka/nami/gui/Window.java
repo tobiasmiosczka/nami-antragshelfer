@@ -1,26 +1,7 @@
 package com.github.tobiasmiosczka.nami.gui;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -44,19 +25,17 @@ import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezese
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuensterGroupLeader;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
-import com.github.tobiasmiosczka.nami.program.VersionHelper;
+import com.github.tobiasmiosczka.nami.program.*;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulungenMap;
-import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
-import com.github.tobiasmiosczka.nami.program.Program;
 import nami.connector.NamiServer;
 import nami.connector.namitypes.enums.NamiGeschlecht;
 import nami.connector.namitypes.enums.NamiMitgliedstyp;
 import nami.connector.namitypes.enums.NamiStufe;
 import nami.connector.exception.NamiApiException;
 
-public class Window extends JFrame implements  Program.ProgramHandler {
+public class Window extends JFrame implements IGui {
 
 	private static final int lastUpdate = 2018;
 
@@ -84,8 +63,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private JPasswordField	pfPassword;
 
-	private JLabel lbUser;
-
 	private JCheckBox 	cWoelflinge,
 						cJungpfadfinder,
 						cPfadfinder,
@@ -109,6 +86,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 	private final Program program;
 	private NamiServer server = NamiServer.LIVESERVER_WITH_API;
+
+	private JCheckBoxMenuItem cbmiLadeInaktiv;
 
 	public static void main(String[] args) {
 		try {
@@ -182,22 +161,22 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		ButtonGroup sortByRadioButtonGroup = new ButtonGroup();
 
 		JRadioButtonMenuItem rbmiSortByFirstname = new JRadioButtonMenuItem("Vorname");
-		rbmiSortByFirstname.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_FIRSTNAME));
+		rbmiSortByFirstname.addActionListener(e -> program.sortBy(Sorting.SORT_BY_FIRSTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByFirstname);
 		mSortation.add(rbmiSortByFirstname);
 
 		JRadioButtonMenuItem rbmiSortByLastname = new JRadioButtonMenuItem("Nachname");
-		rbmiSortByLastname.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_LASTNAME));
+		rbmiSortByLastname.addActionListener(e -> program.sortBy(Sorting.SORT_BY_LASTNAME));
 		sortByRadioButtonGroup.add(rbmiSortByLastname);
 		mSortation.add(rbmiSortByLastname);
 
 		JRadioButtonMenuItem rbmiSortByAge = new JRadioButtonMenuItem("Alter");
-		rbmiSortByAge.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_AGE));
+		rbmiSortByAge.addActionListener(e -> program.sortBy(Sorting.SORT_BY_AGE));
 		sortByRadioButtonGroup.add(rbmiSortByAge);
 		mSortation.add(rbmiSortByAge);
 
 		JRadioButtonMenuItem rbmiSortById = new JRadioButtonMenuItem("ID");
-		rbmiSortById.addActionListener(e -> program.sortBy(Program.Sorting.SORT_BY_ID));
+		rbmiSortById.addActionListener(e -> program.sortBy(Sorting.SORT_BY_ID));
 		sortByRadioButtonGroup.add(rbmiSortById);
 		mSortation.add(rbmiSortById);
 
@@ -225,6 +204,11 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		mServer.add(rbmiServerTestServer);
 
 		rbmiServerLiveServerWithApi.setSelected(true);
+
+		/*Lade Inaktive*/
+		cbmiLadeInaktiv = new JCheckBoxMenuItem("Lade inaktive Mitglieder");
+		cbmiLadeInaktiv.setSelected(false);
+		mProperties.add(cbmiLadeInaktiv);
 
 		/*Hilfe*/
 		JMenu mHelp = new JMenu("Hilfe");
@@ -293,16 +277,12 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(10, 114, 180, 23);
 		pOptions.add(progressBar);
-
-		lbUser = new JLabel("", SwingConstants.CENTER);
-		lbUser.setBounds(10, 130, 180, 14);
-		pOptions.add(lbUser);
 	}
 
 	private void initFilterOptionsPane(JPanel pOptions) {
 		JPanel pFilterOptions = new JPanel();
 		pFilterOptions.setLayout(null);
-		pFilterOptions.setBounds(10, 150, 180, 500);
+		pFilterOptions.setBounds(10, 160, 180, 500);
 		pOptions.add(pFilterOptions);
 
 		JLabel lblFilter = new JLabel("Filter");
@@ -404,7 +384,7 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 
 		JLabel lblCopyRight = new JLabel("\u00a9 Tobias Miosczka 2013 - " + lastUpdate);
 		lblCopyRight.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblCopyRight.setBounds(0, 475, 180, 25);
+		lblCopyRight.setBounds(0, 455, 180, 25);
 		pFilterOptions.add(lblCopyRight);
 	}
 
@@ -497,7 +477,6 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			tfUsername.setBackground(colorSuccess);
 			pfPassword.setBackground(colorSuccess);
 			progressBar.setString("");
-			lbUser.setText(text);
 			bLogin.setEnabled(false);
 			tfUsername.setEnabled(false);
 			pfPassword.setEnabled(false);
@@ -685,10 +664,8 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 	}
 
 	private void login() {
-		String user = tfUsername.getText();
-		String pass = String.copyValueOf(pfPassword.getPassword());
 		try {
-			program.login(user, pass, server);
+			program.login(tfUsername.getText(), String.copyValueOf(pfPassword.getPassword()), server);
 		} catch (IOException e) {
 			this.showPassResult(false, "Keine Verbindung zum Server: " + e.getMessage());
 			return;
@@ -696,9 +673,9 @@ public class Window extends JFrame implements  Program.ProgramHandler {
 			this.showPassResult(false, e.getMessage());
 			return;
 		}
-		showPassResult(true, "Angemeldet als " + user);
+		showPassResult(true, "");
 		try {
-			program.loadData();
+			program.loadData(cbmiLadeInaktiv.isSelected());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, "Keine Verbindung zum Server: " + e.getMessage());
 		} catch (NamiApiException e) {

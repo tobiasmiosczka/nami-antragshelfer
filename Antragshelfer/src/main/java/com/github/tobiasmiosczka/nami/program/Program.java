@@ -15,6 +15,7 @@ import nami.connector.credentials.NamiCredentials;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiSearchedValues;
+import nami.connector.namitypes.enums.NamiMitgliedStatus;
 
 /**
  * Program
@@ -24,42 +25,10 @@ import nami.connector.namitypes.NamiSearchedValues;
  */
 public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
 
-    public interface ProgramHandler {
-        void onUpdate(int current, int count, NamiMitglied member);
-        void onDone(long timeMS);
-        void onException(String message, Exception e);
-        NamiGruppierung selectGruppierung(Collection<NamiGruppierung> gruppierungen);
-    }
-
-    public enum Sorting{
-        SORT_BY_FIRSTNAME((n1, n2) -> {
-            String s1 = n1.getVorname() + n1.getNachname();
-            String s2 = n2.getVorname() + n2.getNachname();
-            return s1.toLowerCase().compareTo(s2.toLowerCase());
-        }),
-        SORT_BY_LASTNAME((n1, n2) -> {
-            String s1 = n1.getNachname() + n1.getVorname();
-            String s2 = n2.getNachname() + n2.getVorname();
-            return s1.toLowerCase().compareTo(s2.toLowerCase());
-        }),
-        SORT_BY_AGE(Comparator.comparing(NamiMitglied::getGeburtsDatum)),
-        SORT_BY_ID(Comparator.comparingInt(NamiMitglied::getMitgliedsnummer));
-
-        private final Comparator<NamiMitglied> comparator;
-
-        Sorting(Comparator<NamiMitglied> comparator) {
-            this.comparator = comparator;
-        }
-
-        protected Comparator<NamiMitglied> getComparator() {
-            return comparator;
-        }
-    }
-
     private NamiConnector connector;
     private final SortedList<NamiMitglied> members = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
     private final SortedList<NamiMitglied> participants = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
-    private final ProgramHandler handler;
+    private final IGui handler;
 
     public List<NamiSchulungenMap> loadSchulungen(List<NamiMitglied> participants) throws IOException, NamiApiException {
         //TODO: make multithreaded
@@ -74,7 +43,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     /**
      * Constructor for Program
      */
-    public Program(ProgramHandler handler){
+    public Program(IGui handler){
         this.handler = handler;
     }
 
@@ -103,7 +72,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
      * program must be logged in first
      *
      */
-    public void loadData() throws IOException, NamiApiException {
+    public void loadData(boolean loadInaktive) throws IOException, NamiApiException {
         members.clear();
         participants.clear();
         Collection<NamiGruppierung> groups = connector.getGruppierungenFromUser();
@@ -111,6 +80,9 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null) {
             namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGruppierungsnummer()));
+        }
+        if (!loadInaktive) {
+            namiSearchedValues.setMitgliedStatus(NamiMitgliedStatus.AKTIV);
         }
         NaMiDataLoader dl = new NaMiDataLoader(connector, namiSearchedValues, this);
         dl.start();
