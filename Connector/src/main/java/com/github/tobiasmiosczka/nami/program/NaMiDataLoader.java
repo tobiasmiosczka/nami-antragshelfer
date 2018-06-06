@@ -16,12 +16,6 @@ import nami.connector.namitypes.NamiSearchedValues;
  */
 public class NaMiDataLoader extends Thread {
 	
-	public interface NamiDataLoaderHandler{
-		void onUpdate(int current, int count, NamiMitglied e);
-		void onDone(long time);
-		void onException(String message, Exception e);
-	}
-	
 	private final NamiDataLoaderHandler handler;
 	private final NamiConnector connector;
 	private final NamiSearchedValues namiSearchedValues;

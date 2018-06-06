@@ -23,12 +23,12 @@ import nami.connector.namitypes.enums.NamiMitgliedStatus;
  * @author Tobias  Miosczka
  *
  */
-public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
+public class Program implements NamiDataLoaderHandler {
 
     private NamiConnector connector;
     private final SortedList<NamiMitglied> members = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
     private final SortedList<NamiMitglied> participants = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
-    private final IGui handler;
+    private final IGui gui;
 
     public List<NamiSchulungenMap> loadSchulungen(List<NamiMitglied> participants) throws IOException, NamiApiException {
         //TODO: make multithreaded
@@ -43,8 +43,8 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     /**
      * Constructor for Program
      */
-    public Program(IGui handler){
-        this.handler = handler;
+    public Program(IGui gui){
+        this.gui = gui;
     }
 
     public void sortBy(Sorting sorting) {
@@ -76,7 +76,7 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
         members.clear();
         participants.clear();
         Collection<NamiGruppierung> groups = connector.getGruppierungenFromUser();
-        NamiGruppierung group = handler.selectGruppierung(groups);
+        NamiGruppierung group = gui.selectGruppierung(groups);
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null) {
             namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGruppierungsnummer()));
@@ -138,21 +138,21 @@ public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
     public void onUpdate(int current, int count, NamiMitglied namiMitglied) {
         synchronized (this) {
             members.add(namiMitglied);
-            handler.onUpdate(current, count, namiMitglied);
+            gui.onUpdate(current, count, namiMitglied);
         }
     }
 
     @Override
     public void onDone(long time) {
         synchronized (this) {
-            handler.onDone(time);
+            gui.onDone(time);
         }
     }
 
     @Override
     public void onException(String message, Exception e) {
         synchronized (this) {
-            handler.onException(message, e);
+            gui.onException(message, e);
         }
     }
 }
