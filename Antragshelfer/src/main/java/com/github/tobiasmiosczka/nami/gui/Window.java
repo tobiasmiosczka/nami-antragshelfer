@@ -72,7 +72,8 @@ public class Window extends JFrame implements IGui {
 						cSchnuppermitglied,
 						cNichtmitglied,
 						cMaennlich,
-						cWeiblich;
+						cWeiblich,
+						cKeineAngabe;
 
 	private JProgressBar progressBar;
 
@@ -368,7 +369,7 @@ public class Window extends JFrame implements IGui {
 		/*Geschlecht*/
 		JPanel pGeschlecht = new JPanel();
 		pGeschlecht.setBorder(BorderFactory.createTitledBorder("Geschlecht"));
-		pGeschlecht.setBounds(0, 335, 180, 70);
+		pGeschlecht.setBounds(0, 335, 180, 105);
 		pFilterOptions.add(pGeschlecht);
 		pGeschlecht.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -381,6 +382,11 @@ public class Window extends JFrame implements IGui {
 		cWeiblich.addActionListener(e -> updateMembersList());
 		cWeiblich.setSelected(true);
 		pGeschlecht.add(cWeiblich);
+
+		cKeineAngabe = new JCheckBox("Keine Angabe");
+		cKeineAngabe.addActionListener(e -> updateMembersList());
+		cKeineAngabe.setSelected(true);
+		pGeschlecht.add(cKeineAngabe);
 
 		JLabel lblCopyRight = new JLabel("\u00a9 Tobias Miosczka 2013 - " + lastUpdate);
 		lblCopyRight.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -511,7 +517,8 @@ public class Window extends JFrame implements IGui {
 		}
 		//check gender
 		if (!(  (cWeiblich.isSelected()  && m.getGeschlecht() == NamiGeschlecht.WEIBLICH) ||
-				(cMaennlich.isSelected() && m.getGeschlecht() == NamiGeschlecht.MAENNLICH))) {
+				(cMaennlich.isSelected() && m.getGeschlecht() == NamiGeschlecht.MAENNLICH) ||
+				(cKeineAngabe.isSelected() && m.getGeschlecht() == NamiGeschlecht.KEINE_ANGABE))) {
 			return false;
 		}
 		//check Name
