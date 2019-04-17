@@ -37,7 +37,7 @@ import nami.connector.exception.NamiApiException;
 
 public class Window extends JFrame implements IGui {
 
-	private static final int lastUpdate = 2018;
+	private static final int lastUpdate = 2019;
 
 	private static final Font fHeadline = new Font("Arial", Font.BOLD, 16);
 
@@ -216,15 +216,15 @@ public class Window extends JFrame implements IGui {
 		menuBar.add(mHelp);
 
 		JMenuItem mntmHomepage = new JMenuItem("Homepage");
-		mntmHomepage.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi"));
+		mntmHomepage.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMiAntragshelfer"));
 		mHelp.add(mntmHomepage);
 
 		JMenuItem mntmLicence = new JMenuItem("Lizenz");
-		mntmLicence.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi/blob/master/LICENSE"));
+		mntmLicence.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/LICENSE"));
 		mHelp.add(mntmLicence);
 
 		JMenuItem mntmChangelog = new JMenuItem("Changelog");
-		mntmChangelog.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md"));
+		mntmChangelog.addActionListener(e -> openUrl("https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/CHANGELOG.md"));
 		mHelp.add(mntmChangelog);
 	}
 
