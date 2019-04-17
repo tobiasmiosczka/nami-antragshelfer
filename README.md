@@ -59,8 +59,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
 [1]: https://dpsg.de/
 [2]: https://nami.dpsg.de/
-[3]: https://github.com/TobiasMiosczka/NaMi/releases
+[3]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/releases
 [4]: https://java.com/de/download/
 [5]: https://github.com/fabianlipp
-[6]: https://github.com/TobiasMiosczka/NaMi/blob/master/CHANGELOG.md
-[7]: https://github.com/TobiasMiosczka/NaMi/blob/master/LICENSE
+[6]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/CHANGELOG.md
+[7]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/LICENSE
