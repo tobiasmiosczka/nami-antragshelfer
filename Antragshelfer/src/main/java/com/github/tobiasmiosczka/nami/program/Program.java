@@ -23,7 +23,7 @@ import nami.connector.namitypes.enums.NamiMitgliedStatus;
  * @author Tobias  Miosczka
  *
  */
-public class Program implements NamiDataLoaderHandler {
+public class Program implements NaMiDataLoader.NamiDataLoaderHandler {
 
     private NamiConnector connector;
     private final SortedList<NamiMitglied> members = new SortedList<>(Sorting.SORT_BY_LASTNAME.getComparator());
