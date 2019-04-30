@@ -11,7 +11,7 @@ public class VersionHelper {
         Properties props = new Properties();
         try
         {
-            props.load(ClassLoader.getSystemResourceAsStream("META-INF/maven/com.github.tobiasmiosczka.nami/antragshelfer/pom.properties"));
+            props.load(ClassLoader.getSystemResourceAsStream("META-INF/maven/com.github.tobiasmiosczka/nami-antragshelfer/pom.properties"));
         } catch (IOException e)
         {
             e.printStackTrace();
