@@ -6,7 +6,7 @@
 
     <groupId>com.github.tobiasmiosczka</groupId>
     <artifactId>nami-antragshelfer</artifactId>
-    <version>3.5</version>
+    <version>3.6</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.github.tobiasmiosczka</groupId>
             <artifactId>nami-connector</artifactId>
-            <version>3.5</version>
+            <version>3.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.odftoolkit</groupId>

@@ -1,7 +1,27 @@
 package com.github.tobiasmiosczka.nami.gui;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -19,13 +39,18 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationCityDinslaken;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuenster;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuensterGroupLeader;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
 import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
-import com.github.tobiasmiosczka.nami.program.*;
+import com.github.tobiasmiosczka.nami.applicationforms.WriterParticipationList;
+import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
+import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
+import com.github.tobiasmiosczka.nami.program.IGui;
+import com.github.tobiasmiosczka.nami.program.Program;
+import com.github.tobiasmiosczka.nami.program.Sorting;
+import com.github.tobiasmiosczka.nami.program.VersionHelper;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulungenMap;
@@ -146,6 +171,10 @@ public class Window extends JFrame implements IGui {
 		JMenuItem mntmNotfallliste = new JMenuItem("Notfallliste");
 		mntmNotfallliste.addActionListener(e -> emergencyPhoneList());
 		mAntrag.add(mntmNotfallliste);
+
+		JMenuItem mntmAnwesenheitsliste = new JMenuItem("Anwesenheitsliste");
+		mntmAnwesenheitsliste.addActionListener(e -> participationList());
+		mAntrag.add(mntmAnwesenheitsliste);
 
 		JMenuItem mntmBankData = new JMenuItem("Bankdaten");
 		mntmBankData.addActionListener(e -> bankData());
@@ -580,7 +609,7 @@ public class Window extends JFrame implements IGui {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+			showNoParticipantsError();
 		}
 	}
 
@@ -605,10 +634,10 @@ public class Window extends JFrame implements IGui {
 		}
 		try {
 			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(fileName, program.getParticipants());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} catch (NoParticipantsException e) {
+			showNoParticipantsError();
 		}
 	}
 
@@ -630,8 +659,8 @@ public class Window extends JFrame implements IGui {
 			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		} catch (NoParticipantsException e) {
+			showNoParticipantsError();
 		}
 	}
 
@@ -644,9 +673,27 @@ public class Window extends JFrame implements IGui {
 			new WriterEmergencyList().run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+		} catch (NoParticipantsException e) {
+			showNoParticipantsError();
 		}
+	}
+
+	private void participationList() {
+		String fileName = SaveDialog.getFilePath("applicationForms/Teilnehmerliste.odt");
+		if (fileName == null) {
+			return;
+		}
+		try {
+			new WriterParticipationList().run(fileName, program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e) {
+			showNoParticipantsError();
+		}
+	}
+
+	private void showNoParticipantsError() {
+		JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
 	}
 
 	private void bankData() {
@@ -666,7 +713,7 @@ public class Window extends JFrame implements IGui {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e1) {
-			JOptionPane.showMessageDialog(null, "Es wurden keine Teilnehmer ausgewählt.");
+			showNoParticipantsError();
 		}
 	}
 
