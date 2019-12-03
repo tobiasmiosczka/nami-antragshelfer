@@ -26,10 +26,11 @@ Unterstützte Formulare
 * Diverse
   * Notfall-Telefonliste
   * Bankdatenliste zum Einzug der Halbjahresbeiträge
+  * Anwesenheitsliste
   
 Danksagung
 ----------------------------------------------------------------------
-Ein besonderer Dank geht an [Fabian Lipp][5], der ursprünglichen Klassen des NaMi-Connectors programmiert hat.
+Ein besonderer Dank geht an [Fabian Lipp][5] für die Veröffentlichung der ursprünglichen Klassen des NaMi-Connectors.
 
 Changelog
 ----------------------------------------------------------------------
