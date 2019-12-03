@@ -59,7 +59,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
 [1]: https://dpsg.de/
 [2]: https://nami.dpsg.de/
-[3]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/releases
+[3]: https://github.com/tobiasmiosczka/nami-antragshelfer/releases/download/3.6/nami-antragshelfer-3.6-jar-with-dependencies.jar
 [4]: https://java.com/de/download/
 [5]: https://github.com/fabianlipp
 [6]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/CHANGELOG.md
