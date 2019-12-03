@@ -43,7 +43,7 @@ Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in [
 
 
 ```
-Copyright (C) 2013 - 2017 Tobias Miosczka
+Copyright (C) 2013 - 2019 Tobias Miosczka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
