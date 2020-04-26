@@ -62,7 +62,7 @@ import nami.connector.exception.NamiApiException;
 
 public class Window extends JFrame implements IGui {
 
-	private static final int lastUpdate = 2019;
+	private static final int lastUpdate = 2020;
 
 	private static final Font fHeadline = new Font("Arial", Font.BOLD, 16);
 

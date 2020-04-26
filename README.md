@@ -43,7 +43,7 @@ Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in [
 
 
 ```
-Copyright (C) 2013 - 2019 Tobias Miosczka
+Copyright (C) 2013 - 2020 Tobias Miosczka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ```
 [1]: https://dpsg.de/
 [2]: https://nami.dpsg.de/
-[3]: https://github.com/tobiasmiosczka/nami-antragshelfer/releases/download/3.6/nami-antragshelfer-3.6-jar-with-dependencies.jar
+[3]: https://github.com/tobiasmiosczka/nami-antragshelfer/releases/download/3.7/nami-antragshelfer-3.7-jar-with-dependencies.jar
 [4]: https://java.com/de/download/
 [5]: https://github.com/fabianlipp
 [6]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/CHANGELOG.md
