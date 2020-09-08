@@ -6,7 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.text.ParseException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -160,9 +161,9 @@ public class UserInputDialog{
 		}
 	}
 	
-	private class InputDate extends Input<Date> {
+	private class InputDate extends Input<LocalDate> {
 		final JTextField textField;
-		public InputDate(JPanel parent, int index, String description, Date preview) {
+		public InputDate(JPanel parent, int index, String description, LocalDate preview) {
 			super(parent, index, description);
 			textField = new JTextField(TimeHelp.getDateString(preview));
 			textField.setBounds(this.getWidth() + 10,  11 + (index * 30), INPUTFIELD_WIDTH,  20);
@@ -178,17 +179,17 @@ public class UserInputDialog{
 		public boolean check() {
 			try {
 				TimeHelp.getDateFromInputInput(textField.getText());
-			} catch (ParseException e) {
+			} catch (DateTimeParseException e) {
 				return false;
 			}
 			return true;
 		}
 
 		@Override
-		public Date getValue() {
+		public LocalDate getValue() {
 			try {
 				return TimeHelp.getDateFromInputInput(textField.getText());
-			} catch (ParseException e) {
+			} catch (DateTimeParseException e) {
 				return null;
 			}
 		}
@@ -296,7 +297,7 @@ public class UserInputDialog{
 		updateBounds();
 	}
 
-	public void addDateOption(String description, Date preview){
+	public void addDateOption(String description, LocalDate preview){
 		inputList.add(new InputDate(panel, inputList.size(), description, preview));
 		updateBounds();
 	}

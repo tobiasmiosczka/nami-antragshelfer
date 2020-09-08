@@ -1,5 +1,6 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,12 +17,12 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 							ort,
 							land;
 
-	private final boolean noDate;
+	private final boolean 	noDate;
 
-	private final Date 	datumVon,
-						datumBis;
+	private final LocalDate datumVon,
+							datumBis;
 
-	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String traeger, boolean noDate, Date datumVon, Date datumBis, String plz, String ort, String land) {
+	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String traeger, boolean noDate, LocalDate datumVon, LocalDate datumBis, String plz, String ort, String land) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.traeger = traeger;

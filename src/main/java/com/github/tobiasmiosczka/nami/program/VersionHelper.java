@@ -9,13 +9,13 @@ public class VersionHelper {
 
     private static String getVersion() {
         Properties props = new Properties();
-        try
-        {
+        String v;
+        try {
             props.load(ClassLoader.getSystemResourceAsStream("META-INF/maven/com.github.tobiasmiosczka/nami-antragshelfer/pom.properties"));
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+            v = props.getProperty("version");
+        } catch (Exception e) {
+           v = "UNKNOWN VERSION";
         }
-        return props.getProperty("version");
+        return v;
     }
 }

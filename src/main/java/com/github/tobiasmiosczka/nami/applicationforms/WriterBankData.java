@@ -26,7 +26,6 @@ public class WriterBankData extends AbstractTextDocumentWriter {
 
     @Override
     public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc){
-        //participants data
         Table tParticipants = odtDoc.getTableList().get(0);
         for (NamiMitglied m : participants){
             Row row = tParticipants.appendRow();

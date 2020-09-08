@@ -35,16 +35,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationCityDinslaken;
-import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuenster;
-import com.github.tobiasmiosczka.nami.applicationforms.WriterApplicationDioezeseMuensterGroupLeader;
-import com.github.tobiasmiosczka.nami.applicationforms.WriterBankData;
-import com.github.tobiasmiosczka.nami.applicationforms.WriterEmergencyList;
-import com.github.tobiasmiosczka.nami.applicationforms.WriterParticipationList;
+import com.github.tobiasmiosczka.nami.applicationforms.*;
 import com.github.tobiasmiosczka.nami.applicationforms.exception.NoParticipantsException;
 import com.github.tobiasmiosczka.nami.program.FileEncodingHelper;
 import com.github.tobiasmiosczka.nami.program.IGui;
@@ -163,6 +158,10 @@ public class Window extends JFrame implements IGui {
 		JMenuItem mntmAntragLand = new JMenuItem("Antrag an Diözese Münster");
 		mntmAntragLand.addActionListener(e -> applicationDioezeseMuenster());
 		mAntrag.add(mntmAntragLand);
+
+		JMenuItem mntmGemeindeDinslakenCoronaRaumnutzung = new JMenuItem("Gemeinde Dinslaken Corona Raumnutzung");
+		mntmGemeindeDinslakenCoronaRaumnutzung.addActionListener(e -> gemeindeDinslakenCoronaRaumnutzung());
+		mAntrag.add(mntmGemeindeDinslakenCoronaRaumnutzung);
 
 		JMenuItem mntmAntragLandLeiter = new JMenuItem("Antrag an Diözese Münster (Leiter)");
 		mntmAntragLandLeiter.addActionListener(e -> applicationDioezeseMuensterGroupLeader());
@@ -583,8 +582,8 @@ public class Window extends JFrame implements IGui {
 		ui.addStringOption("Mitgliedsverband", "");
 		ui.addStringOption("Träger", "");
 		ui.addBooleanOption("Datum freilassen", false);
-		ui.addDateOption("Datum von (tt.mm.jjjj)", new Date());
-		ui.addDateOption("Datum bis (tt.mm.jjjj)", new Date());
+		ui.addDateOption("Datum von (tt.mm.jjjj)", LocalDate.now());
+		ui.addDateOption("Datum bis (tt.mm.jjjj)", LocalDate.now());
 		ui.addStringOption("PLZ","");
 		ui.addStringOption("Ort","");
 		ui.addStringOption("Land","");
@@ -600,8 +599,8 @@ public class Window extends JFrame implements IGui {
 					(String)ui.getOption(0),
 					(String)ui.getOption(1),
 					(Boolean)ui.getOption(2),
-					(Date)ui.getOption(3),
-					(Date)ui.getOption(4),
+					(LocalDate)ui.getOption(3),
+					(LocalDate)ui.getOption(4),
 					(String)ui.getOption(5),
 					(String)ui.getOption(6),
 					(String)ui.getOption(7)
@@ -613,10 +612,36 @@ public class Window extends JFrame implements IGui {
 		}
 	}
 
+	private void gemeindeDinslakenCoronaRaumnutzung() {
+		UserInputDialog ui = new UserInputDialog(this);
+		ui.addDateOption("Datum (TT.MM.JJJJ)", LocalDate.now());
+		ui.addStringOption("Uhrzeit von (HH:MM)", "");
+		ui.addStringOption("Uhrzeit bis (HH:MM)", "");
+
+		if(!ui.showModal()) {
+			return;
+		}
+		String fileName = SaveDialog.getFilePath("Raumnutzung Ausgefüllt.odt");
+		if(fileName == null) {
+			return;
+		}
+		try {
+			new WriterGemeindeDinslakenCoronaRaumnutzungung(
+					(LocalDate) ui.getOption(0),
+					(String) ui.getOption(1),
+					(String) ui.getOption(2)
+			).run(fileName, program.getParticipants());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} catch (NoParticipantsException e) {
+			showNoParticipantsError();
+		}
+	}
+
 	private void applicationDioezeseMuensterGroupLeader() {
 		UserInputDialog ui = new UserInputDialog(this);
 		ui.addBooleanOption("Datum freilassen", false);
-		ui.addDateOption("Datum (tt.mm.jjjj)", new Date());
+		ui.addDateOption("Datum (tt.mm.jjjj)", LocalDate.now());
 		if(!ui.showModal()) {
 			return;
 		}
@@ -633,7 +658,11 @@ public class Window extends JFrame implements IGui {
 			return;
 		}
 		try {
-			new WriterApplicationDioezeseMuensterGroupLeader(schulungen, (Boolean)ui.getOption(0), (Date)ui.getOption(1)).run(fileName, program.getParticipants());
+			new WriterApplicationDioezeseMuensterGroupLeader(
+					schulungen,
+					(Boolean)ui.getOption(0),
+					(LocalDate)ui.getOption(1))
+					.run(fileName, program.getParticipants());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} catch (NoParticipantsException e) {
@@ -645,8 +674,8 @@ public class Window extends JFrame implements IGui {
 		UserInputDialog ui = new UserInputDialog(this);
 		ui.addStringOption("Maßnahme" , "");
 		ui.addBooleanOption("Datum freilassen", false);
-		ui.addDateOption("Anfang (tt.mm.jjjj)", new Date());
-		ui.addDateOption("Ende (tt.mm.jjjj)", new Date());
+		ui.addDateOption("Anfang (tt.mm.jjjj)", LocalDate.now());
+		ui.addDateOption("Ende (tt.mm.jjjj)", LocalDate.now());
 		ui.addStringOption("Ort", "");
 		if (!ui.showModal()) {
 			return;
@@ -656,7 +685,13 @@ public class Window extends JFrame implements IGui {
 			return;
 		}
 		try {
-			new WriterApplicationCityDinslaken((String)ui.getOption(0), (Boolean)ui.getOption(1), (Date)ui.getOption(2), (Date)ui.getOption(3), (String)ui.getOption(4)).run(fileName, program.getParticipants());
+			new WriterApplicationCityDinslaken(
+					(String)ui.getOption(0),
+					(Boolean)ui.getOption(1),
+					(LocalDate)ui.getOption(2),
+					(LocalDate)ui.getOption(3),
+					(String)ui.getOption(4))
+					.run(fileName, program.getParticipants());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} catch (NoParticipantsException e) {

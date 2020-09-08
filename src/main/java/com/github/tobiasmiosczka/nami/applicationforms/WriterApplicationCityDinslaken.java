@@ -1,6 +1,7 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
@@ -19,10 +20,10 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 	private final String 	massnahme,
 							ort;
 	private final boolean 	keinDatum;
-	private final Date		datumVon,
+	private final LocalDate datumVon,
 							datumBis;
 
-	public WriterApplicationCityDinslaken(String massnahme, boolean keinDatum, Date datumVon, Date datumBis, String ort) {
+	public WriterApplicationCityDinslaken(String massnahme, boolean keinDatum, LocalDate datumVon, LocalDate datumBis, String ort) {
 		super();
 		this.massnahme = massnahme;
 		this.keinDatum = keinDatum;

@@ -10,6 +10,7 @@ import org.odftoolkit.simple.style.StyleTypeDefinitions;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 	private static final double height = 0.7;
 
 	private final boolean keinDatum;
-	private final Date datum;
+	private final LocalDate datum;
 	private final List<NamiSchulungenMap> schulungen;
 
-	public WriterApplicationDioezeseMuensterGroupLeader(List<NamiSchulungenMap> schulungen, boolean keinDatum, Date datum) {
+	public WriterApplicationDioezeseMuensterGroupLeader(List<NamiSchulungenMap> schulungen, boolean keinDatum, LocalDate datum) {
 		super();
 		this.schulungen = schulungen;
 		this.keinDatum = keinDatum;
