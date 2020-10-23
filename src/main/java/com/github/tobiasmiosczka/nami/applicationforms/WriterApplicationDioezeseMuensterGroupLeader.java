@@ -14,8 +14,8 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.calcAge;
-import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.getDateYearString;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeUtil.calcAge;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeUtil.getDateYearString;
 
 
 public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDocumentWriter {
@@ -64,7 +64,7 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 			row.getCellByIndex(2).setStringValue(m.getPLZ() + " " + m.getOrt());
 			//Alter
 			if(!keinDatum){
-				Date birthday = m.getGeburtsDatum();
+				LocalDate birthday = LocalDate.from(m.getGeburtsDatum());
 				int diffInYears = calcAge(birthday, datum);
 				row.getCellByIndex(3).setStringValue(String.valueOf(diffInYears));
 			}

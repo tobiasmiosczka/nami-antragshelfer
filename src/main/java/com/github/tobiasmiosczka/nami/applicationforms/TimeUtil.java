@@ -1,41 +1,26 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
-public class TimeHelp {
+public class TimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private static final SimpleDateFormat dfYearOutput = new SimpleDateFormat("yyyy");
-
-    public static String getDateYearString(Date date) {
-        return getDateYearString(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    }
 
     public static String getDateYearString(LocalDate date) {
-        if(date == null) {
+        if (date == null)
             return "";
-        }
-        return dfYearOutput.format(date);
+        return String.valueOf(date.getYear());
     }
+
 
     public static String getDateString(LocalDate date) {
         if(date == null)
             return "";
         return DATE_TIME_FORMATTER.format(date);
-    }
-
-    public static String getDateString(Date date) {
-        if(date == null)
-            return "";
-        return DATE_TIME_FORMATTER.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    }
-
-    public static LocalDate getDateFromInputInput(String dateAsString) {
-        return LocalDate.parse(dateAsString, DATE_TIME_FORMATTER);
     }
 
     public static int calcAge(Date birthdate, LocalDate currentDate) {
@@ -64,5 +49,9 @@ public class TimeHelp {
         } else {
             return String.valueOf(diffInYearsStart);
         }
+    }
+
+    public static LocalDate parseDate(String string) throws DateTimeParseException {
+        return LocalDate.from(DATE_TIME_FORMATTER.parse(string));
     }
 }

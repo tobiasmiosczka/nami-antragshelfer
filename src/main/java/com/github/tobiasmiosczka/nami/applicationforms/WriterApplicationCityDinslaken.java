@@ -1,7 +1,6 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
@@ -40,7 +39,7 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 		tEvent.getCellByPosition(0, 0).setStringValue(tEvent.getCellByPosition(0, 0).getStringValue() + massnahme);
 		//Datum von bis
 		if (!keinDatum) {
-			tEvent.getCellByPosition(0, 1).setStringValue(tEvent.getCellByPosition(0, 1).getStringValue() + TimeHelp.getDateString(datumVon) + " - " + TimeHelp.getDateString(datumBis));
+			tEvent.getCellByPosition(0, 1).setStringValue(tEvent.getCellByPosition(0, 1).getStringValue() + TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
 		}
 		tEvent.getCellByPosition(1, 1).setStringValue(tEvent.getCellByPosition(1, 1).getStringValue() + ort);
 
@@ -76,10 +75,10 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 			//Ort
 			row.getCellByIndex(5).setStringValue(participant.getOrt());
 			//Geburtsdatum
-			row.getCellByIndex(6).setStringValue(TimeHelp.getDateString(participant.getGeburtsDatum()));
+			row.getCellByIndex(6).setStringValue(TimeUtil.getDateString(LocalDate.from(participant.getGeburtsDatum())));
 			//Alter
 			if (!keinDatum) {
-				row.getCellByIndex(7).setStringValue(TimeHelp.calcAgeRange(participant.getGeburtsDatum(), datumVon, datumBis));
+				row.getCellByIndex(7).setStringValue(TimeUtil.calcAgeRange(LocalDate.from(participant.getGeburtsDatum()), datumVon, datumBis));
 			}
 		}
 	}

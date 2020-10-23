@@ -1,10 +1,10 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.enums.NamiGeschlecht;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
@@ -34,6 +34,14 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 		this.land = land;
 	}
 
+	private static char getCharacter(NamiGeschlecht geschlecht) {
+		switch (geschlecht) {
+			case WEIBLICH: return 'w';
+			case MAENNLICH: return 'm';
+			default: return ' ';
+		}
+	}
+
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
 		//association data
@@ -47,7 +55,7 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 		Table tEvent = odtDoc.getHeader().getTableList().get(1);
 		//Datum (von-bis)
 		if (!noDate) {
-			tEvent.getCellByPosition(2, 0).setStringValue(TimeHelp.getDateString(datumVon) + " - " + TimeHelp.getDateString(datumBis));
+			tEvent.getCellByPosition(2, 0).setStringValue(TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
 		}
 		//PLZ Ort
 		tEvent.getCellByPosition(8, 0).setStringValue(plz + " " + ort);
@@ -73,11 +81,10 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 			//Anschrift: Straße, PLZ, Wohnort
 			row.getCellByIndex(3).setStringValue(participant.getStrasse() + ", " + participant.getPLZ() + ", " + participant.getOrt());
 			//w=weibl. m=männl.
-			row.getCellByIndex(4).setStringValue("" + participant.getGeschlecht().getCharacter());
+			row.getCellByIndex(4).setStringValue("" + getCharacter(participant.getGeschlecht()));
 			//Alter
-			if (!noDate) {
-				row.getCellByIndex(5).setStringValue(TimeHelp.calcAgeRange(participant.getGeburtsDatum(), datumVon, datumBis));
-			}
+			if (!noDate)
+				row.getCellByIndex(5).setStringValue(TimeUtil.calcAgeRange(LocalDate.from(participant.getGeburtsDatum()), datumVon, datumBis));
 			Row r = tParticipants.appendRow();
 			r.setHeight(height, true);
 		}

@@ -1,9 +1,8 @@
-package com.github.tobiasmiosczka.nami.program;
+package com.github.tobiasmiosczka.nami.util;
 
-import java.io.IOException;
 import java.util.Properties;
 
-public class VersionHelper {
+public class VersionUtil {
 
     public static final String VERSION = getVersion();
 

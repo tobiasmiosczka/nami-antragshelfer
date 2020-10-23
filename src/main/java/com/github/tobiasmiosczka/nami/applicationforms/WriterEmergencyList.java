@@ -1,15 +1,16 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.program.PhoneContact;
+import com.github.tobiasmiosczka.nami.model.PhoneContact;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.TimeHelp.getDateString;
+import static com.github.tobiasmiosczka.nami.applicationforms.TimeUtil.getDateString;
 
 public class WriterEmergencyList extends AbstractTextDocumentWriter {
 
@@ -38,7 +39,7 @@ public class WriterEmergencyList extends AbstractTextDocumentWriter {
 				//Straße
 				row.getCellByIndex(5).setStringValue(m.getStrasse());
 				//Geburtsdatum
-				row.getCellByIndex(6).setStringValue(getDateString( m.getGeburtsDatum()));
+				row.getCellByIndex(6).setStringValue(getDateString(LocalDate.from(m.getGeburtsDatum())));
 			}
 		}
 	}

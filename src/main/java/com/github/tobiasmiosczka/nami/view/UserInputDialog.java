@@ -1,11 +1,10 @@
-package com.github.tobiasmiosczka.nami.gui;
+package com.github.tobiasmiosczka.nami.view;
 
-import com.github.tobiasmiosczka.nami.applicationforms.TimeHelp;
+import com.github.tobiasmiosczka.nami.applicationforms.TimeUtil;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FontMetrics;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
@@ -165,7 +164,7 @@ public class UserInputDialog{
 		final JTextField textField;
 		public InputDate(JPanel parent, int index, String description, LocalDate preview) {
 			super(parent, index, description);
-			textField = new JTextField(TimeHelp.getDateString(preview));
+			textField = new JTextField(TimeUtil.getDateString(preview));
 			textField.setBounds(this.getWidth() + 10,  11 + (index * 30), INPUTFIELD_WIDTH,  20);
 			parent.add(textField);
 		}
@@ -178,7 +177,7 @@ public class UserInputDialog{
 		@Override
 		public boolean check() {
 			try {
-				TimeHelp.getDateFromInputInput(textField.getText());
+				TimeUtil.parseDate(textField.getText());
 			} catch (DateTimeParseException e) {
 				return false;
 			}
@@ -188,7 +187,7 @@ public class UserInputDialog{
 		@Override
 		public LocalDate getValue() {
 			try {
-				return TimeHelp.getDateFromInputInput(textField.getText());
+				return TimeUtil.parseDate(textField.getText());
 			} catch (DateTimeParseException e) {
 				return null;
 			}
@@ -196,7 +195,7 @@ public class UserInputDialog{
 
 		@Override
 		public String toString() {
-			return TimeHelp.getDateString(getValue());
+			return TimeUtil.getDateString(getValue());
 		}	
 	}
 	
