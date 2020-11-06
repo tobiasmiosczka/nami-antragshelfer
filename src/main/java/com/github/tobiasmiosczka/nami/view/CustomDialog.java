@@ -8,7 +8,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -32,6 +31,8 @@ public class CustomDialog {
         dialog = new Dialog<>();
         options = new LinkedList<>();
         DialogPane dialogPane = dialog.getDialogPane();
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(IconUtil.getIcon());
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         VBox vBox = new VBox(8);
         dialogPane.setContent(vBox);
@@ -45,12 +46,6 @@ public class CustomDialog {
 
     public CustomDialog setHeaderText(String headerText) {
         dialog.setHeaderText(headerText);
-        return this;
-    }
-
-    public CustomDialog setIcon(Image icon) {
-        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(icon);
         return this;
     }
 

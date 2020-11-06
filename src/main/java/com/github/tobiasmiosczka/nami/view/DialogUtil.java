@@ -15,6 +15,8 @@ public class DialogUtil {
     public static void showMessage(Alert.AlertType type, String title, String message, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(IconUtil.getIcon());
         alert.setHeaderText(message);
         alert.setContentText(content);
         alert.showAndWait();
@@ -28,4 +30,7 @@ public class DialogUtil {
         return fileChooser.showSaveDialog(parent);
     }
 
+    public static File showSaveDialog() {
+        return showSaveDialog(null, null);
+    }
 }

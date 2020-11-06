@@ -8,11 +8,6 @@ import java.time.format.DateTimeFormatter;
 public class TimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    public static String getDateYearString(LocalDate date) {
-        if (date == null)
-            return "";
-        return String.valueOf(date.getYear());
-    }
     public static String getDateYearString(LocalDateTime date) {
         if (date == null)
             return "";

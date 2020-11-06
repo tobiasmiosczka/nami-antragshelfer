@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
+import javafx.stage.Stage;
 import nami.connector.NamiServer;
 import nami.connector.exception.NamiApiException;
 import nami.connector.exception.NamiLoginException;
@@ -44,10 +45,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Controller implements Initializable, NamiServiceListener {
@@ -149,13 +147,14 @@ public class Controller implements Initializable, NamiServiceListener {
     private void genAppRaumnutzungsplanGemeindeDinslaken() {
         List<Object> options = new CustomDialog()
                 .setTitle("Optionen")
+                .setHeaderText("Dokumentoptionen:")
                 .addDateOption("Datum")
                 .addStringOption("Von (HH:MM)")
                 .addStringOption("Bis (HH:MM)")
                 .getResult();
         if (options == null)
             return;
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         WriterGemeindeDinslakenCoronaRaumnutzungung writer = new WriterGemeindeDinslakenCoronaRaumnutzungung(
@@ -176,6 +175,7 @@ public class Controller implements Initializable, NamiServiceListener {
     private void genAppStadtDinslaken() {
         List<Object> options = new CustomDialog()
                 .setTitle("Optionen")
+                .setHeaderText("Dokumentoptionen:")
                 .addStringOption("Maßnahme")
                 .addDateOption("Datum (von)")
                 .addDateOption("Datum (bis)")
@@ -183,7 +183,7 @@ public class Controller implements Initializable, NamiServiceListener {
                 .getResult();
         if (options == null)
             return;
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         WriterApplicationCityDinslaken writer = new WriterApplicationCityDinslaken(
@@ -205,6 +205,7 @@ public class Controller implements Initializable, NamiServiceListener {
     private void genAppDioezeseMuenster() {
         List<Object> options = new CustomDialog()
                 .setTitle("Optionen")
+                .setHeaderText("Dokumentoptionen:")
                 .addStringOption("Mitgliedsverband")
                 .addStringOption("Träger")
                 .addDateOption("Datum (von)")
@@ -212,7 +213,6 @@ public class Controller implements Initializable, NamiServiceListener {
                 .addStringOption("PLZ")
                 .addStringOption("Ort")
                 .addStringOption("Land")
-
                 .addBooleanOption("Freizeit")
                 .addBooleanOption("Bildung")
                 .addBooleanOption("Aus- und Weiterbildung")
@@ -221,7 +221,7 @@ public class Controller implements Initializable, NamiServiceListener {
                 .getResult();
         if (options == null)
             return;
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         WriterApplicationDioezeseMuenster writer = new WriterApplicationDioezeseMuenster(
@@ -251,11 +251,12 @@ public class Controller implements Initializable, NamiServiceListener {
     private void genAppDioezeseMuensterLeader() {
         List<Object> options = new CustomDialog()
                 .setTitle("Optionen")
+                .setHeaderText("Dokumentoptionen:")
                 .addDateOption("Datum")
                 .getResult();
         if (options == null)
             return;
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         try {
@@ -275,7 +276,7 @@ public class Controller implements Initializable, NamiServiceListener {
     @FXML
     private void genEmergencyList() {
         WriterEmergencyList writer = new WriterEmergencyList();
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         try {
@@ -291,7 +292,7 @@ public class Controller implements Initializable, NamiServiceListener {
     @FXML
     private void genParticipantsList() {
         WriterParticipationList writer = new WriterParticipationList();
-        File file = DialogUtil.showSaveDialog(null, null);
+        File file = DialogUtil.showSaveDialog();
         if (file == null)
             return;
         try {
@@ -339,6 +340,8 @@ public class Controller implements Initializable, NamiServiceListener {
                         "Update verfügbar.",
                         ButtonType.OK,
                         ButtonType.CANCEL);
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(IconUtil.getIcon());
                 alert.setTitle("Update");
                 alert.setHeaderText("Update verfügbar.");
                 alert.setContentText("Soll das Update heruntergeladen werden?");
@@ -419,6 +422,8 @@ public class Controller implements Initializable, NamiServiceListener {
     @Override
     public NamiGruppierung selectGroup(Collection<NamiGruppierung> groups) {
         ChoiceDialog<NamiGruppierung> dialog = new ChoiceDialog<>(null, groups);
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(IconUtil.getIcon());
         dialog.setTitle("Gruppierung");
         dialog.setHeaderText("Gruppierung auswählen");
         return dialog.showAndWait().orElse(null);

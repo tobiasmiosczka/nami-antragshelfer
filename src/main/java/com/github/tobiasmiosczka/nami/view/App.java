@@ -5,11 +5,9 @@ import com.github.tobiasmiosczka.nami.util.VersionUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class App extends Application {
 
@@ -31,7 +29,7 @@ public class App extends Application {
         stage.setTitle(TITLE);
         stage.setMinWidth(MIN_WIDTH);
         stage.setMinHeight(MIN_HEIGHT);
-        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getClassLoader().getResourceAsStream("gui/icon.png"))));
+        stage.getIcons().add(IconUtil.getIcon());
         stage.setScene(new Scene(new FXMLLoader(App.class.getClassLoader().getResource("gui/primary.fxml")).load()));
         stage.show();
     }
