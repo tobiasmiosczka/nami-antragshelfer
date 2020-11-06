@@ -10,7 +10,7 @@ import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.TimeUtil.getDateString;
+import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
 public class WriterEmergencyList extends AbstractTextDocumentWriter {
 
@@ -80,11 +80,6 @@ public class WriterEmergencyList extends AbstractTextDocumentWriter {
 		}
 
 		return sb.toString();
-	}
-
-	@Override
-	public int getMaxParticipantsPerPage() {
-		return 0;
 	}
 
 	@Override

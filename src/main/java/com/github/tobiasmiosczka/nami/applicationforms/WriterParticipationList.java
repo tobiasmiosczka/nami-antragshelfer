@@ -29,11 +29,6 @@ public class WriterParticipationList extends AbstractTextDocumentWriter {
     }
 
     @Override
-    public int getMaxParticipantsPerPage() {
-        return 0;
-    }
-
-    @Override
     protected String getResourceFileName() {
         return "Anwesenheitsliste.odt";
     }

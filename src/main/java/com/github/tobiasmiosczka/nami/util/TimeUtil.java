@@ -1,11 +1,9 @@
-package com.github.tobiasmiosczka.nami.applicationforms;
+package com.github.tobiasmiosczka.nami.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 public class TimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -15,7 +13,11 @@ public class TimeUtil {
             return "";
         return String.valueOf(date.getYear());
     }
-
+    public static String getDateYearString(LocalDateTime date) {
+        if (date == null)
+            return "";
+        return String.valueOf(date.getYear());
+    }
 
     public static String getDateString(LocalDate date) {
         if(date == null)
@@ -23,20 +25,8 @@ public class TimeUtil {
         return DATE_TIME_FORMATTER.format(date);
     }
 
-    public static int calcAge(Date birthdate, LocalDate currentDate) {
-        return calcAge(birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), currentDate);
-    }
-
     public static int calcAge(LocalDate birthDate, LocalDate currentDate) {
         return Period.between(birthDate, currentDate).getYears();
-    }
-
-    public static String calcAgeRange(Date birthday, LocalDate from, LocalDate to) {
-        return calcAgeRange(
-                birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                from,
-                to
-        );
     }
 
     public static String calcAgeRange(LocalDate birthday, LocalDate from, LocalDate to) {
@@ -51,7 +41,4 @@ public class TimeUtil {
         }
     }
 
-    public static LocalDate parseDate(String string) throws DateTimeParseException {
-        return LocalDate.from(DATE_TIME_FORMATTER.parse(string));
-    }
 }

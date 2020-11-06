@@ -4,143 +4,96 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tobiasmiosczka.nami.view.PrimaryController">
-         <top>
-                  <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="Anträge und Listen">
-                        <items>
-                            <MenuItem mnemonicParsing="false" text="Antrag an Diözese Münster" />
-                            <MenuItem mnemonicParsing="false" text="Antrag an Diözese Münster (Leiter)" />
-                            <MenuItem mnemonicParsing="false" text="Antrag an Stadt Dinslaken" />
-                            <MenuItem mnemonicParsing="false" text="Raumnutzungsliste Gemeinde Dinslaken" />
-                            <MenuItem mnemonicParsing="false" text="Notfallliste" />
-
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Info">
-                        <items>
-                            <MenuItem mnemonicParsing="false" onAction="#openHomepage" text="Homepage" />
-                            <MenuItem mnemonicParsing="false" onAction="#openLicence" text="Lizenz" />
-                            <MenuItem mnemonicParsing="false" onAction="#openChangelog" text="Changelog" />
-                        </items>
-                      </Menu>
-                    </menus>
-                  </MenuBar>
-         </top>
-         <center>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
-                     <children>
-                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-                             <children>
-                                 <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Login">
-                                  <content>
-                                    <GridPane layoutX="-35.0" layoutY="54.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Button fx:id="fxIdBtLogin" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Username: " />
-                                          <Label text="Password: " GridPane.rowIndex="1" />
-                                          <TextField fx:id="fxIdTfUsername" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" GridPane.columnIndex="1" />
-                                          <PasswordField fx:id="fxIdPfPassword" minHeight="-Infinity" minWidth="-Infinity" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Button fx:id="fxIdBtLogout" disable="true" mnemonicParsing="false" onAction="#logout" text="Logout" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                  </content>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                                </TitledPane>
-                                 <ProgressBar fx:id="fxIdPbProgress" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" />
-                                <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Filter">
-                                  <content>
-                                      <VBox layoutX="48.0" layoutY="-34.0" prefHeight="200.0" prefWidth="100.0">
-                                         <children>
-                                            <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Name">
-                                              <content>
-                                                  <GridPane layoutX="-74.0" layoutY="-35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                                                    <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    </rowConstraints>
-                                                   <children>
-                                                      <Label minHeight="-Infinity" minWidth="-Infinity" text="Vorname: " />
-                                                      <Label text="Nachname: " GridPane.rowIndex="1" />
-                                                      <TextField fx:id="fxIdTfFilterFirstname" promptText="Vorname" GridPane.columnIndex="1" />
-                                                      <TextField fx:id="fxIdTfFilterLastname" promptText="Nachname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                   </children>
-                                                  </GridPane>
-                                              </content>
-                                            </TitledPane>
-                                            <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Stufe">
-                                              <content>
-                                                  <VBox prefHeight="200.0" prefWidth="100.0">
-                                                   <children>
-                                                      <CheckBox fx:id="fxIdCbFilterStufeWoelflinge" mnemonicParsing="false" selected="true" text="Wölflinge" />
-                                                      <CheckBox fx:id="fxIdCbFilterStufeJungpfadfinder" mnemonicParsing="false" selected="true" text="Jungpfadfinder" />
-                                                      <CheckBox fx:id="fxIdCbFilterStufePfadfinder" mnemonicParsing="false" selected="true" text="Pfadfinder" />
-                                                      <CheckBox fx:id="fxIdCbFilterStufeRover" mnemonicParsing="false" selected="true" text="Rover" />
-                                                      <CheckBox fx:id="fxIdCbFilterStufeOther" mnemonicParsing="false" selected="true" text="Andere" />
-                                                   </children>
-                                                </VBox>
-                                              </content>
-                                            </TitledPane>
-                                            <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Geschlecht">
-                                              <content>
-                                                  <VBox prefHeight="200.0" prefWidth="100.0">
-                                                   <children>
-                                                      <CheckBox fx:id="fxIdCbFilterGenderMale" mnemonicParsing="false" selected="true" text="Männlich" />
-                                                      <CheckBox fx:id="fxIdCbFilterGenderFemale" mnemonicParsing="false" selected="true" text="Weiblich" />
-                                                      <CheckBox fx:id="fxIdCbFilterGenderOther" mnemonicParsing="false" selected="true" text="Andere" />
-                                                   </children>
-                                                </VBox>
-                                              </content>
-                                            </TitledPane>
-                                            <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Mitgliedstyp">
-                                              <content>
-                                                  <VBox prefHeight="200.0" prefWidth="100.0">
-                                                   <children>
-                                                      <CheckBox fx:id="fxIdCbFilterMemberTypeMember" mnemonicParsing="false" selected="true" text="Mitglieder" />
-                                                      <CheckBox fx:id="fxIdCbFilterMemberTypeTryout" mnemonicParsing="false" selected="true" text="Schnuppermitglieder" />
-                                                      <CheckBox fx:id="fxIdCbFilterMemberTypeNonMember" mnemonicParsing="false" text="Nichtmitglieder" />
-                                                   </children>
-                                                </VBox>
-                                              </content>
-                                            </TitledPane>
-                                         </children>
-                                      </VBox>
-                                  </content>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                                </TitledPane>
-                             </children>
-                          </VBox>
-                        <TableView fx:id="fxIdTvMember" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="Vorname" />
-                            <TableColumn prefWidth="75.0" text="Nachname" />
-                          </columns>
-                        </TableView>
-                        <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="Vorname" />
-                            <TableColumn prefWidth="75.0" text="Nachname" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </HBox>
-         </center>
-      </BorderPane>
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tobiasmiosczka.nami.view.Controller">
+    <top>
+        <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+            <Menu mnemonicParsing="false" text="Anträge und Listen">
+                <MenuItem mnemonicParsing="false" onAction="#genAppDioezeseMuenster" text="Antrag an Diözese Münster" />
+                <MenuItem mnemonicParsing="false" onAction="#genAppDioezeseMuensterLeader" text="Antrag an Diözese Münster (Leiter)" />
+                <MenuItem mnemonicParsing="false" onAction="#genAppStadtDinslaken" text="Antrag an Stadt Dinslaken" />
+                <MenuItem mnemonicParsing="false" onAction="#genAppRaumnutzungsplanGemeindeDinslaken" text="Raumnutzungsplan Gemeinde Dinslaken" />
+                <MenuItem mnemonicParsing="false" onAction="#genEmergencyList" text="Notfallliste" />
+            <MenuItem mnemonicParsing="false" onAction="#genParticipantsList" text="Anwesenheitsliste" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Info">
+                <MenuItem mnemonicParsing="false" onAction="#openHomepage" text="Homepage" />
+                <MenuItem mnemonicParsing="false" onAction="#openLicence" text="Lizenz" />
+                <MenuItem mnemonicParsing="false" onAction="#checkForUpdates" text="Update" />
+                <MenuItem mnemonicParsing="false" onAction="#openChangelog" text="Changelog" />
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                <TableView fx:id="fxIdTvMember" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addParticipants" text="Hinzufügen" />
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                <TableView fx:id="fxIdTvParticipants" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeParticipants" text="Entfernen" />
+            </VBox>
+        </SplitPane>
+    </center>
+    <bottom>
+        <ProgressBar fx:id="fxIdPbProgress" disable="true" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" BorderPane.alignment="CENTER" />
+    </bottom>
+   <left>
+       <ScrollPane hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="0.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+           <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+               <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Login">
+                   <VBox.margin>
+                       <Insets />
+                   </VBox.margin>
+                   <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                       <TextField fx:id="fxIdTfUsername" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" />
+                       <PasswordField fx:id="fxIdPfPassword" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" promptText="Password" />
+                       <Button fx:id="fxIdBtLogin" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" text="Login" />
+                   </VBox>
+               </TitledPane>
+               <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Filter">
+                   <VBox.margin>
+                       <Insets />
+                   </VBox.margin>
+                   <VBox layoutX="48.0" layoutY="-34.0" prefHeight="200.0" prefWidth="100.0">
+                       <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Name">
+                           <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                               <TextField fx:id="fxIdTfFilterFirstname" onKeyTyped="#updateMembersList" promptText="Vorname" />
+                               <TextField fx:id="fxIdTfFilterLastname" onKeyTyped="#updateMembersList" promptText="Nachname" />
+                           </VBox>
+                       </TitledPane>
+                       <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Stufe">
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                               <CheckBox fx:id="fxIdCbFilterStufeWoelflinge" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Wölflinge" />
+                               <CheckBox fx:id="fxIdCbFilterStufeJungpfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Jungpfadfinder" />
+                               <CheckBox fx:id="fxIdCbFilterStufePfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Pfadfinder" />
+                               <CheckBox fx:id="fxIdCbFilterStufeRover" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Rover" />
+                               <CheckBox fx:id="fxIdCbFilterStufeOther" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Andere" />
+                           </VBox>
+                       </TitledPane>
+                       <TitledPane expanded="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Geschlecht">
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                               <CheckBox fx:id="fxIdCbFilterGenderMale" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Männlich" />
+                               <CheckBox fx:id="fxIdCbFilterGenderFemale" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Weiblich" />
+                               <CheckBox fx:id="fxIdCbFilterGenderOther" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Andere" />
+                           </VBox>
+                       </TitledPane>
+                       <TitledPane expanded="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Mitgliedstyp">
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                               <CheckBox fx:id="fxIdCbFilterMemberTypeMember" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Mitglieder" />
+                               <CheckBox fx:id="fxIdCbFilterMemberTypeTryout" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Schnuppermitglieder" />
+                               <CheckBox fx:id="fxIdCbFilterMemberTypeNonMember" mnemonicParsing="false" onAction="#updateMembersList" text="Nichtmitglieder" />
+                           </VBox>
+                       </TitledPane>
+                       <TitledPane animated="false" expanded="false" text="Geburtsdatum">
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                               <DatePicker fx:id="fxIdDpFilterBirthdateFrom" onAction="#updateMembersList" promptText="Von" />
+                               <DatePicker fx:id="fxIdDpFilterBirthdateTo" onAction="#updateMembersList" promptText="Bis" />
+                           </VBox>
+                       </TitledPane>
+                   </VBox>
+               </TitledPane>
+           </VBox>
+       </ScrollPane>
+   </left>
+</BorderPane>

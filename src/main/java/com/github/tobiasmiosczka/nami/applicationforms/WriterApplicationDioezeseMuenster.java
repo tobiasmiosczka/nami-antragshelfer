@@ -3,13 +3,24 @@ package com.github.tobiasmiosczka.nami.applicationforms;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.util.GenderUtil;
+import com.github.tobiasmiosczka.nami.util.TimeUtil;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.enums.NamiGeschlecht;
+import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
+import org.odftoolkit.simple.style.Font;
+import org.odftoolkit.simple.style.StyleTypeDefinitions;
+import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
 public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWriter {
+
+	private static final Font FONT = new Font(
+			"Tahoma",
+			StyleTypeDefinitions.FontStyle.REGULAR,
+			10D,
+			Color.BLACK);
 
 	private final String 	mitgliedsVerband,
 							traeger,
@@ -17,83 +28,86 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 							ort,
 							land;
 
-	private final boolean 	noDate;
-
 	private final LocalDate datumVon,
 							datumBis;
+	private final boolean  	freizeit,
+							bildung,
+	 						ausbildung,
+	 						qualitaetssicherung,
+	 						grossveranstaltung;
 
-	public WriterApplicationDioezeseMuenster(String mitgliedsVerband, String traeger, boolean noDate, LocalDate datumVon, LocalDate datumBis, String plz, String ort, String land) {
+	public WriterApplicationDioezeseMuenster(
+			String mitgliedsVerband,
+			String traeger,
+			LocalDate datumVon,
+			LocalDate datumBis,
+			String plz,
+			String ort,
+			String land,
+			boolean freizeit,
+			boolean bildung,
+			boolean ausbildung,
+			boolean qualitaetssicherung,
+			boolean grossveranstaltung) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.traeger = traeger;
-		this.noDate = noDate;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
 		this.plz = plz;
 		this.ort = ort;
 		this.land = land;
-	}
-
-	private static char getCharacter(NamiGeschlecht geschlecht) {
-		switch (geschlecht) {
-			case WEIBLICH: return 'w';
-			case MAENNLICH: return 'm';
-			default: return ' ';
-		}
+		this.freizeit = freizeit;
+		this.bildung = bildung;
+		this.ausbildung = ausbildung;
+		this.qualitaetssicherung = qualitaetssicherung;
+		this.grossveranstaltung = grossveranstaltung;
 	}
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
 		//association data
 		Table tAssociation = odtDoc.getHeader().getTableList().get(0);
-		//Mitgliedsverband
 		tAssociation.getCellByPosition(2, 0).setStringValue(mitgliedsVerband);
-		//Träger
 		tAssociation.getCellByPosition(2, 1).setStringValue(traeger);
 		
 		//event data
 		Table tEvent = odtDoc.getHeader().getTableList().get(1);
-		//Datum (von-bis)
-		if (!noDate) {
-			tEvent.getCellByPosition(2, 0).setStringValue(TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
-		}
-		//PLZ Ort
+		if (datumVon != null && datumBis != null)
+			tEvent.getCellByPosition(2, 0)
+					.setStringValue(TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
 		tEvent.getCellByPosition(8, 0).setStringValue(plz + " " + ort);
-		//Land
 		tEvent.getCellByPosition(14, 0).setStringValue(land);
-		
+		tEvent.getCellByPosition(0, 1).setStringValue(freizeit ? "x" : "");
+		tEvent.getCellByPosition(3, 1).setStringValue(bildung ? "x" : "");
+		tEvent.getCellByPosition(5, 1).setStringValue(ausbildung ? "x" : "");
+		tEvent.getCellByPosition(9, 1).setStringValue(qualitaetssicherung ? "x" : "");
+		tEvent.getCellByPosition(11, 1).setStringValue(grossveranstaltung ? "x" : "");
+
+
 		//participants data
-
-
 		Table tParticipants = odtDoc.getTableList().get(0);
-
 		double height = tParticipants.getRowByIndex(1).getHeight();
-
-		for (NamiMitglied participant : participants) {
-
-			Row row = tParticipants.getRowByIndex(tParticipants.getRowCount() - 1);
-			//Lfd. Nr.
-
-			//Kursleiter K= Kursleiter, R= Referent, L= Leiter
-
-			//Name, Vorname
-			row.getCellByIndex(2).setStringValue(participant.getNachname() + ", " + participant.getVorname());
-			//Anschrift: Straße, PLZ, Wohnort
-			row.getCellByIndex(3).setStringValue(participant.getStrasse() + ", " + participant.getPLZ() + ", " + participant.getOrt());
-			//w=weibl. m=männl.
-			row.getCellByIndex(4).setStringValue("" + getCharacter(participant.getGeschlecht()));
-			//Alter
-			if (!noDate)
-				row.getCellByIndex(5).setStringValue(TimeUtil.calcAgeRange(LocalDate.from(participant.getGeburtsDatum()), datumVon, datumBis));
-			Row r = tParticipants.appendRow();
-			r.setHeight(height, true);
+		List<Row> newRows = tParticipants.appendRows(Math.max(participants.size() - 1, 0));
+		for (Row row : newRows) {
+			row.setHeight(height, true);
+			for (int i = 0; i < row.getCellCount(); ++i) {
+				Cell cell = row.getCellByIndex(i);
+				cell.setFont(FONT);
+				cell.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
+			}
 		}
-		tParticipants.removeRowsByIndex(tParticipants.getRowCount() - 1, tParticipants.getRowCount() - 1);
-	}
 
-	@Override
-	public int getMaxParticipantsPerPage() {
-		return 0;
+		for (int i = 0; i < participants.size(); ++i) {
+			Row r = tParticipants.getRowList().get(i + 1);
+			NamiMitglied p = participants.get(i);
+			r.getCellByIndex(2).setStringValue(p.getNachname() + ", " + p.getVorname());
+			r.getCellByIndex(3).setStringValue(p.getStrasse() + ", " + p.getPLZ() + ", " + p.getOrt());
+			r.getCellByIndex(4).setStringValue("" + GenderUtil.getCharacter(p.getGeschlecht()));
+			if ((datumVon != null && datumBis != null))
+				r.getCellByIndex(5)
+						.setStringValue(TimeUtil.calcAgeRange(LocalDate.from(p.getGeburtsDatum()), datumVon, datumBis));
+		}
 	}
 
 	@Override

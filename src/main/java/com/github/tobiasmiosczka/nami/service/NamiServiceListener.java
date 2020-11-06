@@ -9,5 +9,7 @@ public interface NamiServiceListener {
     void onMemberLoaded(int current, int count, NamiMitglied member);
     void onDone(long timeMS);
     void onException(String message, Exception e);
+    void onMemberListUpdated();
+    void onParticipantsListUpdated();
     NamiGruppierung selectGroup(Collection<NamiGruppierung> groups);
 }

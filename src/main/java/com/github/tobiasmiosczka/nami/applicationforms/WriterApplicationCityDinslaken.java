@@ -3,6 +3,7 @@ package com.github.tobiasmiosczka.nami.applicationforms;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.util.TimeUtil;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
@@ -13,19 +14,17 @@ import org.odftoolkit.simple.table.Table;
 
 public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 
-	private static final Font font = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
-	private static final double height = 0.7;
+	private static final Font FONT = new Font("Calibri", StyleTypeDefinitions.FontStyle.REGULAR, 10, Color.BLACK);
+	private static final double HEIGHT = 0.7D;
 
 	private final String 	massnahme,
 							ort;
-	private final boolean 	keinDatum;
 	private final LocalDate datumVon,
 							datumBis;
 
-	public WriterApplicationCityDinslaken(String massnahme, boolean keinDatum, LocalDate datumVon, LocalDate datumBis, String ort) {
+	public WriterApplicationCityDinslaken(String massnahme, LocalDate datumVon, LocalDate datumBis, String ort) {
 		super();
 		this.massnahme = massnahme;
-		this.keinDatum = keinDatum;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
 		this.ort = ort;
@@ -38,7 +37,7 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 		//Maßnahme
 		tEvent.getCellByPosition(0, 0).setStringValue(tEvent.getCellByPosition(0, 0).getStringValue() + massnahme);
 		//Datum von bis
-		if (!keinDatum) {
+		if (datumVon != null && datumBis != null) {
 			tEvent.getCellByPosition(0, 1).setStringValue(tEvent.getCellByPosition(0, 1).getStringValue() + TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
 		}
 		tEvent.getCellByPosition(1, 1).setStringValue(tEvent.getCellByPosition(1, 1).getStringValue() + ort);
@@ -57,10 +56,9 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 			}
 
 			//set row style
-			row.setHeight(height, true);
-			for(int i = 0; i < row.getCellCount(); ++i) {
-				row.getCellByIndex(i).setFont(font);
-			}
+			row.setHeight(HEIGHT, true);
+			for(int i = 0; i < row.getCellCount(); ++i)
+				row.getCellByIndex(i).setFont(FONT);
 
 			//Nr.
 
@@ -77,15 +75,10 @@ public class WriterApplicationCityDinslaken extends AbstractTextDocumentWriter {
 			//Geburtsdatum
 			row.getCellByIndex(6).setStringValue(TimeUtil.getDateString(LocalDate.from(participant.getGeburtsDatum())));
 			//Alter
-			if (!keinDatum) {
+			if (datumVon != null && datumBis != null) {
 				row.getCellByIndex(7).setStringValue(TimeUtil.calcAgeRange(LocalDate.from(participant.getGeburtsDatum()), datumVon, datumBis));
 			}
 		}
-	}
-
-	@Override
-	public int getMaxParticipantsPerPage() {
-		return 0;
 	}
 
 	@Override

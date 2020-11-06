@@ -13,9 +13,9 @@ public class WriterGemeindeDinslakenCoronaRaumnutzungung extends AbstractTextDoc
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    private LocalDate date;
-    private String timeFrom;
-    private String timeTo;
+    private final LocalDate date;
+    private final String timeFrom;
+    private final String timeTo;
 
     public WriterGemeindeDinslakenCoronaRaumnutzungung(
             LocalDate date,
@@ -27,30 +27,23 @@ public class WriterGemeindeDinslakenCoronaRaumnutzungung extends AbstractTextDoc
     }
 
     @Override
-    protected int getMaxParticipantsPerPage() {
-        return 0;
-    }
-
-    @Override
     protected void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
         Table tParticipants = odtDoc.getTableList().get(0);
-        boolean first = true;
-        for (NamiMitglied m : participants){
-            Row row;
-            if (first) {
-                row = tParticipants.getRowByIndex(1);
-                first = false;
-            } else {
-                row = tParticipants.appendRow();
-            }
+        tParticipants.appendRows(Math.max(participants.size() - 1, 0));
+        for (int i = 0; i < participants.size(); ++i){
+            NamiMitglied m = participants.get(i);
+            Row row = tParticipants.getRowList().get(i + 1);
             if (m == null)
                 continue;
             //Datum
-            row.getCellByIndex(0).setStringValue(DATE_TIME_FORMATTER.format(date));
+            if (date != null)
+                row.getCellByIndex(0).setStringValue(DATE_TIME_FORMATTER.format(date));
             //Uhrzeit von
-            row.getCellByIndex(1).setStringValue(timeFrom);
+            if (timeFrom != null)
+                row.getCellByIndex(1).setStringValue(timeFrom);
             //Uhrzeit bis
-            row.getCellByIndex(2).setStringValue(timeTo);
+            if (timeTo != null)
+                row.getCellByIndex(2).setStringValue(timeTo);
             //Vorname
             row.getCellByIndex(3).setStringValue(m.getVorname());
             //Nachname

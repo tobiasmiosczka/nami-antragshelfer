@@ -1,8 +1,7 @@
 package com.github.tobiasmiosczka.nami.model;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneContact {
     private final String phoneNumber;
@@ -44,14 +43,11 @@ public class PhoneContact {
     }
 
     public static Collection<PhoneContact> getPhoneContacts(String string){
-        List<PhoneContact> contacts = new LinkedList<>();
         if (string == null || string.isEmpty())
-            return contacts;
-        for(String s : string.split(";")) {
-            PhoneContact c = getPhoneContact(s);
-            if (c != null)
-                contacts.add(c);
-        }
-        return contacts;
+            return new LinkedList<>();
+        return Arrays.stream(string.split(";"))
+                .map(PhoneContact::getPhoneContact)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 }
