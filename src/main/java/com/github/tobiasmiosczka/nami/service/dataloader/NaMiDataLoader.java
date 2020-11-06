@@ -18,7 +18,7 @@ public class NaMiDataLoader {
 	}
 
 	public void load(NamiSearchedValues namiSearchedValues, NamiDataLoaderHandler handler) {
-		new Thread(() -> {
+		Thread t = new Thread(() -> {
 			long startTimeInMillis = System.currentTimeMillis();
 			try {
 				List<NamiMitglied> result = new LinkedList<>(connector.getAllResults(namiSearchedValues));
@@ -31,6 +31,8 @@ public class NaMiDataLoader {
 			} catch (NamiApiException | IOException e) {
 				handler.onException("Beim laden der Mitgliedsdaten ist ein Fehler aufgetreten.", e);
 			}
-		}).start();
+		});
+		t.setDaemon(true);
+		t.start();
 	}
 }
