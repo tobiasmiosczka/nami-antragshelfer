@@ -1,5 +1,6 @@
 package com.github.tobiasmiosczka.nami.view;
 
+import com.github.tobiasmiosczka.nami.util.GenderUtil;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,18 +12,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class NamiMitgliedTableUtil {
+public class NamiMitgliedTableRowUtil {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-    private static char getGenderChar(NamiGeschlecht gender) {
-        switch (gender) {
-            case MAENNLICH:  return 'm';
-            case WEIBLICH: return 'w';
-            case KEINE_ANGABE: return '-';
-            default: return ' ';
-        }
-    }
 
     public static List<TableColumn<NamiMitglied, ?>> getCollumns() {
         TableColumn<NamiMitglied, String> firstNameColumn = new TableColumn<>("Vorname");
@@ -31,23 +23,41 @@ public class NamiMitgliedTableUtil {
         TableColumn<NamiMitglied, String> lastNameColumn = new TableColumn<>("Nachname");
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("nachname"));
 
-        TableColumn<NamiMitglied, NamiStufe> stufeCollumn = new TableColumn<>("Stufe");
-        stufeCollumn.setCellValueFactory(new PropertyValueFactory<>("stufe"));
-        stufeCollumn.setVisible(false);
+        TableColumn<NamiMitglied, NamiStufe> groupColumn = new TableColumn<>("Stufe");
+        groupColumn.setCellValueFactory(new PropertyValueFactory<>("stufe"));
+        groupColumn.setVisible(false);
 
-        TableColumn<NamiMitglied, NamiGeschlecht> genderCollumn = new TableColumn<>("Geschlecht");
-        genderCollumn.setCellValueFactory(new PropertyValueFactory<>("geschlecht"));
-        genderCollumn.setCellFactory(column -> new TableCell<>() {
+        TableColumn<NamiMitglied, Integer> mitgliedsNummerColumn = new TableColumn<>("Mitgliedsnummer");
+        mitgliedsNummerColumn.setCellValueFactory(new PropertyValueFactory<>("mitgliedsnummer"));
+        mitgliedsNummerColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty)
+                    setText(null);
+                else
+                    setText(String.valueOf(String.valueOf(item)));
+            }
+        });
+        mitgliedsNummerColumn.setVisible(false);
+
+        TableColumn<NamiMitglied, String> gruppierungColumn = new TableColumn<>("Gruppierung");
+        gruppierungColumn.setCellValueFactory(new PropertyValueFactory<>("gruppierung"));
+        gruppierungColumn.setVisible(false);
+
+        TableColumn<NamiMitglied, NamiGeschlecht> genderColumn = new TableColumn<>("Geschlecht");
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("geschlecht"));
+        genderColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(NamiGeschlecht item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty)
                     setText(null);
                 else
-                    setText(String.valueOf(getGenderChar(item)));
+                    setText(String.valueOf(GenderUtil.getCharacter(item)));
             }
         });
-        genderCollumn.setVisible(false);
+        genderColumn.setVisible(false);
 
         TableColumn<NamiMitglied, LocalDateTime> birthdateCollumn = new TableColumn<>("Geburtsdatum");
         birthdateCollumn.setCellValueFactory(new PropertyValueFactory<>("geburtsDatum"));
@@ -61,15 +71,15 @@ public class NamiMitgliedTableUtil {
                     setText(DATE_FORMATTER.format(item));
             }
         });
-
         birthdateCollumn.setVisible(false);
 
         return List.of(
+                mitgliedsNummerColumn,
                 firstNameColumn,
                 lastNameColumn,
-                stufeCollumn,
-                genderCollumn,
-                birthdateCollumn);
+                groupColumn,
+                genderColumn,
+                birthdateCollumn,
+                gruppierungColumn);
     }
-
 }

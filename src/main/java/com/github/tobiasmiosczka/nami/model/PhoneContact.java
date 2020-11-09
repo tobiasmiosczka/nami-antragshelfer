@@ -1,6 +1,8 @@
 package com.github.tobiasmiosczka.nami.model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PhoneContact {
@@ -21,33 +23,26 @@ public class PhoneContact {
         }
 
     public String toString() {
-        if (name != null)
-            return name + ": " + phoneNumber;
-         else
-            return phoneNumber;
+        return ((name == null) ? "" : name + ": ") + phoneNumber;
     }
 
     private static PhoneContact getPhoneContact(String string) {
-        if(string == null || string.isEmpty())
-            return null;
         String name = null;
-        int openBracketIndex = string.indexOf('(');
-        int closeBracketIndex = string.lastIndexOf(')');
-        if(openBracketIndex >= 0 && closeBracketIndex >= 0) {
-            name = string.substring(openBracketIndex, closeBracketIndex + 1);
-            string = string.replace(name, "");
-            name = name.substring(1, name.length() - 1).trim();
+        int iOpenBracket = string.indexOf('(');
+        int iCloseBracket = string.lastIndexOf(')');
+        if(iOpenBracket >= 0 && iCloseBracket >= 0 && iCloseBracket > iOpenBracket) {
+            name = string.substring(iOpenBracket + 1, iCloseBracket).trim();
+            string = string.replace( '(' + name + ')', "");
         }
-        String phoneNumber = string.trim();
-        return new PhoneContact(name, phoneNumber);
+        return new PhoneContact(name, string.trim());
     }
 
-    public static Collection<PhoneContact> getPhoneContacts(String string){
-        if (string == null || string.isEmpty())
+    public static List<PhoneContact> getPhoneContacts(String string){
+        if (string == null || string.isBlank())
             return new LinkedList<>();
         return Arrays.stream(string.split(";"))
+                .filter(s -> s != null && !s.isBlank())
                 .map(PhoneContact::getPhoneContact)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toList());
     }
 }

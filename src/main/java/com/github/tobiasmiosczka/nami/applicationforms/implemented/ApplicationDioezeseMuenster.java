@@ -1,8 +1,12 @@
-package com.github.tobiasmiosczka.nami.applicationforms;
+package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
+import com.github.tobiasmiosczka.nami.applicationforms.TableUtil;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import com.github.tobiasmiosczka.nami.util.GenderUtil;
 import com.github.tobiasmiosczka.nami.util.TimeUtil;
 import nami.connector.namitypes.NamiMitglied;
@@ -10,11 +14,11 @@ import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.style.Font;
 import org.odftoolkit.simple.style.StyleTypeDefinitions;
-import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
-public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWriter {
+@Form(title = "Antrag an Diözese Münster")
+public class ApplicationDioezeseMuenster extends DocumentWriter {
 
 	private static final Font FONT = new Font(
 			"Tahoma",
@@ -27,7 +31,6 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 							plz,
 							ort,
 							land;
-
 	private final LocalDate datumVon,
 							datumBis;
 	private final boolean  	freizeit,
@@ -36,19 +39,19 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 	 						qualitaetssicherung,
 	 						grossveranstaltung;
 
-	public WriterApplicationDioezeseMuenster(
-			String mitgliedsVerband,
-			String traeger,
-			LocalDate datumVon,
-			LocalDate datumBis,
-			String plz,
-			String ort,
-			String land,
-			boolean freizeit,
-			boolean bildung,
-			boolean ausbildung,
-			boolean qualitaetssicherung,
-			boolean grossveranstaltung) {
+	public ApplicationDioezeseMuenster(
+			@Option(title = "Mitgliedsverband") String mitgliedsVerband,
+			@Option(title = "Träger") String traeger,
+			@Option(title = "Datum (von)") LocalDate datumVon,
+			@Option(title = "Datum (bis)") LocalDate datumBis,
+			@Option(title = "Postleitzahl") String plz,
+			@Option(title = "Ort") String ort,
+			@Option(title = "Land") String land,
+			@Option(title = "Freizeit") boolean freizeit,
+			@Option(title = "Bildung") boolean bildung,
+			@Option(title = "Aus-/Fortbildung") boolean ausbildung,
+			@Option(title = "Qualitätssicherung") boolean qualitaetssicherung,
+			@Option(title = "Großveranstaltung") boolean grossveranstaltung) {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.traeger = traeger;
@@ -65,14 +68,14 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
+	public void manipulateDoc(List<NamiMitglied> participants, TextDocument doc) {
 		//association data
-		Table tAssociation = odtDoc.getHeader().getTableList().get(0);
+		Table tAssociation = doc.getHeader().getTableList().get(0);
 		tAssociation.getCellByPosition(2, 0).setStringValue(mitgliedsVerband);
 		tAssociation.getCellByPosition(2, 1).setStringValue(traeger);
 		
 		//event data
-		Table tEvent = odtDoc.getHeader().getTableList().get(1);
+		Table tEvent = doc.getHeader().getTableList().get(1);
 		if (datumVon != null && datumBis != null)
 			tEvent.getCellByPosition(2, 0)
 					.setStringValue(TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
@@ -84,29 +87,19 @@ public class WriterApplicationDioezeseMuenster extends AbstractTextDocumentWrite
 		tEvent.getCellByPosition(9, 1).setStringValue(qualitaetssicherung ? "x" : "");
 		tEvent.getCellByPosition(11, 1).setStringValue(grossveranstaltung ? "x" : "");
 
-
 		//participants data
-		Table tParticipants = odtDoc.getTableList().get(0);
+		Table tParticipants = doc.getTableList().get(0);
 		double height = tParticipants.getRowByIndex(1).getHeight();
-		List<Row> newRows = tParticipants.appendRows(Math.max(participants.size() - 1, 0));
-		for (Row row : newRows) {
-			row.setHeight(height, true);
-			for (int i = 0; i < row.getCellCount(); ++i) {
-				Cell cell = row.getCellByIndex(i);
-				cell.setFont(FONT);
-				cell.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
-			}
-		}
-
+		TableUtil.appendRows(tParticipants, participants.size(), height, FONT, StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
 		for (int i = 0; i < participants.size(); ++i) {
 			Row r = tParticipants.getRowList().get(i + 1);
 			NamiMitglied p = participants.get(i);
 			r.getCellByIndex(2).setStringValue(p.getNachname() + ", " + p.getVorname());
 			r.getCellByIndex(3).setStringValue(p.getStrasse() + ", " + p.getPLZ() + ", " + p.getOrt());
 			r.getCellByIndex(4).setStringValue("" + GenderUtil.getCharacter(p.getGeschlecht()));
-			if ((datumVon != null && datumBis != null))
+			if (datumVon != null && datumBis != null)
 				r.getCellByIndex(5)
-						.setStringValue(TimeUtil.calcAgeRange(LocalDate.from(p.getGeburtsDatum()), datumVon, datumBis));
+						.setStringValue(TimeUtil.calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis));
 		}
 	}
 

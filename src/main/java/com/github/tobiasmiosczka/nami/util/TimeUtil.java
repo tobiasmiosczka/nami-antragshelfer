@@ -6,34 +6,24 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class TimeUtil {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static String getDateYearString(LocalDateTime date) {
-        if (date == null)
-            return "";
-        return String.valueOf(date.getYear());
+        return (date == null) ? "" : String.valueOf(date.getYear());
     }
 
     public static String getDateString(LocalDate date) {
-        if(date == null)
-            return "";
-        return DATE_TIME_FORMATTER.format(date);
+        return (date == null) ? "" : FORMATTER.format(date);
     }
 
-    public static int calcAge(LocalDate birthDate, LocalDate currentDate) {
-        return Period.between(birthDate, currentDate).getYears();
+    public static int calcAge(LocalDateTime birthDate, LocalDate currentDate) {
+        return Period.between(LocalDate.from(birthDate), currentDate).getYears();
     }
 
-    public static String calcAgeRange(LocalDate birthday, LocalDate from, LocalDate to) {
-        //compute age
-        int diffInYearsStart = calcAge(birthday, from);
-        int diffInYearsEnd = calcAge(birthday, to);
-        if (diffInYearsEnd > diffInYearsStart) {
-            //participant has his/her birthday at the event
-            return diffInYearsStart + "-" + diffInYearsEnd;
-        } else {
-            return String.valueOf(diffInYearsStart);
-        }
+    public static String calcAgeRange(LocalDateTime birthday, LocalDate from, LocalDate to) {
+        int ageStart = calcAge(birthday, from);
+        int ageEnd = calcAge(birthday, to);
+        return ageStart + ((ageStart == ageEnd) ? "" : "-" + ageEnd);
     }
 
 }

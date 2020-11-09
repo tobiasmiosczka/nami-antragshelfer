@@ -1,5 +1,10 @@
-package com.github.tobiasmiosczka.nami.applicationforms;
+package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
+import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
+import com.github.tobiasmiosczka.nami.applicationforms.TableUtil;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Training;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.enums.NamiBaustein;
 import nami.connector.namitypes.NamiSchulungenMap;
@@ -16,8 +21,8 @@ import java.util.List;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAge;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateYearString;
 
-
-public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDocumentWriter {
+@Form(title = "Antrag an Diözese Münster (Leiter)")
+public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 
 	private static final Font FONT = new Font(
 			"Calibri",
@@ -29,44 +34,46 @@ public class WriterApplicationDioezeseMuensterGroupLeader extends AbstractTextDo
 	private final LocalDate datum;
 	private final List<NamiSchulungenMap> schulungen;
 
-	public WriterApplicationDioezeseMuensterGroupLeader(List<NamiSchulungenMap> schulungen, LocalDate datum) {
+	public ApplicationDioezeseMuensterGroupLeader(
+			@Training List<NamiSchulungenMap> schulungen,
+			@Option(title = "datum") LocalDate datum) {
 		super();
 		this.schulungen = schulungen;
 		this.datum = datum;
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc){
-		Table tParticipants = odtDoc.getTableList().get(0);
-		List<Row> newRows = tParticipants.appendRows(Math.max(participants.size() - 1, 0));
-		for (Row row : newRows) {
-			row.setHeight(HEIGHT, true);
-			for(int cell = 0; cell < row.getCellCount(); ++cell)
-				row.getCellByIndex(cell).setFont(FONT);
-		}
+	public void manipulateDoc(List<NamiMitglied> participants, TextDocument doc){
+		Table tParticipants = doc.getTableList().get(0);
+		TableUtil.appendRows(
+				tParticipants,
+				participants.size(),
+				HEIGHT,
+				FONT,
+				StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
 
-		for(int i = 0; i < participants.size(); ++i){
+		for (int i = 0; i < participants.size(); ++i){
 			Row r = tParticipants.getRowList().get(i + 3);
 			NamiMitglied p = participants.get(i);
 			NamiSchulungenMap s = schulungen.get(i);
 			r.getCellByIndex(0).setStringValue(p.getNachname() + ", " + p.getVorname());
 			r.getCellByIndex(1).setStringValue(p.getStrasse());
 			r.getCellByIndex(2).setStringValue(p.getPLZ() + " " + p.getOrt());
-			if(datum != null){
-				int diffInYears = calcAge(LocalDate.from(p.getGeburtsDatum()), datum);
+			if (datum != null){
+				int diffInYears = calcAge(p.getGeburtsDatum(), datum);
 				r.getCellByIndex(3).setStringValue(String.valueOf(diffInYears));
 			}
-			if(schulungen.get(i).containsKey(NamiBaustein.MLK))
+			if (schulungen.get(i).containsKey(NamiBaustein.MLK))
 				r.getCellByIndex(6).setStringValue(getDateYearString(s.get(NamiBaustein.MLK).getDate()));
-			if(schulungen.get(i).containsKey(NamiBaustein.WBK))
+			if (schulungen.get(i).containsKey(NamiBaustein.WBK))
 				r.getCellByIndex(6).setStringValue(getDateYearString(s.get(NamiBaustein.WBK).getDate()));
-			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_1B))
+			if (schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_1B))
 				r.getCellByIndex(7).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_1B).getDate()));
-			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_2D))
+			if (schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_2D))
 				r.getCellByIndex(8).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_2D).getDate()));
-			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3B))
+			if (schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3B))
 				r.getCellByIndex(9).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_3B).getDate()));
-			if(schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3C))
+			if (schulungen.get(i).containsKey(NamiBaustein.BAUSTEIN_3C))
 				r.getCellByIndex(10).setStringValue(getDateYearString(s.get(NamiBaustein.BAUSTEIN_3C).getDate()));
 		}
 	}

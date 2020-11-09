@@ -1,5 +1,8 @@
-package com.github.tobiasmiosczka.nami.applicationforms;
+package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
+import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.table.Row;
@@ -9,7 +12,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class WriterGemeindeDinslakenCoronaRaumnutzungung extends AbstractTextDocumentWriter {
+@Form(title = "Corona Raumnutzung der Gemeinde Dinslaken")
+public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -17,18 +21,18 @@ public class WriterGemeindeDinslakenCoronaRaumnutzungung extends AbstractTextDoc
     private final String timeFrom;
     private final String timeTo;
 
-    public WriterGemeindeDinslakenCoronaRaumnutzungung(
-            LocalDate date,
-            String timeFrom,
-            String timeTo){
+    public GemeindeDinslakenCoronaRaumnutzungung(
+            @Option(title = "Datum")LocalDate date,
+            @Option(title = "Zeit (von)(HH:MM)")String timeFrom,
+            @Option(title = "Zeit (bis)(HH:MM)")String timeTo){
         this.date = date;
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
     }
 
     @Override
-    protected void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc) {
-        Table tParticipants = odtDoc.getTableList().get(0);
+    protected void manipulateDoc(List<NamiMitglied> participants, TextDocument doc) {
+        Table tParticipants = doc.getTableList().get(0);
         tParticipants.appendRows(Math.max(participants.size() - 1, 0));
         for (int i = 0; i < participants.size(); ++i){
             NamiMitglied m = participants.get(i);

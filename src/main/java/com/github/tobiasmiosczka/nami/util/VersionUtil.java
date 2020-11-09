@@ -4,17 +4,18 @@ import java.util.Properties;
 
 public class VersionUtil {
 
-    public static final String VERSION = getVersion();
+    private static final String PATH = "META-INF/maven/com.github.tobiasmiosczka/nami-antragshelfer/pom.properties";
+    public static final String VERSION;
 
-    private static String getVersion() {
+    static  {
         Properties props = new Properties();
         String v;
         try {
-            props.load(ClassLoader.getSystemResourceAsStream("META-INF/maven/com.github.tobiasmiosczka/nami-antragshelfer/pom.properties"));
+            props.load(ClassLoader.getSystemResourceAsStream(PATH));
             v = props.getProperty("version");
         } catch (Exception e) {
-           v = "UNKNOWN VERSION";
+            v = "UNKNOWN VERSION";
         }
-        return v;
+        VERSION = v;
     }
 }

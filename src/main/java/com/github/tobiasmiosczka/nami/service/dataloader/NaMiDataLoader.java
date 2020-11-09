@@ -3,6 +3,8 @@ package com.github.tobiasmiosczka.nami.service.dataloader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import nami.connector.NamiConnector;
 import nami.connector.exception.NamiApiException;
@@ -11,21 +13,16 @@ import nami.connector.namitypes.NamiSearchedValues;
 
 public class NaMiDataLoader {
 
-	private final NamiConnector connector;
-	
-	public NaMiDataLoader(NamiConnector connector){
-		this.connector = connector;
-	}
+	private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
-	public void load(NamiSearchedValues namiSearchedValues, NamiDataLoaderHandler handler) {
+	public static void load(NamiConnector connector, NamiSearchedValues namiSearchedValues, NamiDataLoaderHandler handler) {
 		Thread t = new Thread(() -> {
 			long startTimeInMillis = System.currentTimeMillis();
 			try {
 				List<NamiMitglied> result = new LinkedList<>(connector.getAllResults(namiSearchedValues));
-				int count = result.size();
 				for (int i = 0; i < result.size(); ++i) {
 					NamiMitglied r = connector.getMitgliedById(result.get(i).getId());
-					handler.onUpdate(i, count, r);
+					handler.onUpdate(i, result.size(), r);
 				}
 				handler.onDone((System.currentTimeMillis() - startTimeInMillis));
 			} catch (NamiApiException | IOException e) {

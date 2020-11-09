@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import nami.connector.namitypes.NamiMitglied;
 import org.odftoolkit.simple.TextDocument;
 
-public abstract class AbstractTextDocumentWriter {
+public abstract class DocumentWriter {
 
 	static {
 		Logger.getLogger("org.apache.zookeeper").setLevel(Level.OFF);
@@ -18,13 +18,15 @@ public abstract class AbstractTextDocumentWriter {
 	}
 
 	public void run(OutputStream outputStream, List<NamiMitglied> participants) throws Exception {
-		InputStream s = Thread.currentThread().getContextClassLoader().getResourceAsStream("applicationForms/"+getResourceFileName());
-		TextDocument odtDoc = TextDocument.loadDocument(s);
-		manipulateDoc(participants, odtDoc);
-		odtDoc.save(outputStream);
+		InputStream s = Thread.currentThread()
+				.getContextClassLoader()
+				.getResourceAsStream("forms/" + getResourceFileName());
+		TextDocument doc = TextDocument.loadDocument(s);
+		manipulateDoc(participants, doc);
+		doc.save(outputStream);
 	}
 
-	protected abstract void manipulateDoc(List<NamiMitglied> participants, TextDocument odtDoc);
+	protected abstract void manipulateDoc(List<NamiMitglied> participants, TextDocument doc);
 
 	protected abstract String getResourceFileName();
 }

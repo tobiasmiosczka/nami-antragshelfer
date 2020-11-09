@@ -17,19 +17,11 @@ import java.util.Optional;
 
 public class CustomDialog {
 
-    public enum OptionType {
-        BOOLEAN,
-        STRING,
-        DATE
-    }
-
     private final Dialog<List<Object>> dialog;
     private final ObservableList<Node> content;
-    private final List<OptionType> options;
 
     public CustomDialog() {
         dialog = new Dialog<>();
-        options = new LinkedList<>();
         DialogPane dialogPane = dialog.getDialogPane();
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(IconUtil.getIcon());
@@ -50,7 +42,6 @@ public class CustomDialog {
     }
 
     public CustomDialog addStringOption(String text) {
-        options.add(OptionType.STRING);
         TextField i = new TextField();
         i.setPromptText(text);
         content.add(i);
@@ -58,7 +49,6 @@ public class CustomDialog {
     }
 
     public CustomDialog addDateOption(String text) {
-        options.add(OptionType.DATE);
         DatePicker i = new DatePicker();
         i.setPromptText(text);
         content.add(i);
@@ -66,7 +56,6 @@ public class CustomDialog {
     }
 
     public CustomDialog addBooleanOption(String text) {
-        options.add(OptionType.BOOLEAN);
         CheckBox i = new CheckBox(text);
         content.add(i);
         return this;
@@ -74,13 +63,13 @@ public class CustomDialog {
 
     private List<Object> getValues() {
         List<Object> result = new LinkedList<>();
-        for (int i = 0; i < options.size(); ++i) {
-            Node n = content.get(i);
-            switch (options.get(i)) {
-                case DATE: result.add(((DatePicker)n).getValue()); break;
-                case BOOLEAN: result.add(((CheckBox)n).isSelected()); break;
-                case STRING: result.add(((TextField)n).getText()); break;
-            }
+        for (Node node : content) {
+            if (node instanceof DatePicker)
+                result.add(((DatePicker)node).getValue());
+            if (node instanceof  CheckBox)
+                result.add(((CheckBox)node).isSelected());
+            if (node instanceof TextField)
+                result.add(((TextField)node).getText());
         }
         return result;
     }

@@ -7,13 +7,7 @@
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tobiasmiosczka.nami.view.Controller">
     <top>
         <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
-            <Menu mnemonicParsing="false" text="Anträge und Listen">
-                <MenuItem mnemonicParsing="false" onAction="#genAppDioezeseMuenster" text="Antrag an Diözese Münster" />
-                <MenuItem mnemonicParsing="false" onAction="#genAppDioezeseMuensterLeader" text="Antrag an Diözese Münster (Leiter)" />
-                <MenuItem mnemonicParsing="false" onAction="#genAppStadtDinslaken" text="Antrag an Stadt Dinslaken" />
-                <MenuItem mnemonicParsing="false" onAction="#genAppRaumnutzungsplanGemeindeDinslaken" text="Raumnutzungsplan Gemeinde Dinslaken" />
-                <MenuItem mnemonicParsing="false" onAction="#genEmergencyList" text="Notfallliste" />
-            <MenuItem mnemonicParsing="false" onAction="#genParticipantsList" text="Anwesenheitsliste" />
+            <Menu fx:id="fxIdMnApplicationForms" mnemonicParsing="false" text="Anträge und Listen">
             </Menu>
             <Menu mnemonicParsing="false" text="Info">
                 <MenuItem mnemonicParsing="false" onAction="#openHomepage" text="Homepage" />
@@ -64,11 +58,11 @@
                        </TitledPane>
                        <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Stufe">
                            <VBox prefHeight="200.0" prefWidth="100.0">
-                               <CheckBox fx:id="fxIdCbFilterStufeWoelflinge" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Wölflinge" />
-                               <CheckBox fx:id="fxIdCbFilterStufeJungpfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Jungpfadfinder" />
-                               <CheckBox fx:id="fxIdCbFilterStufePfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Pfadfinder" />
-                               <CheckBox fx:id="fxIdCbFilterStufeRover" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Rover" />
-                               <CheckBox fx:id="fxIdCbFilterStufeOther" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Andere" />
+                               <CheckBox fx:id="fxIdCbFilterGroupWoelflinge" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Wölflinge" />
+                               <CheckBox fx:id="fxIdCbFilterGroupJungpfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Jungpfadfinder" />
+                               <CheckBox fx:id="fxIdCbFilterGroupPfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Pfadfinder" />
+                               <CheckBox fx:id="fxIdCbFilterGroupRover" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Rover" />
+                               <CheckBox fx:id="fxIdCbFilterGroupOther" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Andere" />
                            </VBox>
                        </TitledPane>
                        <TitledPane expanded="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Geschlecht">
