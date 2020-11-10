@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NamiDataLoader {
 
 	public interface Listener {
-		void onUpdate(int current, int count, NamiMitglied e);
+		void onUpdate(int current, int count, NamiMitglied newMember);
 		void onDone(long time);
-		void onException(String message, Throwable e);
+		void onException(String message, Throwable t);
 	}
 
 	private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();

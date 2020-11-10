@@ -21,21 +21,18 @@ public class DialogUtil {
         alert.showAndWait();
     }
 
-    public static void showMessage(String title, String message, String content) {
+    public static void showMessage(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(IconUtil.getIcon());
-        alert.setHeaderText(message);
+        alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
     }
 
     public static boolean showChooseDialog(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "",
-                ButtonType.OK,
-                ButtonType.CANCEL);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.OK, ButtonType.CANCEL);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(IconUtil.getIcon());
         alert.setTitle(title);
@@ -46,7 +43,8 @@ public class DialogUtil {
 
     public static File showSaveDialog(File preview, Stage parent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open document type format (*.odt)", "*.odt"));
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Open document type format (*.odt)", "*.odt"));
         if (preview != null)
             fileChooser.setInitialDirectory(preview);
         return fileChooser.showSaveDialog(parent);

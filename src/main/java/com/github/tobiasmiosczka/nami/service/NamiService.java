@@ -64,9 +64,9 @@ public class NamiService {
             namiSearchedValues.setMitgliedStatus(NamiMitgliedStatus.AKTIV);
         NamiDataLoader.load(connector, namiSearchedValues, new NamiDataLoader.Listener() {
             @Override
-            public void onUpdate(int current, int count, NamiMitglied namiMitglied) {
-                members.add(namiMitglied);
-                gui.onMemberLoaded(current, count, namiMitglied);
+            public void onUpdate(int current, int count, NamiMitglied newMember) {
+                members.add(newMember);
+                gui.onMemberLoaded(current, count, newMember);
                 gui.onMemberListUpdated();
             }
 

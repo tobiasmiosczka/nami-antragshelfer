@@ -75,20 +75,13 @@ public class Controller implements Initializable, NamiService.Listener {
     @FXML private TableView<NamiMitglied> fxIdTvMember;
     @FXML private TableView<NamiMitglied> fxIdTvParticipants;
 
-    public static EventHandler<KeyEvent> enterKeyEvent(Runnable runnable) {
-        return keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)
-                runnable.run();
-        };
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         namiService = new NamiService(this);
         fxIdTvMember.getColumns().setAll(NamiMitgliedTableRowUtil.getCollumns());
         fxIdTvParticipants.getColumns().setAll(NamiMitgliedTableRowUtil.getCollumns());
-        fxIdTfUsername.setOnKeyPressed(enterKeyEvent(this::login));
-        fxIdPfPassword.setOnKeyPressed(enterKeyEvent(this::login));
+        fxIdTfUsername.setOnKeyPressed(e -> { if (e.getCode() == KeyCode.ENTER) this.login(); });
+        fxIdPfPassword.setOnKeyPressed(e -> { if (e.getCode() == KeyCode.ENTER) this.login(); });
         TableViewDragAndDropUtil.init(
                 fxIdTvMember,
                 fxIdTvParticipants,
@@ -110,7 +103,7 @@ public class Controller implements Initializable, NamiService.Listener {
         if (namiService.isLoggedIn())
             logout();
         else
-            this.login(fxIdTfUsername.getText(), fxIdPfPassword.getText());
+            login(fxIdTfUsername.getText(), fxIdPfPassword.getText());
     }
 
     private void login(String username, String password) {
@@ -157,6 +150,7 @@ public class Controller implements Initializable, NamiService.Listener {
         fxIdTvMember.sort();
     }
 
+    @FXML
     private void updateParticipantsList() {
         List<NamiMitglied> selected = new LinkedList<>(fxIdTvParticipants.getSelectionModel().getSelectedItems());
         fxIdTvParticipants.getItems().setAll(namiService.getParticipants());
