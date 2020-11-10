@@ -9,7 +9,12 @@ import org.odftoolkit.simple.table.Table;
 import java.util.List;
 
 public class TableUtil {
-    public static void appendRows(Table table, int count, double height, Font font, StyleTypeDefinitions.HorizontalAlignmentType horizontalAlignment) {
+    public static void appendRows(
+            Table table,
+            int count,
+            double height,
+            Font font,
+            StyleTypeDefinitions.HorizontalAlignmentType horizontalAlignment) {
         List<Row> newRows = table.appendRows(Math.max(count - 1, 0));
         for (Row row : newRows) {
             row.setHeight(height, true);

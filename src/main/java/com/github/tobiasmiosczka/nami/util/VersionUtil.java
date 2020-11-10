@@ -5,17 +5,15 @@ import java.util.Properties;
 public class VersionUtil {
 
     private static final String PATH = "META-INF/maven/com.github.tobiasmiosczka/nami-antragshelfer/pom.properties";
-    public static final String VERSION;
+    public static final String VERSION = getVersion();
 
-    static  {
-        Properties props = new Properties();
-        String v;
+    private static String getVersion() {
         try {
+            Properties props = new Properties();
             props.load(ClassLoader.getSystemResourceAsStream(PATH));
-            v = props.getProperty("version");
+            return props.getProperty("version");
         } catch (Exception e) {
-            v = "UNKNOWN VERSION";
+            return  "UNKNOWN VERSION";
         }
-        VERSION = v;
     }
 }

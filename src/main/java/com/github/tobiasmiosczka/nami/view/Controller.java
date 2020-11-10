@@ -102,7 +102,7 @@ public class Controller implements Initializable, NamiService.Listener {
                     ApplicationDioezeseMuensterGroupLeader.class,
                     EmergencyList.class,
                     ParticipationList.class));
-        checkForUpdatesSilent();
+        checkForUpdates(true);
     }
 
     @FXML
@@ -175,7 +175,7 @@ public class Controller implements Initializable, NamiService.Listener {
         namiService.putParticipantsToMembers(fxIdTvParticipants.getSelectionModel().getSelectedItems());
     }
 
-    private void checkForUpdatesSilent() {
+    private void checkForUpdates(boolean silent) {
         try {
             if (Updater.updateAvailable()) {
                 if (DialogUtil.showChooseDialog(
@@ -183,7 +183,8 @@ public class Controller implements Initializable, NamiService.Listener {
                         "Update verfügbar.",
                         "Soll das Update heruntergeladen werden?"))
                     Updater.downloadUpdate();
-            }
+            } else if (!silent)
+                DialogUtil.showMessage("Update", null, "Kein Update verfügbar.");
         } catch (URISyntaxException | IOException e) {
             onException("Fehler beim Updateüberprüfung.", e);
         }
@@ -191,14 +192,7 @@ public class Controller implements Initializable, NamiService.Listener {
 
     @FXML
     private void checkForUpdates() {
-        try {
-            if (Updater.updateAvailable())
-                checkForUpdatesSilent();
-            else
-                DialogUtil.showMessage("Update", null, "Kein Update verfügbar.");
-        } catch (IOException e) {
-            onException("Fehler bei der Updateüberprüfung.", e);
-        }
+        checkForUpdates(false);
     }
 
     private boolean checkFilter(NamiMitglied m) {
