@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.github.tobiasmiosczka.nami.service.dataloader.NaMiDataLoader;
-import com.github.tobiasmiosczka.nami.service.dataloader.NamiDataLoaderHandler;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulungenMap;
@@ -22,13 +20,22 @@ import nami.connector.namitypes.enums.NamiMitgliedStatus;
 
 public class NamiService {
 
+    public interface Listener {
+        void onMemberLoaded(int current, int count, NamiMitglied member);
+        void onDone(long timeMS);
+        void onException(String message, Throwable e);
+        void onMemberListUpdated();
+        void onParticipantsListUpdated();
+        NamiGruppierung selectGroup(Collection<NamiGruppierung> groups);
+    }
+
     private NamiConnector connector;
-    private final NamiServiceListener gui;
+    private final Listener gui;
     private final List<NamiMitglied> members = Collections.synchronizedList(new ArrayList<>());
     private final List<NamiMitglied> participants = Collections.synchronizedList(new ArrayList<>());
     private boolean isLoggedIn;
 
-    public NamiService(NamiServiceListener gui){
+    public NamiService(Listener gui){
         this.gui = gui;
     }
 
@@ -55,7 +62,7 @@ public class NamiService {
             namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGruppierungsnummer()));
         if (!loadInactive)
             namiSearchedValues.setMitgliedStatus(NamiMitgliedStatus.AKTIV);
-        NaMiDataLoader.load(connector, namiSearchedValues, new NamiDataLoaderHandler() {
+        NamiDataLoader.load(connector, namiSearchedValues, new NamiDataLoader.Listener() {
             @Override
             public void onUpdate(int current, int count, NamiMitglied namiMitglied) {
                 members.add(namiMitglied);
@@ -69,7 +76,7 @@ public class NamiService {
             }
 
             @Override
-            public void onException(String message, Exception e) {
+            public void onException(String message, Throwable e) {
                 gui.onException(message, e);
             }
         });

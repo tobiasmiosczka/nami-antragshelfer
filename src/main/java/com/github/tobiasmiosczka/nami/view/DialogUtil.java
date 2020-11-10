@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class DialogUtil {
 
-    public static void showError(String message, Exception e) {
+    public static void showError(String message, Throwable e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Fehler");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();

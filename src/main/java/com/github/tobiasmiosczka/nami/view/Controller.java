@@ -1,7 +1,6 @@
 package com.github.tobiasmiosczka.nami.view;
 
 import com.github.tobiasmiosczka.nami.applicationforms.implemented.*;
-import com.github.tobiasmiosczka.nami.service.NamiServiceListener;
 import com.github.tobiasmiosczka.nami.service.NamiService;
 import com.github.tobiasmiosczka.nami.util.BrowserUtil;
 import com.github.tobiasmiosczka.nami.updater.Updater;
@@ -39,7 +38,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class Controller implements Initializable, NamiServiceListener {
+public class Controller implements Initializable, NamiService.Listener {
 
     private NamiService namiService;
 
@@ -240,7 +239,7 @@ public class Controller implements Initializable, NamiServiceListener {
     }
 
     @Override
-    public void onException(String message, Exception e) {
+    public void onException(String message, Throwable e) {
         Platform.runLater(() -> DialogUtil.showError(message, e));
         e.printStackTrace();
     }

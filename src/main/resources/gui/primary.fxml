@@ -79,7 +79,7 @@
                                <CheckBox fx:id="fxIdCbFilterMemberTypeNonMember" mnemonicParsing="false" onAction="#updateMembersList" text="Nichtmitglieder" />
                            </VBox>
                        </TitledPane>
-                       <TitledPane animated="false" expanded="false" text="Geburtsdatum">
+                       <TitledPane expanded="false" text="Geburtsdatum">
                            <VBox prefHeight="200.0" prefWidth="100.0">
                                <DatePicker fx:id="fxIdDpFilterBirthdateFrom" onAction="#updateMembersList" promptText="Von" />
                                <DatePicker fx:id="fxIdDpFilterBirthdateTo" onAction="#updateMembersList" promptText="Bis" />
