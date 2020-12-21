@@ -1,22 +1,14 @@
 package com.github.tobiasmiosczka.nami.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import nami.connector.namitypes.NamiGruppierung;
-import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.NamiSchulungenMap;
+import nami.connector.namitypes.*;
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
-import nami.connector.credentials.NamiCredentials;
-import nami.connector.exception.NamiApiException;
+import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
-import nami.connector.namitypes.NamiSearchedValues;
-import nami.connector.namitypes.enums.NamiMitgliedStatus;
 
 public class NamiService {
 
@@ -39,21 +31,21 @@ public class NamiService {
         this.gui = gui;
     }
 
-    public List<NamiSchulungenMap> loadSchulungen(List<NamiMitglied> member) throws IOException, NamiApiException {
+    public List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws IOException, NamiException, InterruptedException {
         //TODO: make multithreaded
-        List<NamiSchulungenMap> result = new ArrayList<>();
+        List<Map<NamiBaustein, NamiSchulung>> result = new ArrayList<>();
         for (NamiMitglied participant : member)
             result.add(connector.getSchulungen(participant));
         return result;
     }
 
-    public void login(String username, String password) throws NamiLoginException, IOException{
+    public void login(String username, String password) throws NamiLoginException, IOException, InterruptedException {
         connector = new NamiConnector(NamiServer.getLiveserver());
-        connector.login(new NamiCredentials(username, password));
+        connector.login(username, password);
         isLoggedIn = true;
     }
 
-    public void loadData(boolean loadInactive) throws IOException, NamiApiException {
+    public void loadData(boolean loadInactive) throws IOException, NamiException, InterruptedException {
         members.clear();
         participants.clear();
         NamiGruppierung group = gui.selectGroup(connector.getGruppierungenFromUser());

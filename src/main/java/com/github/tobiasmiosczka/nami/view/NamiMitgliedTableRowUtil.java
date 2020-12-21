@@ -5,8 +5,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.enums.NamiGeschlecht;
-import nami.connector.namitypes.enums.NamiStufe;
+import nami.connector.namitypes.NamiGeschlecht;
+import nami.connector.namitypes.NamiStufe;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -38,13 +38,12 @@ public class DialogUtil {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        return (alert.showAndWait().orElse(ButtonType.CLOSE) == ButtonType.OK);
+        return alert.showAndWait().orElse(ButtonType.CLOSE) == ButtonType.OK;
     }
 
     public static File showSaveDialog(File preview, Stage parent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("Open document type format (*.odt)", "*.odt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("docx (*.docx)", "*.docx"));
         if (preview != null)
             fileChooser.setInitialDirectory(preview);
         return fileChooser.showSaveDialog(parent);

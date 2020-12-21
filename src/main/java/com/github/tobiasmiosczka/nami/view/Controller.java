@@ -6,7 +6,6 @@ import com.github.tobiasmiosczka.nami.util.BrowserUtil;
 import com.github.tobiasmiosczka.nami.updater.Updater;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,15 +17,14 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
-import nami.connector.exception.NamiApiException;
+import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
-import nami.connector.namitypes.enums.NamiGeschlecht;
-import nami.connector.namitypes.enums.NamiMitgliedstyp;
-import nami.connector.namitypes.enums.NamiStufe;
+import nami.connector.namitypes.NamiGeschlecht;
+import nami.connector.namitypes.NamiMitgliedstyp;
+import nami.connector.namitypes.NamiStufe;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -89,7 +87,7 @@ public class Controller implements Initializable, NamiService.Listener {
                 namiService::putParticipantsToMembers);
         ApplicationFormsMenuUtil.init(fxIdMnApplicationForms, namiService, this::onException,
                 List.of(
-                    ApplicationCityDinslaken.class,
+                    ApplicationBdkjDinslaken.class,
                     GemeindeDinslakenCoronaRaumnutzungung.class,
                     ApplicationDioezeseMuenster.class,
                     ApplicationDioezeseMuensterGroupLeader.class,
@@ -112,7 +110,7 @@ public class Controller implements Initializable, NamiService.Listener {
         } catch (NamiLoginException e) {
             onException("Fehler beim Login", e);
             return;
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             onException("Netzwerkfehler", e);
             return;
         }
@@ -124,7 +122,7 @@ public class Controller implements Initializable, NamiService.Listener {
         fxIdBtLogin.setText("Logout");
         try {
             namiService.loadData(true);
-        } catch (IOException | NamiApiException e) {
+        } catch (IOException | NamiException | InterruptedException e) {
             onException("Fehler beim Laden der Mitgliedsdaten", e);
         }
     }

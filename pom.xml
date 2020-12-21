@@ -6,7 +6,7 @@
 
     <groupId>com.github.tobiasmiosczka</groupId>
     <artifactId>nami-antragshelfer</artifactId>
-    <version>4.0</version>
+    <version>4.0-BETA</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -31,39 +31,20 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.github.tobiasmiosczka.nami.Starter</mainClass>
-                                </transformer>
-                            </transformers>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>.settings/**</exclude>
-                                        <exclude>*.classpath</exclude>
-                                        <exclude>*.project</exclude>
-                                        <exclude>*.txt</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <launcher>Nami-Antragshelfer</launcher>
+                    <jlinkZipName>Nami-Antragshelfer</jlinkZipName>
+                    <mainClass>com.github.tobiasmiosczka.nami.view.App</mainClass>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -80,15 +61,10 @@
         <dependency>
             <groupId>com.github.tobiasmiosczka</groupId>
             <artifactId>nami-connector</artifactId>
-            <version>3.24</version>
+            <version>3.33</version>
         </dependency>
 
         <!-- JavaFX -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -105,6 +81,8 @@
             <version>${javafx.version}</version>
             <classifier>win</classifier>
         </dependency>
+
+        <!--
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics </artifactId>
@@ -117,18 +95,13 @@
             <version>${javafx.version}</version>
             <classifier>linux</classifier>
         </dependency>
+        -->
 
         <!-- Document manipulation -->
         <dependency>
-            <groupId>org.odftoolkit</groupId>
-            <artifactId>simple-odf</artifactId>
-            <version>0.9.0-RC1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun</groupId>
-                    <artifactId>tools</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+            <version>11.2.5</version>
         </dependency>
 
         <!-- Testing -->

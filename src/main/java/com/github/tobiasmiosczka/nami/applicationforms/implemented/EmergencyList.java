@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.applicationforms.DocUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.model.PhoneContact;
 import nami.connector.namitypes.NamiMitglied;
-import org.odftoolkit.simple.TextDocument;
-import org.odftoolkit.simple.table.Row;
-import org.odftoolkit.simple.table.Table;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.Tbl;
 
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
@@ -52,23 +52,22 @@ public class EmergencyList extends DocumentWriter {
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, TextDocument doc){
-		//participants data
-		Table tParticipants = doc.getTableList().get(0);
-		for (NamiMitglied m : participants){
-			Row row = tParticipants.appendRow();
-			row.getCellByIndex(0).setStringValue(m.getVorname());
-			row.getCellByIndex(1).setStringValue(m.getNachname());
-			row.getCellByIndex(2).setStringValue(getEmergencyContactsString(m));
-			row.getCellByIndex(3).setStringValue(m.getOrt());
-			row.getCellByIndex(4).setStringValue(m.getPLZ());
-			row.getCellByIndex(5).setStringValue(m.getStrasse());
-			row.getCellByIndex(6).setStringValue(getDateString(LocalDate.from(m.getGeburtsDatum())));
+	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
+		Tbl tbl = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(0);
+		for (NamiMitglied p : participants) {
+			tbl.getContent().add(DocUtil.createTr(
+					p.getVorname(),
+					p.getNachname(),
+					getEmergencyContactsString(p),
+					p.getOrt(),
+					p.getPLZ(),
+					p.getStrasse(),
+					getDateString(LocalDate.from(p.getGeburtsDatum()))));
 		}
 	}
 
 	@Override
 	protected String getResourceFileName() {
-		return "Notfallliste.odt";
+		return "Notfallliste.docx";
 	}
 }

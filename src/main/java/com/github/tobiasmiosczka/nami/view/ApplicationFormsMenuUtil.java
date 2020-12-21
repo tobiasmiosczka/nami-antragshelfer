@@ -22,16 +22,15 @@ public class ApplicationFormsMenuUtil {
         void onException(String message, Exception e);
     }
 
-    public static void init(Menu menu, NamiService service, ErrorConsumer errorConsumer, List<Class<? extends DocumentWriter>> writers) {
-        for (Class<? extends  DocumentWriter> dClass : writers) {
-            add(service, menu, errorConsumer, dClass);
-        }
+    public static void init(Menu menu, NamiService service, ErrorConsumer consumer, List<Class<? extends DocumentWriter>> writers) {
+        for (Class<? extends  DocumentWriter> dClass : writers)
+            add(service, menu, consumer, dClass);
     }
 
     private static DocumentWriter genWriter(Constructor<?> constructor, NamiService service, List<Object> options) throws Exception {
         int iParameter = 0, iOption = 0;
         Object[] constructorParameters = new Object[constructor.getParameterCount()];
-        for (Class<?> c : constructor.getParameterTypes()) {
+        for (Parameter c : constructor.getParameters()) {
             if (c.getAnnotation(Training.class) != null)
                 constructorParameters[iParameter++] = service.loadSchulungen(service.getParticipants());
             if (c.getAnnotation(Option.class) != null)
@@ -60,7 +59,7 @@ public class ApplicationFormsMenuUtil {
         return hasOption ? customDialog : null;
     }
 
-    public static void add(NamiService service, Menu menu, ErrorConsumer errorConsumer, Class<? extends DocumentWriter> c) {
+    public static void add(NamiService service, Menu menu, ErrorConsumer consumer, Class<? extends DocumentWriter> c) {
         String title = c.getAnnotation(Form.class).title();
         Constructor<?> constructor = c.getConstructors()[0];
         CustomDialog customDialog = getCustomDialog(constructor);
@@ -75,10 +74,9 @@ public class ApplicationFormsMenuUtil {
             if (file == null)
                 return;
             try {
-                genWriter(constructor, service, options)
-                        .run(new FileOutputStream(file), service.getParticipants());
+                genWriter(constructor, service, options).run(new FileOutputStream(file), service.getParticipants());
             } catch (Exception e) {
-                errorConsumer.onException("Fehler beim Generieren (" + title + ")", e);
+                consumer.onException("Fehler beim Generieren von \"" + title + "\"", e);
             }
         });
         menu.getItems().add(item);

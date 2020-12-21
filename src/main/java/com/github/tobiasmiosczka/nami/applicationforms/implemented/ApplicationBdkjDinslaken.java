@@ -4,27 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
-import com.github.tobiasmiosczka.nami.applicationforms.TableUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
-import com.github.tobiasmiosczka.nami.util.TimeUtil;
 import nami.connector.namitypes.NamiMitglied;
-import org.odftoolkit.odfdom.type.Color;
-import org.odftoolkit.simple.TextDocument;
-import org.odftoolkit.simple.style.Font;
-import org.odftoolkit.simple.style.StyleTypeDefinitions;
-import org.odftoolkit.simple.table.Row;
-import org.odftoolkit.simple.table.Table;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 @Form(title = "Antrag an Stadt Dinslaken")
 public class ApplicationCityDinslaken extends DocumentWriter {
-
-	private static final Font FONT = new Font(
-			"Calibri",
-			StyleTypeDefinitions.FontStyle.REGULAR,
-			10D,
-			Color.BLACK);
-	private static final double HEIGHT = 0.7D;
 
 	private final String 	massnahme,
 							ort;
@@ -44,8 +30,8 @@ public class ApplicationCityDinslaken extends DocumentWriter {
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, TextDocument doc) {
-		//event data
+	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
+		/*//event data
 		Table tEvent = doc.getHeader().getTableList().get(0);
 		tEvent.getCellByPosition(0, 0)
 				.setStringValue(tEvent.getCellByPosition(0, 0).getStringValue() + massnahme);
@@ -76,7 +62,7 @@ public class ApplicationCityDinslaken extends DocumentWriter {
 			r.getCellByIndex(6).setStringValue(TimeUtil.getDateString(LocalDate.from(p.getGeburtsDatum())));
 			if (datumVon != null && datumBis != null)
 				r.getCellByIndex(7).setStringValue(TimeUtil.calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis));
-		}
+		}*/
 	}
 
 	@Override

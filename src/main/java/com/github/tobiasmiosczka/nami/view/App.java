@@ -1,6 +1,5 @@
 package com.github.tobiasmiosczka.nami.view;
 
-import com.github.tobiasmiosczka.nami.util.FileEncodingUtil;
 import com.github.tobiasmiosczka.nami.util.VersionUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +15,6 @@ public class App extends Application {
     private static final double MIN_HEIGHT = 500D;
 
     public static void main(String[] args) {
-        try {
-            FileEncodingUtil.setFileEncoding("UTF-8");
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
         App.launch();
     }
 
