@@ -1,14 +1,23 @@
 package com.github.tobiasmiosczka.nami.service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import nami.connector.namitypes.*;
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
 import nami.connector.exception.NamiException;
 import nami.connector.exception.NamiLoginException;
+import nami.connector.namitypes.NamiBaustein;
+import nami.connector.namitypes.NamiGruppierung;
+import nami.connector.namitypes.NamiMitglied;
+import nami.connector.namitypes.NamiMitgliedStatus;
+import nami.connector.namitypes.NamiSchulung;
+import nami.connector.namitypes.NamiSearchedValues;
 
 public class NamiService {
 

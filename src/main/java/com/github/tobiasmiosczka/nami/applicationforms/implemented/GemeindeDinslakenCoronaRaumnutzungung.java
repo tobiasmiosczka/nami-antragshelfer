@@ -33,7 +33,7 @@ public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
     @Override
     protected void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
         Tbl tbl = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(0);
-        for (NamiMitglied p : participants) {
+        for (NamiMitglied p : participants)
             tbl.getContent().add(DocUtil.createTr(
                     (date == null) ? "" : DATE_TIME_FORMATTER.format(date),
                     timeFrom,
@@ -44,8 +44,6 @@ public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
                     p.getPLZ() + " " + p.getOrt(),
                     p.getTelefon1(),
                     ""));
-        }
-        DocUtil.addBorders(tbl);
     }
 
     @Override

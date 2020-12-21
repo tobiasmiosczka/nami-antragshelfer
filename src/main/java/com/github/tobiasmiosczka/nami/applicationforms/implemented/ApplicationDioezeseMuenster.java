@@ -17,6 +17,7 @@ import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.getTableCellP;
+import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAgeRange;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
 @Form(title = "Antrag an Diözese Münster")
@@ -92,7 +93,7 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 					p.getNachname() + ", " + p.getVorname(),
 					p.getPLZ() + " " + p.getOrt(),
 					"" + GenderUtil.getCharacter(p.getGeschlecht()),
-					dateFromToString,
+					calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
 					""));
 
 		tbl = tblList.get(10);

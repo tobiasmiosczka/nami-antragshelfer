@@ -60,7 +60,7 @@ public class DocUtil {
         TableFinder tableFinder = new TableFinder();
         new TraversalUtil(objects, tableFinder);
         return tableFinder.tblList.stream()
-                .map(o -> XmlUtils.unwrap(o))
+                .map(XmlUtils::unwrap)
                 .filter(o -> o instanceof Tbl)
                 .map(o -> (Tbl) o)
                 .collect(Collectors.toList());
@@ -82,9 +82,5 @@ public class DocUtil {
             if (r.getType().equals(Namespaces.HEADER))
                 result.add((HeaderPart) rp.getPart(r));
         return result;
-    }
-
-    public static void addBorders(Tbl tbl) {
-        //TODO: implement
     }
 }
