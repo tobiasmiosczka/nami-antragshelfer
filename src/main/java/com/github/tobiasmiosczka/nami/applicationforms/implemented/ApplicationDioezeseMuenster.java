@@ -112,6 +112,7 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 		tbl = tblList.get(1);
 		getTableCellP(tbl, 0, 1).getContent().add(createR(dateFromToString));
 		getTableCellP(tbl, 0, 3).getContent().add(createR(plz + " " + ort));
+		getTableCellP(tbl, 0, 5).getContent().add(createR(land));
 		getTableCellP(tbl, 1, 0).getContent().add(createR(freizeit ? "x" : ""));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(bildung ? "x" : ""));
 		getTableCellP(tbl, 1, 4).getContent().add(createR(ausbildung ? "x" : ""));
