@@ -3,70 +3,77 @@ package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.applicationforms.DocUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
+import com.github.tobiasmiosczka.nami.util.TimeUtil;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.Tbl;
 
-@Form(title = "Antrag an Stadt Dinslaken")
-public class ApplicationCityDinslaken extends DocumentWriter {
+import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
+
+@Form(title = "Antrag an BDKJ Dinslaken")
+public class ApplicationBdkjDinslaken extends DocumentWriter {
 
 	private final String 	massnahme,
-							ort;
+							plz,
+							ort,
+							tagungsstaette;
 	private final LocalDate datumVon,
 							datumBis;
 
-	public ApplicationCityDinslaken(
+	public ApplicationBdkjDinslaken(
 			@Option(title = "Maßnahme") String massnahme,
-			@Option(title = "Datum (von)")LocalDate datumVon,
-			@Option(title = "Datum (bis)")LocalDate datumBis,
-			@Option(title = "Ort")String ort) {
+			@Option(title = "Datum (von)") LocalDate datumVon,
+			@Option(title = "Datum (bis)") LocalDate datumBis,
+			@Option(title = "PLZ") String plz,
+			@Option(title = "Ort") String ort,
+			@Option(title = "Tagungsstätte") String tagungsstaette) {
 		super();
 		this.massnahme = massnahme;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
+		this.plz = plz;
 		this.ort = ort;
+		this.tagungsstaette = tagungsstaette;
 	}
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
-		/*//event data
-		Table tEvent = doc.getHeader().getTableList().get(0);
-		tEvent.getCellByPosition(0, 0)
-				.setStringValue(tEvent.getCellByPosition(0, 0).getStringValue() + massnahme);
-		if (datumVon != null && datumBis != null)
-			tEvent.getCellByPosition(0, 1)
-					.setStringValue(
-							tEvent.getCellByPosition(0, 1).getStringValue()
-									+ TimeUtil.getDateString(datumVon) + " - " + TimeUtil.getDateString(datumBis));
-		tEvent.getCellByPosition(1, 1)
-				.setStringValue(tEvent.getCellByPosition(1, 1).getStringValue() + ort);
+		Tbl tblMain = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(0);
+		if (datumVon != null)
+			DocUtil.getTableCellP(tblMain, 5, 1).getContent().add(DocUtil.createR(getDateString(datumVon)));
+		if (datumBis != null)
+			DocUtil.getTableCellP(tblMain, 5, 3).getContent().add(DocUtil.createR(getDateString(datumBis)));
+		DocUtil.getTableCellP(tblMain, 5, 5).getContent().add(DocUtil.createR(plz + " " + ort));
+		DocUtil.getTableCellP(tblMain, 7, 1).getContent().add(DocUtil.createR(tagungsstaette));
 
-		//participants data
-		Table tParticipants = doc.getTableList().get(0);
-		TableUtil.appendRows(
-				tParticipants,
-				participants.size(),
-				HEIGHT,
-				FONT,
-				StyleTypeDefinitions.HorizontalAlignmentType.LEFT);
-		for (int i = 0; i < participants.size(); ++i) {
-			NamiMitglied p = participants.get(i);
-			Row r = tParticipants.getRowList().get(i + 1);
-			r.getCellByIndex(1).setStringValue(p.getNachname());
-			r.getCellByIndex(2).setStringValue(p.getVorname());
-			r.getCellByIndex(3).setStringValue(p.getStrasse());
-			r.getCellByIndex(4).setStringValue(p.getPLZ());
-			r.getCellByIndex(5).setStringValue(p.getOrt());
-			r.getCellByIndex(6).setStringValue(TimeUtil.getDateString(LocalDate.from(p.getGeburtsDatum())));
-			if (datumVon != null && datumBis != null)
-				r.getCellByIndex(7).setStringValue(TimeUtil.calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis));
-		}*/
+		Tbl tblEvents = DocUtil.findTables(DocUtil.findHeaders(doc).get(0).getContent()).get(0);
+		if (datumVon != null && datumBis != null)
+			DocUtil.getTableCellP(tblEvents, 1, 0).getContent()
+					.add(DocUtil.createR(getDateString(datumVon) + " - " + getDateString(datumBis)));
+		DocUtil.getTableCellP(tblEvents, 1, 1).getContent()
+				.add(DocUtil.createR(plz + " " + ort));
+
+		Tbl tblParticipants = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(1);
+		for (NamiMitglied p : participants) {
+			tblParticipants.getContent().add(DocUtil.createTr(
+					"",
+					p.getNachname(),
+					p.getVorname(),
+					p.getStrasse(),
+					p.getPLZ(),
+					p.getOrt(),
+					getDateString(LocalDate.from(p.getGeburtsDatum())),
+					(datumVon == null || datumBis == null) ? "" : TimeUtil.calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
+					"", ""));
+		}
 	}
 
 	@Override
 	protected String getResourceFileName() {
-		return "Stadt_Dinslaken_Blanco.odt";
+		return "BDKJ-Dinslaken-16.12.2020.docx";
 	}
 }
