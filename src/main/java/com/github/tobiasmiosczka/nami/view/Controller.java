@@ -34,9 +34,13 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Controller implements Initializable, NamiService.Listener {
+
+    private static final  Logger logger = Logger.getLogger(Controller.class.getName());
 
     private NamiService namiService;
 
@@ -221,7 +225,7 @@ public class Controller implements Initializable, NamiService.Listener {
 
     @Override
     public void onDone(long timeMS) {
-        //TODO: implement
+        logger.log(Level.FINE, "Done loading after " + timeMS + "ms.");
     }
 
     @Override

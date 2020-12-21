@@ -1,6 +1,5 @@
 package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
-import com.github.tobiasmiosczka.nami.applicationforms.DocUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
@@ -9,13 +8,14 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Tbl;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
+import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
 @Form(title = "Corona Raumnutzung der Gemeinde Dinslaken")
 public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private final LocalDate date;
     private final String timeFrom;
@@ -32,10 +32,10 @@ public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
 
     @Override
     protected void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
-        Tbl tbl = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(0);
+        Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
         for (NamiMitglied p : participants)
-            tbl.getContent().add(DocUtil.createTr(
-                    (date == null) ? "" : DATE_TIME_FORMATTER.format(date),
+            tbl.getContent().add(createTr(
+                    getDateString(date),
                     timeFrom,
                     timeTo,
                     p.getVorname(),
