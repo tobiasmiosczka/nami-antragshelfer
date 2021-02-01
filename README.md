@@ -1,32 +1,32 @@
 NaMi-Antragshelfer
 ======================================================================
-Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der [DPSG][1]. Die benötigten Mitgliederdaten können aus der [NaMi][2]-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. Derweil können Anträge an die Stadt Dinslaken und der Diözese Münster exportiert werden.
-
+Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der [DPSG][1]. Die benötigten Mitgliederdaten können aus der [NaMi][2]-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. 
 ![Benutzeroberfläche der Version 4.0](https://raw.githubusercontent.com/TobiasMiosczka/NaMi/master/pictures/preview.PNG "Benutzeroberfläche der Version 4.0")
 
 Download
 ----------------------------------------------------------------------
 Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werden.
 
-Compilierung
+Kompilierung
 ----------------------------------------------------------------------
-Zum compilieren benötigt das Projekt JDK 15.
+Zur Kompilierung benötigt das Projekt JDK 15. 
+
 
 Systemvorraussetzungen
 ----------------------------------------------------------------------
-Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit(JDK) 15 benötigt. 
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit (JDK) 15 benötigt. 
 Die aktuelle kostenlose Version des JDKs (OpenJDK) gibt es [hier][4].
 
 Unterstützte Anträge & Listen
 ----------------------------------------------------------------------
-* Diözese Münster
-  * Teilnehmerliste (Formular 2)
+* Diözesanverband Münster
+  * Förderungsantrag and den Diözesanverband Münster
   * Anmeldung Freizeit
 * Stadt Dinslaken
-  * Teilnehmerliste
+  * Förderungsantrag an BDKJ Dinslaken
+  * Dokumentation der Verordnung zum Schutz vor Neuinfizierungen mit dem Coronavirus SARS-CoV-2
 * Listen
   * Notfall-Telefonliste
-  * Bankdatenliste zum Einzug der Halbjahresbeiträge
   * Anwesenheitsliste
   
 Danksagung
