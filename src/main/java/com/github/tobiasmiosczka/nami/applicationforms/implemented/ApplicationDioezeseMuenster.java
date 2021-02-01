@@ -3,20 +3,19 @@ package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.github.tobiasmiosczka.nami.applicationforms.DocUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
-import com.github.tobiasmiosczka.nami.util.GenderUtil;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.wml.Tbl;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findHeaders;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.getTableCellP;
+import static com.github.tobiasmiosczka.nami.util.GenderUtil.getCharacter;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAgeRange;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
@@ -67,24 +66,21 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
 		boolean dateSet = datumVon != null && datumBis != null;
+		String plzOrt = plz + " " + ort;
 		String dateFromToString = dateSet ? getDateString(datumVon) + " - " + getDateString(datumBis) : "";
 		List<Tbl> tblList = findTables(doc.getMainDocumentPart().getContent());
 		Tbl tbl = tblList.get(0);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-
 		tbl = tblList.get(1);
 		getTableCellP(tbl, 1, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 1, 1).getContent().add(createR(plz + " " + ort));
-
+		getTableCellP(tbl, 1, 1).getContent().add(createR(plzOrt));
 		tbl = tblList.get(5);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-
 		tbl = tblList.get(6);
 		getTableCellP(tbl, 1, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 1, 1).getContent().add(createR(plz + " " + ort));
-
+		getTableCellP(tbl, 1, 1).getContent().add(createR(plzOrt));
 		tbl = tblList.get(9);
 		for (NamiMitglied p : participants)
 			tbl.getContent().add(createTr(
@@ -92,27 +88,22 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 					"",
 					p.getNachname() + ", " + p.getVorname(),
 					p.getPLZ() + " " + p.getOrt(),
-					"" + GenderUtil.getCharacter(p.getGeschlecht()),
+					String.valueOf(getCharacter(p.getGeschlecht())),
 					calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
 					""));
-
 		tbl = tblList.get(10);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-
 		tbl = tblList.get(11);
 		getTableCellP(tbl, 2, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 2, 1).getContent().add(createR(plz + " " + ort));
-
-		HeaderPart headerPart = DocUtil.findHeaders(doc).get(2);
-		tblList = findTables(headerPart.getContent());
+		getTableCellP(tbl, 2, 1).getContent().add(createR(plzOrt));
+		tblList = findTables(findHeaders(doc).get(2).getContent());
 		tbl = tblList.get(0);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-
 		tbl = tblList.get(1);
 		getTableCellP(tbl, 0, 1).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 0, 3).getContent().add(createR(plz + " " + ort));
+		getTableCellP(tbl, 0, 3).getContent().add(createR(plzOrt));
 		getTableCellP(tbl, 0, 5).getContent().add(createR(land));
 		getTableCellP(tbl, 1, 0).getContent().add(createR(freizeit ? "x" : ""));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(bildung ? "x" : ""));

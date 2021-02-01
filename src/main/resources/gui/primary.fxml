@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tobiasmiosczka.nami.view.Controller">
     <top>
@@ -20,10 +21,20 @@
     <center>
         <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Label text="Mitglieder">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
                 <TableView fx:id="fxIdTvMember" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" />
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addParticipants" text="Hinzufügen" />
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Label text="Teilnehmer">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
                 <TableView fx:id="fxIdTvParticipants" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" />
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeParticipants" text="Entfernen" />
             </VBox>

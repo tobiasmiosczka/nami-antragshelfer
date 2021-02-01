@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class CustomDialog {
 
@@ -80,8 +79,7 @@ public class CustomDialog {
                 return getValues();
             return null;
         });
-        Optional<List<Object>> optionalResult = dialog.showAndWait();
-        return optionalResult.orElse(null);
+        return dialog.showAndWait().orElse(null);
     }
 
 }

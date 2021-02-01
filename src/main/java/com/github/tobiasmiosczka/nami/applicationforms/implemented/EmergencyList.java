@@ -1,7 +1,6 @@
 package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
@@ -13,6 +12,7 @@ import org.docx4j.wml.Tbl;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
+import static com.github.tobiasmiosczka.nami.model.PhoneContact.getPhoneContacts;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
 @Form(title = "Notfallliste")
@@ -23,39 +23,25 @@ public class EmergencyList extends DocumentWriter {
 	}
 
 	private static String getEmergencyContactsString(NamiMitglied member) {
-		StringBuilder sb = new StringBuilder();
-
-		//Phone1
-		sb.append("Telefon 1:\n");
-		Collection<PhoneContact> contactsPhone1 = PhoneContact.getPhoneContacts(member.getTelefon1());
-		for (PhoneContact c : contactsPhone1)
+		StringBuilder sb = new StringBuilder("Telefon 1:\n");
+		for (PhoneContact c : getPhoneContacts(member.getTelefon1()))
 			sb.append(c).append("\n");
-
-		//Phone2
 		sb.append("Telefon 2:\n");
-		Collection<PhoneContact> contactsPhone2 = PhoneContact.getPhoneContacts(member.getTelefon2());
-		for (PhoneContact c : contactsPhone2)
+		for (PhoneContact c : getPhoneContacts(member.getTelefon2()))
 			sb.append(c).append("\n");
-
-		//Phone3
 		sb.append("Telefon 3:\n");
-		Collection<PhoneContact> contactsPhone3 = PhoneContact.getPhoneContacts(member.getTelefon3());
-		for (PhoneContact c : contactsPhone3)
+		for (PhoneContact c : getPhoneContacts(member.getTelefon3()))
 			sb.append(c).append("\n");
-
-		//Fax
 		sb.append("Fax:\n");
-		Collection<PhoneContact> contactsFax = PhoneContact.getPhoneContacts(member.getTelefax());
-		for (PhoneContact c : contactsFax)
+		for (PhoneContact c : getPhoneContacts(member.getTelefax()))
 			sb.append(c).append("\n");
-
 		return sb.toString();
 	}
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
 		Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
-		for (NamiMitglied p : participants) {
+		for (NamiMitglied p : participants)
 			tbl.getContent().add(createTr(
 					p.getVorname(),
 					p.getNachname(),
@@ -64,7 +50,6 @@ public class EmergencyList extends DocumentWriter {
 					p.getPLZ(),
 					p.getStrasse(),
 					getDateString(LocalDate.from(p.getGeburtsDatum()))));
-		}
 	}
 
 	@Override

@@ -1,8 +1,11 @@
 module nami.antragshelfer {
-    requires nami.connector;
+    requires transitive nami.connector;
+    requires transitive javafx.base;
+    requires transitive javafx.graphics;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive java.desktop;
     requires org.docx4j.core;
-    requires javafx.controls;
-    requires javafx.fxml;
 
     opens com.github.tobiasmiosczka.nami.view;
     opens com.github.tobiasmiosczka.nami.updater;

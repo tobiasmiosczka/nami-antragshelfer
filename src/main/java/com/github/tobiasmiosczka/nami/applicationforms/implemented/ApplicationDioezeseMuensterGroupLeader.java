@@ -1,11 +1,9 @@
 package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 
-import com.github.tobiasmiosczka.nami.applicationforms.DocUtil;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Training;
-import com.github.tobiasmiosczka.nami.util.GenderUtil;
 import nami.connector.namitypes.NamiBaustein;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulung;
@@ -16,6 +14,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.addBorders;
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
+import static com.github.tobiasmiosczka.nami.util.GenderUtil.getLeiterString;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAge;
 
 @Form(title = "Antrag an Diözese Münster (Leiter)")
@@ -38,16 +40,16 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
-		Tbl tbl = DocUtil.findTables(doc.getMainDocumentPart().getContent()).get(0);
+		Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
 		for (int i = 0; i < participants.size(); ++i) {
 			NamiMitglied p = participants.get(i);
 			Map<NamiBaustein, NamiSchulung> s = schulungen.get(i);
-			tbl.getContent().add(DocUtil.createTr(
+			tbl.getContent().add(createTr(
 				p.getNachname() + ", " + p.getVorname(),
 					p.getStrasse(),
 					p.getPLZ() + " " + p.getOrt(),
 					String.valueOf(calcAge(p.getGeburtsDatum(), datum)),
-					GenderUtil.getLeiterString(p.getGeschlecht()),
+					getLeiterString(p.getGeschlecht()),
 					getYear(s, NamiBaustein.MLK),
 					getYear(s, NamiBaustein.WBK),
 					getYear(s, NamiBaustein.BAUSTEIN_1B),
@@ -55,6 +57,7 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 					getYear(s, NamiBaustein.BAUSTEIN_3B),
 					getYear(s, NamiBaustein.BAUSTEIN_3C)));
 		}
+		addBorders(tbl);
 	}
 
 	@Override

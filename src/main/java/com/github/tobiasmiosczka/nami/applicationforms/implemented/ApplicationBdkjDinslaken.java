@@ -46,21 +46,23 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
+		String plzOrt = plz + " " + ort;
+		boolean dateSet = datumVon != null && datumBis != null;
 		Tbl tblMain = findTables(doc.getMainDocumentPart().getContent()).get(0);
+
 		if (datumVon != null)
 			getTableCellP(tblMain, 5, 1).getContent().add(createR(getDateString(datumVon)));
 		if (datumBis != null)
 			getTableCellP(tblMain, 5, 3).getContent().add(createR(getDateString(datumBis)));
-		getTableCellP(tblMain, 5, 5).getContent().add(createR(plz + " " + ort));
+		getTableCellP(tblMain, 5, 5).getContent().add(createR(plzOrt));
 		getTableCellP(tblMain, 7, 1).getContent().add(createR(tagungsstaette));
 
 		Tbl tblEvents = findTables(findHeaders(doc).get(0).getContent()).get(0);
 		getTableCellP(tblEvents, 0, 0).getContent().add(createR(massnahme));
-		if (datumVon != null && datumBis != null)
+		if (dateSet)
 			getTableCellP(tblEvents, 1, 0).getContent()
 					.add(createR(getDateString(datumVon) + " - " + getDateString(datumBis)));
-		getTableCellP(tblEvents, 1, 1).getContent()
-				.add(createR(plz + " " + ort));
+		getTableCellP(tblEvents, 1, 1).getContent().add(createR(plzOrt));
 
 		Tbl tblParticipants = findTables(doc.getMainDocumentPart().getContent()).get(1);
 		for (NamiMitglied p : participants) {
@@ -72,7 +74,7 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 					p.getPLZ(),
 					p.getOrt(),
 					getDateString(LocalDate.from(p.getGeburtsDatum())),
-					(datumVon == null || datumBis == null) ? "" : calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
+					(dateSet) ? calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis) : "",
 					"", ""));
 		}
 	}

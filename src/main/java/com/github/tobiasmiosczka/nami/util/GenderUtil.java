@@ -7,20 +7,20 @@ public class GenderUtil {
     public static char getCharacter(NamiGeschlecht gender) {
         if (gender == null)
             return ' ';
-        switch (gender) {
-            case WEIBLICH: return  'w';
-            case MAENNLICH: return  'm';
-            default: return  ' ';
-        }
+        return switch (gender) {
+            case WEIBLICH -> 'w';
+            case MAENNLICH -> 'm';
+            default -> ' ';
+        };
     }
 
     public static String getLeiterString(NamiGeschlecht gender) {
         if (gender == null)
             return "";
-        switch (gender) {
-            case MAENNLICH: return "Leiter";
-            case WEIBLICH: return "Leiterin";
-            default: return "";
-        }
+        return switch (gender) {
+            case MAENNLICH -> "Leiter";
+            case WEIBLICH -> "Leiterin";
+            default -> "";
+        };
     }
 }

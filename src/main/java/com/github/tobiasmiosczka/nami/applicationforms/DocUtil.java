@@ -1,6 +1,5 @@
 package com.github.tobiasmiosczka.nami.applicationforms;
 
-
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
 import org.docx4j.finders.TableFinder;
@@ -9,14 +8,19 @@ import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
 import org.docx4j.relationships.Relationship;
+import org.docx4j.wml.CTBorder;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
+import org.docx4j.wml.STBorder;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.TblBorders;
+import org.docx4j.wml.TblPr;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,7 +76,8 @@ public class DocUtil {
         return tc.getContent().stream()
                 .filter(o -> o instanceof P)
                 .map(o -> (P) o)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
     public static List<HeaderPart> findHeaders(WordprocessingMLPackage wordMLPackage) {
@@ -82,5 +87,23 @@ public class DocUtil {
             if (r.getType().equals(Namespaces.HEADER))
                 result.add((HeaderPart) rp.getPart(r));
         return result;
+    }
+
+    public static void addBorders(Tbl table) {
+        table.setTblPr(new TblPr());
+        CTBorder border = new CTBorder();
+        border.setColor("auto");
+        border.setSz(new BigInteger("4"));
+        border.setSpace(new BigInteger("0"));
+        border.setVal(STBorder.SINGLE);
+
+        TblBorders borders = new TblBorders();
+        borders.setBottom(border);
+        borders.setLeft(border);
+        borders.setRight(border);
+        borders.setTop(border);
+        borders.setInsideH(border);
+        borders.setInsideV(border);
+        table.getTblPr().setTblBorders(borders);
     }
 }

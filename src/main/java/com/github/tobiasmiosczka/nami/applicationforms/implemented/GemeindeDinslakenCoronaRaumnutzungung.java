@@ -10,6 +10,7 @@ import org.docx4j.wml.Tbl;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.addBorders;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
@@ -44,6 +45,7 @@ public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
                     p.getPLZ() + " " + p.getOrt(),
                     p.getTelefon1(),
                     ""));
+        addBorders(tbl);
     }
 
     @Override

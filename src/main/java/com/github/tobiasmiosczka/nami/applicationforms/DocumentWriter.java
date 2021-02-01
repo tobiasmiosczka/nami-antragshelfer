@@ -5,11 +5,12 @@ import java.io.OutputStream;
 import java.util.List;
 
 import nami.connector.namitypes.NamiMitglied;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 public abstract class DocumentWriter {
 
-	public void run(OutputStream outputStream, List<NamiMitglied> participants) throws Exception {
+	public void run(OutputStream outputStream, List<NamiMitglied> participants) throws Docx4JException {
 		InputStream is = Thread.currentThread()
 				.getContextClassLoader()
 				.getResourceAsStream("forms/" + getResourceFileName());
