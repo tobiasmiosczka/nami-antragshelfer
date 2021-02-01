@@ -1,5 +1,13 @@
 Changelog
 ===========================================================
+4.0
+-----------------------------------------------------------
+- Export als .docx (anstelle von .odt)
+- Anträge werden nun vollständig exportiert (nicht nur die Teilnehmerlisten)
+- Überarbeitung der Benutzeroberfläche
+- Download der Mitgliedsdaten ist nun 800% schneller
+- Programm prüft nun beim Programmstart, ob es bereits eine neuere Version gibt
+
 3.7
 -----------------------------------------------------------
 - Bugfix: Fehler bei Gruppierungsauswahl behoben
