@@ -10,7 +10,11 @@ Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werd
 Kompilierung
 ----------------------------------------------------------------------
 Zur Kompilierung benötigt das Projekt JDK 15. 
-
+Die Kompilierung und Paketierung erfolgt über die folgenden Maven-Befehle:
+```
+mvn clean
+mvn package
+```
 
 Systemvorraussetzungen
 ----------------------------------------------------------------------
