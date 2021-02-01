@@ -5,12 +5,12 @@ Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen 
 
 Download
 ----------------------------------------------------------------------
-Die aktuelle Version des NaMi-Antragsgelfers kann [hier][3] heruntergeladen werden.
+Die aktuelle Version des NaMi-Antragshelfers kann [hier][3] heruntergeladen werden.
 
 Systemvoraussetzungen
 ----------------------------------------------------------------------
 Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit (JDK) 15 benötigt.
-Die aktuelle kostenlose Version des JDKs (OpenJDK) gibt es [hier][4].
+Die kostenlose Version des JDKs (OpenJDK) gibt es [hier][4]. 
 
 Kompilierung
 ----------------------------------------------------------------------
