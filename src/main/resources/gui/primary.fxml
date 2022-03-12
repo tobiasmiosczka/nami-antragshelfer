@@ -69,6 +69,7 @@
                        </TitledPane>
                        <TitledPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Stufe">
                            <VBox prefHeight="200.0" prefWidth="100.0">
+                               <CheckBox fx:id="fxIdCbFilterGroupBiber" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Biber" />
                                <CheckBox fx:id="fxIdCbFilterGroupWoelflinge" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Wölflinge" />
                                <CheckBox fx:id="fxIdCbFilterGroupJungpfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Jungpfadfinder" />
                                <CheckBox fx:id="fxIdCbFilterGroupPfadfinder" mnemonicParsing="false" onAction="#updateMembersList" selected="true" text="Pfadfinder" />

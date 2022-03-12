@@ -57,6 +57,7 @@ public class Controller implements Initializable, NamiService.Listener {
     @FXML private TextField fxIdTfFilterFirstname;
     @FXML private TextField fxIdTfFilterLastname;
 
+    @FXML private CheckBox fxIdCbFilterGroupBiber;
     @FXML private CheckBox fxIdCbFilterGroupWoelflinge;
     @FXML private CheckBox fxIdCbFilterGroupJungpfadfinder;
     @FXML private CheckBox fxIdCbFilterGroupPfadfinder;
@@ -192,12 +193,14 @@ public class Controller implements Initializable, NamiService.Listener {
     }
 
     private boolean checkFilter(NamiMitglied m) {
-        boolean bIsWlf = (m.getStufe() == NamiStufe.WOELFLING),
+        boolean bIsBib = (m.getStufe() == NamiStufe.BIBER),
+                bIsWlf = (m.getStufe() == NamiStufe.WOELFLING),
                 bIsJng = (m.getStufe() == NamiStufe.JUNGPFADFINDER),
                 bIsPfd = (m.getStufe() == NamiStufe.PFADFINDER),
                 bIsRvr = (m.getStufe() == NamiStufe.ROVER),
                 bIsNon = !(bIsWlf || bIsJng || bIsPfd || bIsRvr);
-        if (!(  (bIsWlf && fxIdCbFilterGroupWoelflinge.isSelected()) ||
+        if (!(  (bIsBib && fxIdCbFilterGroupBiber.isSelected()) ||
+                (bIsWlf && fxIdCbFilterGroupWoelflinge.isSelected()) ||
                 (bIsJng && fxIdCbFilterGroupJungpfadfinder.isSelected()) ||
                 (bIsPfd && fxIdCbFilterGroupPfadfinder.isSelected()) ||
                 (bIsRvr && fxIdCbFilterGroupRover.isSelected()) ||
