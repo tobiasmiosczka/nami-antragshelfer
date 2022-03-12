@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.github.tobiasmiosczka</groupId>
             <artifactId>nami-connector</artifactId>
-            <version>3.33</version>
+            <version>3.34</version>
         </dependency>
 
         <!-- JavaFX -->
