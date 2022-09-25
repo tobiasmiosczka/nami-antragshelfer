@@ -5,6 +5,7 @@ module nami.antragshelfer {
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
     requires transitive java.desktop;
+    requires java.logging;
     requires org.docx4j.core;
 
     opens com.github.tobiasmiosczka.nami.view;

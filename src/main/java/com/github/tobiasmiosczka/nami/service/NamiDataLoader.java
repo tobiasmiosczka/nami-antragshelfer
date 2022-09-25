@@ -34,7 +34,7 @@ public class NamiDataLoader {
 								} catch (Exception e) {
 									throw new RuntimeException(e);
 								}}, EXECUTOR)
-							.thenAccept(m -> listener.onUpdate(i.getAndIncrement(), result.size(), m))
+							.thenAccept(m -> listener.onUpdate(i.getAndIncrement(), result.size(), m.orElse(null)))
 							.exceptionally(e -> {
 								listener.onException("Fehler beim Laden der Mitgliedsdaten.", e);
 								return null; });
