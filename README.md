@@ -1,6 +1,7 @@
 NaMi-Antragshelfer
 ======================================================================
 [![Java CI with Maven](https://github.com/tobiasmiosczka/nami-antragshelfer/actions/workflows/maven.yml/badge.svg)](https://github.com/tobiasmiosczka/nami-antragshelfer/actions/workflows/maven.yml)
+
 Der NaMi-Antragshelfer ist ein Programm zum Ausfüllen von Förderungsanträgen und Generieren von Notfall-Telefonlisten für Pfadfinderstämme der [DPSG][1]. Die benötigten Mitgliederdaten können aus der [NaMi][2]-Datenbank heruntergeladen und mithilfe einer einfachen Benutzeroberfläche ausgewählt werden. 
 ![Benutzeroberfläche der Version 4.0](https://raw.githubusercontent.com/TobiasMiosczka/NaMi/master/pictures/preview.PNG "Benutzeroberfläche der Version 4.0")
 
