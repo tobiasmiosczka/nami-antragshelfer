@@ -31,7 +31,7 @@ jobs:
       uses: whelk-io/maven-settings-xml-action@v20
       with:
         repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/tobiasmiosczka/nami-connector" }]'
-        servers: '[{ "id": "github", "username": ${{ github.username }}, "password": ${{ github.token }} }]'
+        servers: '[{ "id": "github", "username": "${{ github.username }}", "password": "${{ github.token }}" }]'
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
