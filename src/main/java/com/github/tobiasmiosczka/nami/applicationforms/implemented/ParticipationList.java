@@ -7,6 +7,7 @@ import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
@@ -20,13 +21,23 @@ public class ParticipationList extends DocumentWriter {
 
     @Override
     public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
-        Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
-        for (NamiMitglied p : participants)
-            tbl.getContent().add(createTr(
-                    p.getNachname(),
-                    p.getVorname(),
-                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-            ));
+        findTables(doc.getMainDocumentPart().getContent()).get(0)
+                .getContent()
+                .addAll(memberToTr(participants));
+    }
+
+    private List<Tr> memberToTr(List<NamiMitglied> member) {
+        return member.stream()
+                .map(this::memberToTr)
+                .toList();
+    }
+
+    private Tr memberToTr(NamiMitglied member) {
+        return createTr(
+                member.getNachname(),
+                member.getVorname(),
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+        );
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.github.tobiasmiosczka.nami.model.PhoneContact;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
@@ -42,14 +43,18 @@ public class EmergencyList extends DocumentWriter {
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
 		Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
 		for (NamiMitglied p : participants)
-			tbl.getContent().add(createTr(
-					p.getVorname(),
-					p.getNachname(),
-					getEmergencyContactsString(p),
-					p.getOrt(),
-					p.getPLZ(),
-					p.getStrasse(),
-					getDateString(LocalDate.from(p.getGeburtsDatum()))));
+			tbl.getContent().add(memberToTr(p));
+	}
+
+	private Tr memberToTr(NamiMitglied p) {
+		return createTr(
+				p.getVorname(),
+				p.getNachname(),
+				getEmergencyContactsString(p),
+				p.getOrt(),
+				p.getPLZ(),
+				p.getStrasse(),
+				getDateString(LocalDate.from(p.getGeburtsDatum())));
 	}
 
 	@Override

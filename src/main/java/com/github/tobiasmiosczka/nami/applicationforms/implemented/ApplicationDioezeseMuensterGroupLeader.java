@@ -57,7 +57,7 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 					getYear(s, NamiBaustein.BAUSTEIN_3B),
 					getYear(s, NamiBaustein.BAUSTEIN_3C)));
 		}
-		addBorders(tbl);
+		addBorders(tbl, "auto", 4L, 0L);
 	}
 
 	@Override

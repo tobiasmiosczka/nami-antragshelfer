@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
@@ -23,7 +22,7 @@ public class NamiService {
 
     public interface Listener {
         void onMemberLoaded(int current, int count, NamiMitglied member);
-        void onDone(long timeMS);
+        void onDone(long timeInMs);
         void onException(String message, Throwable e);
         void onMemberListUpdated();
         void onParticipantsListUpdated();
@@ -98,7 +97,7 @@ public class NamiService {
     public synchronized void putMembersToParticipants(Collection<NamiMitglied> newMembers) {
         Collection<NamiMitglied> filtered = newMembers.stream()
                 .filter(this.members::contains)
-                .collect(Collectors.toList());
+                .toList();
         this.members.removeAll(filtered);
         this.participants.addAll(filtered);
         gui.onMemberListUpdated();
@@ -108,7 +107,7 @@ public class NamiService {
     public synchronized void putParticipantsToMembers(Collection<NamiMitglied> newParticipants) {
         Collection<NamiMitglied> filtered = newParticipants.stream()
                 .filter(this.participants::contains)
-                .collect(Collectors.toList());
+                .toList();
         this.participants.removeAll(filtered);
         this.members.addAll(filtered);
         gui.onMemberListUpdated();

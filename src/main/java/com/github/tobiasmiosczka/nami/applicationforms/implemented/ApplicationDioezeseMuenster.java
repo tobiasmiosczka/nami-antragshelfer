@@ -9,6 +9,7 @@ import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
@@ -27,9 +28,10 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 							plz,
 							ort,
 							land;
-	private final LocalDate datumVon,
-							datumBis;
-	private final boolean  	freizeit,
+	private final LocalDate dateFrom,
+							dateTo;
+	private final boolean  	dateSet,
+							freizeit,
 							bildung,
 	 						ausbildung,
 	 						qualitaetssicherung,
@@ -41,8 +43,8 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 			@Option(title = "Postleitzahl") String plz,
 			@Option(title = "Ort") String ort,
 			@Option(title = "Land") String land,
-			@Option(title = "Datum (von)") LocalDate datumVon,
-			@Option(title = "Datum (bis)") LocalDate datumBis,
+			@Option(title = "Datum (von)") LocalDate dateFrom,
+			@Option(title = "Datum (bis)") LocalDate dateTo,
 			@Option(title = "Freizeit") boolean freizeit,
 			@Option(title = "Bildung") boolean bildung,
 			@Option(title = "Aus-/Fortbildung") boolean ausbildung,
@@ -51,8 +53,9 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 		super();
 		this.mitgliedsVerband = mitgliedsVerband;
 		this.traeger = traeger;
-		this.datumVon = datumVon;
-		this.datumBis = datumBis;
+		this.dateFrom = dateFrom;
+		this.dateSet = dateFrom != null && dateTo != null;
+		this.dateTo = dateTo;
 		this.plz = plz;
 		this.ort = ort;
 		this.land = land;
@@ -65,9 +68,8 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
-		boolean dateSet = datumVon != null && datumBis != null;
 		String plzOrt = plz + " " + ort;
-		String dateFromToString = dateSet ? getDateString(datumVon) + " - " + getDateString(datumBis) : "";
+		String dateFromToString = dateSet ? getDateString(dateFrom) + " - " + getDateString(dateTo) : "";
 		List<Tbl> tblList = findTables(doc.getMainDocumentPart().getContent());
 		Tbl tbl = tblList.get(0);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
@@ -82,15 +84,9 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 		getTableCellP(tbl, 1, 0).getContent().add(createR(dateFromToString));
 		getTableCellP(tbl, 1, 1).getContent().add(createR(plzOrt));
 		tbl = tblList.get(9);
-		for (NamiMitglied p : participants)
-			tbl.getContent().add(createTr(
-					"",
-					"",
-					p.getNachname() + ", " + p.getVorname(),
-					p.getPLZ() + " " + p.getOrt(),
-					String.valueOf(getCharacter(p.getGeschlecht())),
-					calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
-					""));
+		for (NamiMitglied p : participants) {
+			tbl.getContent().add(memberToTr(p));
+		}
 		tbl = tblList.get(10);
 		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
 		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
@@ -110,6 +106,17 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 		getTableCellP(tbl, 1, 4).getContent().add(createR(ausbildung ? "x" : ""));
 		getTableCellP(tbl, 1, 6).getContent().add(createR(qualitaetssicherung ? "x" : ""));
 		getTableCellP(tbl, 1, 8).getContent().add(createR(grossveranstaltung ? "x" : ""));
+	}
+
+	private Tr memberToTr(NamiMitglied member) {
+		return createTr(
+				"",
+				"",
+				member.getNachname() + ", " + member.getVorname(),
+				member.getPLZ() + " " + member.getOrt(),
+				String.valueOf(getCharacter(member.getGeschlecht())),
+				calcAgeRange(member.getGeburtsDatum(), dateFrom, dateTo),
+				"");
 	}
 
 	@Override

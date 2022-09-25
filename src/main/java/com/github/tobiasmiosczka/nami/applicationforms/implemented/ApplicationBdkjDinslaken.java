@@ -9,6 +9,7 @@ import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import nami.connector.namitypes.NamiMitglied;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
 import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
@@ -25,58 +26,65 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 							plz,
 							ort,
 							tagungsstaette;
-	private final LocalDate datumVon,
-							datumBis;
+	private final LocalDate dateFrom,
+							dateTo;
+	private final boolean dateSet;
 
 	public ApplicationBdkjDinslaken(
 			@Option(title = "Maßnahme") String massnahme,
-			@Option(title = "Datum (von)") LocalDate datumVon,
-			@Option(title = "Datum (bis)") LocalDate datumBis,
+			@Option(title = "Datum (von)") LocalDate dateFrom,
+			@Option(title = "Datum (bis)") LocalDate dateTo,
 			@Option(title = "PLZ") String plz,
 			@Option(title = "Ort") String ort,
 			@Option(title = "Tagungsstätte") String tagungsstaette) {
 		super();
 		this.massnahme = massnahme;
-		this.datumVon = datumVon;
-		this.datumBis = datumBis;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
 		this.plz = plz;
 		this.ort = ort;
 		this.tagungsstaette = tagungsstaette;
+		this.dateSet = dateFrom != null && dateTo != null;
 	}
 
 	@Override
 	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
 		String plzOrt = plz + " " + ort;
-		boolean dateSet = datumVon != null && datumBis != null;
 		Tbl tblMain = findTables(doc.getMainDocumentPart().getContent()).get(0);
-
-		if (datumVon != null)
-			getTableCellP(tblMain, 5, 1).getContent().add(createR(getDateString(datumVon)));
-		if (datumBis != null)
-			getTableCellP(tblMain, 5, 3).getContent().add(createR(getDateString(datumBis)));
+		if (dateFrom != null) {
+			getTableCellP(tblMain, 5, 1).getContent().add(createR(getDateString(dateFrom)));
+		}
+		if (dateTo != null) {
+			getTableCellP(tblMain, 5, 3).getContent().add(createR(getDateString(dateTo)));
+		}
 		getTableCellP(tblMain, 5, 5).getContent().add(createR(plzOrt));
 		getTableCellP(tblMain, 7, 1).getContent().add(createR(tagungsstaette));
 
 		Tbl tblEvents = findTables(findHeaders(doc).get(0).getContent()).get(0);
 		getTableCellP(tblEvents, 0, 0).getContent().add(createR(massnahme));
-		if (dateSet)
+		if (dateSet) {
 			getTableCellP(tblEvents, 1, 0).getContent()
-					.add(createR(getDateString(datumVon) + " - " + getDateString(datumBis)));
+					.add(createR(getDateString(dateFrom) + " - " + getDateString(dateTo)));
+		}
 		getTableCellP(tblEvents, 1, 1).getContent().add(createR(plzOrt));
-
 		Tbl tblParticipants = findTables(doc.getMainDocumentPart().getContent()).get(1);
 		for (NamiMitglied p : participants) {
-			tblParticipants.getContent().add(createTr(
-					"",
-					p.getNachname(),
-					p.getVorname(),
-					p.getStrasse(),
-					p.getPLZ(),
-					p.getOrt(),
-					getDateString(LocalDate.from(p.getGeburtsDatum())),
-					(dateSet) ? calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis) : "",
-					"", ""));
+			tblParticipants.getContent().add(memberToTr(p));
 		}
+	}
+
+	private Tr memberToTr(NamiMitglied member) {
+		return createTr(
+				"",
+				member.getNachname(),
+				member.getVorname(),
+				member.getStrasse(),
+				member.getPLZ(),
+				member.getOrt(),
+				getDateString(LocalDate.from(member.getGeburtsDatum())),
+				(dateSet) ? calcAgeRange(member.getGeburtsDatum(), dateFrom, dateTo) : "",
+				"",
+				"");
 	}
 
 	@Override

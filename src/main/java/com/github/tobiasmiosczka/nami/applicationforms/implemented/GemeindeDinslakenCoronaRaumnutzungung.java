@@ -45,7 +45,7 @@ public class GemeindeDinslakenCoronaRaumnutzungung extends DocumentWriter {
                     p.getPLZ() + " " + p.getOrt(),
                     p.getTelefon1(),
                     ""));
-        addBorders(tbl);
+        addBorders(tbl, "auto", 4L, 0L);
     }
 
     @Override

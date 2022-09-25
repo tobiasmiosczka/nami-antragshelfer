@@ -11,12 +11,16 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 public abstract class DocumentWriter {
 
 	public void run(OutputStream outputStream, List<NamiMitglied> participants) throws Docx4JException {
-		InputStream is = Thread.currentThread()
-				.getContextClassLoader()
-				.getResourceAsStream("forms/" + getResourceFileName());
+		InputStream is = loadResource();
 		WordprocessingMLPackage doc = WordprocessingMLPackage.load(is);
 		manipulateDoc(participants, doc);
 		doc.save(outputStream);
+	}
+
+	private InputStream loadResource() {
+		return Thread.currentThread()
+				.getContextClassLoader()
+				.getResourceAsStream("forms/" + getResourceFileName());
 	}
 
 	protected abstract void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc);

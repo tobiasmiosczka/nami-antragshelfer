@@ -89,12 +89,12 @@ public class DocUtil {
         return result;
     }
 
-    public static void addBorders(Tbl table) {
+    public static void addBorders(Tbl table, String color, long size, long space) {
         table.setTblPr(new TblPr());
         CTBorder border = new CTBorder();
-        border.setColor("auto");
-        border.setSz(new BigInteger("4"));
-        border.setSpace(new BigInteger("0"));
+        border.setColor(color);
+        border.setSz(BigInteger.valueOf(size));
+        border.setSpace(BigInteger.valueOf(space));
         border.setVal(STBorder.SINGLE);
 
         TblBorders borders = new TblBorders();
