@@ -3,9 +3,12 @@ package com.github.tobiasmiosczka.nami.model;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PhoneContact {
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("\\((?<name>.*?)\\)");
     private final String phoneNumber;
     private final String name;
 
@@ -27,14 +30,13 @@ public class PhoneContact {
     }
 
     private static PhoneContact getPhoneContact(String string) {
-        String name = null;
-        int iOpenBracket = string.indexOf('(');
-        int iCloseBracket = string.lastIndexOf(')');
-        if(iOpenBracket >= 0 && iCloseBracket >= 0 && iCloseBracket > iOpenBracket) {
-            name = string.substring(iOpenBracket + 1, iCloseBracket).trim();
-            string = string.replace( '(' + name + ')', "");
+        Matcher matcher = NAME_PATTERN.matcher(string);
+        if (matcher.find()) {
+            String name = matcher.group("name").trim();
+            String number = matcher.replaceFirst("").trim();
+            return new PhoneContact(name, number);
         }
-        return new PhoneContact(name, string.trim());
+        return new PhoneContact(null, string.trim());
     }
 
     public static List<PhoneContact> getPhoneContacts(String string){
@@ -43,6 +45,6 @@ public class PhoneContact {
         return Arrays.stream(string.split(";"))
                 .filter(s -> s != null && !s.isBlank())
                 .map(PhoneContact::getPhoneContact)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
