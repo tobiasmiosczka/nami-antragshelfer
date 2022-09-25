@@ -44,7 +44,7 @@ public class NamiService {
         //TODO: make multithreaded
         List<Map<NamiBaustein, NamiSchulung>> result = new ArrayList<>();
         for (NamiMitglied participant : member)
-            result.add(connector.getSchulungen(participant));
+            result.add(connector.getSchulungen(participant.getId()));
         return result;
     }
 
@@ -60,7 +60,7 @@ public class NamiService {
         NamiGruppierung group = gui.selectGroup(connector.getGruppierungenFromUser());
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null)
-            namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGruppierungsnummer()));
+            namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGroupId()));
         if (!loadInactive)
             namiSearchedValues.setMitgliedStatus(NamiMitgliedStatus.AKTIV);
         NamiDataLoader.load(connector, namiSearchedValues, new NamiDataLoader.Listener() {
