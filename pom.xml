@@ -11,10 +11,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>15</maven.compiler.release>
-        <maven.compiler.target>15</maven.compiler.target>
-        <maven.compiler.source>15</maven.compiler.source>
-        <javafx.version>15.0.1</javafx.version>
+        <maven.compiler.release>18</maven.compiler.release>
+        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>18</maven.compiler.source>
+        <javafx.version>18.0.2</javafx.version>
         <junit.version>5.9.0</junit.version>
         <main.class>com.github.tobiasmiosczka.nami.Starter</main.class>
         <app.class>com.github.tobiasmiosczka.nami.view.App</app.class>
@@ -48,7 +48,7 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.5</version>
+                <version>0.0.8</version>
                 <configuration>
                     <launcher>Nami-Antragshelfer</launcher>
                     <jlinkZipName>Nami-Antragshelfer</jlinkZipName>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.docx4j</groupId>
             <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-            <version>11.2.8</version>
+            <version>11.4.8</version>
         </dependency>
 
         <!-- Testing -->
