@@ -11,8 +11,8 @@ Die aktuelle Version des NaMi-Antragshelfers kann [hier][3] heruntergeladen werd
 
 Systemvoraussetzungen
 ----------------------------------------------------------------------
-Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit (JDK) 18 benötigt.
-Die kostenlose Version des JDKs (OpenJDK) gibt es [hier][4].
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Runtime Enviroments (JRE) 18 benötigt.
+Die kostenlose Version des JREs (Temurin) gibt es [hier][4].
 
 Unterstützte Anträge & Listen
 ----------------------------------------------------------------------
@@ -25,7 +25,7 @@ Unterstützte Anträge & Listen
 * Listen
   * Notfall-Telefonliste
   * Anwesenheitsliste
-  
+
 Danksagung
 ----------------------------------------------------------------------
 Ein besonderer Dank geht an [Fabian Lipp][5] für die Veröffentlichung der ursprünglichen Klassen des NaMi-Connectors.
