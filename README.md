@@ -11,7 +11,7 @@ Die aktuelle Version des NaMi-Antragshelfers kann [hier][3] heruntergeladen werd
 
 Systemvoraussetzungen
 ----------------------------------------------------------------------
-Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit (JDK) 15 benötigt.
+Zum Ausführen des NaMi-Antragshelfers wird eine Installation des Java Development Kit (JDK) 18 benötigt.
 Die kostenlose Version des JDKs (OpenJDK) gibt es [hier][4].
 
 Unterstützte Anträge & Listen
@@ -32,11 +32,10 @@ Ein besonderer Dank geht an [Fabian Lipp][5] für die Veröffentlichung der ursp
 
 Kompilierung
 ----------------------------------------------------------------------
-Zur Kompilierung benötigt das Projekt JDK 15.
+Zur Kompilierung benötigt das Projekt JDK 18.
 Die Kompilierung und Paketierung erfolgt über die folgenden Maven-Befehle:
 ```
-mvn clean
-mvn package
+mvn clean package
 ```
 
 Changelog
@@ -50,7 +49,7 @@ Der Code unterliegt der GNU GPL. Der vollständige Lizenztext befindet sich in [
 
 
 ```
-Copyright (C) 2013 - 2021 Tobias Miosczka
+Copyright (C) 2013 - 2022 Tobias Miosczka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -68,7 +67,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 [1]: https://dpsg.de/
 [2]: https://nami.dpsg.de/
 [3]: https://github.com/tobiasmiosczka/nami-antragshelfer/releases/latest
-[4]: https://adoptopenjdk.net/?variant=openjdk15&jvmVariant=hotspot
+[4]: https://adoptopenjdk.net/?variant=openjdk18&jvmVariant=hotspot
 [5]: https://github.com/fabianlipp
 [6]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/CHANGELOG.md
 [7]: https://github.com/TobiasMiosczka/NaMiAntragshelfer/blob/master/LICENSE
