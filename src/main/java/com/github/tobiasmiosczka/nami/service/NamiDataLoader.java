@@ -16,9 +16,9 @@ public class NamiDataLoader {
 	}
 
 	public static void load(NamiConnector connector, NamiSearchedValues searchedValues, Listener listener) {
-		long startTime = System.currentTimeMillis();
 		Thread thread = new Thread(() -> {
 			try {
+				long startTime = System.currentTimeMillis();
 				Collection<NamiMitglied> result = connector.getAllResults(searchedValues).get();
 				AtomicInteger i = new AtomicInteger();
 				for (NamiMitglied member : result) {

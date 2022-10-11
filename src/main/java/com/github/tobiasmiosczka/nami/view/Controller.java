@@ -19,7 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 import nami.connector.exception.NamiException;
-import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiGeschlecht;
@@ -37,7 +36,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class Controller implements Initializable, NamiService.Listener {
 
@@ -116,9 +114,6 @@ public class Controller implements Initializable, NamiService.Listener {
         } catch (NamiException e) {
             onException("Fehler beim Login", e);
             return;
-        } catch (IOException | InterruptedException e) {
-            onException("Netzwerkfehler", e);
-            return;
         }
         fxIdTfUsername.setDisable(true);
         fxIdPfPassword.setText("");
@@ -128,7 +123,7 @@ public class Controller implements Initializable, NamiService.Listener {
         fxIdBtLogin.setText("Logout");
         try {
             namiService.loadData(true);
-        } catch (IOException | NamiException | InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             onException("Fehler beim Laden der Mitgliedsdaten", e);
         }
     }
