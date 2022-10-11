@@ -6,12 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
 
 import nami.connector.NamiConnector;
 import nami.connector.NamiServer;
 import nami.connector.exception.NamiException;
-import nami.connector.exception.NamiLoginException;
 import nami.connector.namitypes.NamiBaustein;
 import nami.connector.namitypes.NamiGruppierung;
 import nami.connector.namitypes.NamiMitglied;
@@ -40,30 +39,31 @@ public class NamiService {
         this.gui = gui;
     }
 
-    public List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws IOException, NamiException, InterruptedException {
+    public List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws InterruptedException, ExecutionException {
         //TODO: make multithreaded
         List<Map<NamiBaustein, NamiSchulung>> result = new ArrayList<>();
         for (NamiMitglied participant : member)
-            result.add(connector.getSchulungen(participant.getId()));
+            result.add(connector.getLatestTrainingsByUser(participant.getId()).get());
         return result;
     }
 
-    public void login(String username, String password) throws NamiLoginException, IOException, InterruptedException {
+    public void login(String username, String password) throws NamiException, IOException, InterruptedException {
         connector = new NamiConnector(NamiServer.getLiveserver());
         connector.login(username, password);
         isLoggedIn = true;
     }
 
-    public void loadData(boolean loadInactive) throws IOException, NamiException, InterruptedException {
+    public void loadData(boolean loadInactive) throws IOException, NamiException, InterruptedException, ExecutionException {
         members.clear();
         participants.clear();
-        NamiGruppierung group = gui.selectGroup(connector.getGruppierungenFromUser());
+        NamiGruppierung group = gui.selectGroup(connector.getAccessibleGroups().get());
         NamiSearchedValues namiSearchedValues = new NamiSearchedValues();
         if (group != null)
             namiSearchedValues.setGruppierungsnummer(String.valueOf(group.getGroupId()));
         if (!loadInactive)
             namiSearchedValues.setMitgliedStatus(NamiMitgliedStatus.AKTIV);
         NamiDataLoader.load(connector, namiSearchedValues, new NamiDataLoader.Listener() {
+
             @Override
             public void onUpdate(int current, int count, NamiMitglied newMember) {
                 members.add(newMember);
@@ -98,7 +98,7 @@ public class NamiService {
     public synchronized void putMembersToParticipants(Collection<NamiMitglied> newMembers) {
         Collection<NamiMitglied> filtered = newMembers.stream()
                 .filter(this.members::contains)
-                .collect(Collectors.toList());
+                .toList();
         this.members.removeAll(filtered);
         this.participants.addAll(filtered);
         gui.onMemberListUpdated();
@@ -108,7 +108,7 @@ public class NamiService {
     public synchronized void putParticipantsToMembers(Collection<NamiMitglied> newParticipants) {
         Collection<NamiMitglied> filtered = newParticipants.stream()
                 .filter(this.participants::contains)
-                .collect(Collectors.toList());
+                .toList();
         this.participants.removeAll(filtered);
         this.members.addAll(filtered);
         gui.onMemberListUpdated();

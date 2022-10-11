@@ -71,7 +71,7 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 					p.getNachname(),
 					p.getVorname(),
 					p.getStrasse(),
-					p.getPLZ(),
+					p.getPlz(),
 					p.getOrt(),
 					getDateString(LocalDate.from(p.getGeburtsDatum())),
 					(dateSet) ? calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis) : "",

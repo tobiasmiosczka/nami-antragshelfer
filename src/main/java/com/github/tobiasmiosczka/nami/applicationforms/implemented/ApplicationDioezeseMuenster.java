@@ -87,7 +87,7 @@ public class ApplicationDioezeseMuenster extends DocumentWriter {
 					"",
 					"",
 					p.getNachname() + ", " + p.getVorname(),
-					p.getPLZ() + " " + p.getOrt(),
+					p.getPlz() + " " + p.getOrt(),
 					String.valueOf(getCharacter(p.getGeschlecht())),
 					calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
 					""));

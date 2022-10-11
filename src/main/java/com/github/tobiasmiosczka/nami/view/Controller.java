@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -112,7 +113,7 @@ public class Controller implements Initializable, NamiService.Listener {
     private void login(String username, String password) {
         try {
             namiService.login(username, password);
-        } catch (NamiLoginException e) {
+        } catch (NamiException e) {
             onException("Fehler beim Login", e);
             return;
         } catch (IOException | InterruptedException e) {
@@ -127,7 +128,7 @@ public class Controller implements Initializable, NamiService.Listener {
         fxIdBtLogin.setText("Logout");
         try {
             namiService.loadData(true);
-        } catch (IOException | NamiException | InterruptedException e) {
+        } catch (IOException | NamiException | InterruptedException | ExecutionException e) {
             onException("Fehler beim Laden der Mitgliedsdaten", e);
         }
     }
@@ -144,12 +145,11 @@ public class Controller implements Initializable, NamiService.Listener {
     private void updateMembersList() {
         List<NamiMitglied> filteredMember = namiService.getMember().stream()
                 .filter(this::checkFilter)
-                .collect(Collectors.toList());
+                .toList();
         List<NamiMitglied> selected = new LinkedList<>(fxIdTvMember.getSelectionModel().getSelectedItems());
         fxIdTvMember.getItems().setAll(filteredMember);
         int[] indices = selected.stream().mapToInt(fxIdTvMember.getItems()::indexOf).toArray();
         fxIdTvMember.getSelectionModel().selectIndices(-1, indices);
-
         fxIdTvMember.sort();
     }
 
