@@ -1,10 +1,10 @@
 package com.github.tobiasmiosczka.nami.updater;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tobiasmiosczka.nami.util.BrowserUtil;
 import com.github.tobiasmiosczka.nami.util.VersionUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,9 +16,9 @@ public class Updater {
 
     private static class Release {
 
-        @SerializedName("html_url")
+        @JsonProperty("html_url")
         private String htmlUrl;
-        @SerializedName("tag_name")
+        @JsonProperty("tag_name")
         private String tagName;
         private String name;
         private Boolean draft;
@@ -46,13 +46,14 @@ public class Updater {
 
     }
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     private static Release getLatestRelease() throws IOException {
         URL url = new URL("https://api.github.com/repos/tobiasmiosczka/nami-antragshelfer/releases/latest");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-        return GSON.fromJson(new InputStreamReader(con.getInputStream()), Release.class);
+        return OBJECT_MAPPER.readValue(new InputStreamReader(con.getInputStream()), Release.class);
     }
 
     public static boolean updateAvailable() throws IOException {

@@ -47,7 +47,7 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 			tbl.getContent().add(createTr(
 				p.getNachname() + ", " + p.getVorname(),
 					p.getStrasse(),
-					p.getPLZ() + " " + p.getOrt(),
+					p.getPlz() + " " + p.getOrt(),
 					String.valueOf(calcAge(p.getGeburtsDatum(), datum)),
 					getLeiterString(p.getGeschlecht()),
 					getYear(s, NamiBaustein.MLK),

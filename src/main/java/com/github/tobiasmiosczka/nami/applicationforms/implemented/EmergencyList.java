@@ -47,7 +47,7 @@ public class EmergencyList extends DocumentWriter {
 					p.getNachname(),
 					getEmergencyContactsString(p),
 					p.getOrt(),
-					p.getPLZ(),
+					p.getPlz(),
 					p.getStrasse(),
 					getDateString(LocalDate.from(p.getGeburtsDatum()))));
 	}
