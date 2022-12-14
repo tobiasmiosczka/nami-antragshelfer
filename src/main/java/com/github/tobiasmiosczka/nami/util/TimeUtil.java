@@ -17,6 +17,8 @@ public class TimeUtil {
     }
 
     public static String calcAgeRange(LocalDateTime birthday, LocalDate from, LocalDate to) {
+        if (from == null || to == null)
+            return "";
         int ageStart = calcAge(birthday, from);
         int ageEnd = calcAge(birthday, to);
         if (ageStart == ageEnd)

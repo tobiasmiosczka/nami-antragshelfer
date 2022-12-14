@@ -47,13 +47,13 @@ public class NamiService {
         return result;
     }
 
-    public void login(String username, String password) throws NamiException, IOException, InterruptedException {
+    public void login(String username, String password) throws NamiException {
         connector = new NamiConnector(NamiServer.getLiveserver());
         connector.login(username, password);
         isLoggedIn = true;
     }
 
-    public void loadData(boolean loadInactive) throws IOException, NamiException, InterruptedException, ExecutionException {
+    public void loadData(boolean loadInactive) throws InterruptedException, ExecutionException {
         members.clear();
         participants.clear();
         NamiGruppierung group = gui.selectGroup(connector.getAccessibleGroups().get());
