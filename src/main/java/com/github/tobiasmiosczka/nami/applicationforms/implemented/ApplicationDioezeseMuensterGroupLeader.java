@@ -3,33 +3,34 @@ package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Participants;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Training;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Document;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Table;
 import nami.connector.namitypes.NamiBaustein;
 import nami.connector.namitypes.NamiMitglied;
 import nami.connector.namitypes.NamiSchulung;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.Tbl;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.addBorders;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
 import static com.github.tobiasmiosczka.nami.util.GenderUtil.getLeiterString;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAge;
 
 @Form(title = "Antrag an Diözese Münster (Leiter)")
 public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 
+	private final List<NamiMitglied> participants;
 	private final LocalDate datum;
 	private final List<Map<NamiBaustein, NamiSchulung>> schulungen;
 
 	public ApplicationDioezeseMuensterGroupLeader(
+			@Participants List<NamiMitglied> participants,
 			@Training List<Map<NamiBaustein, NamiSchulung>> schulungen,
 			@Option(title = "datum") LocalDate datum) {
 		super();
+		this.participants = participants;
 		this.schulungen = schulungen;
 		this.datum = datum;
 	}
@@ -39,12 +40,12 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
-		Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
+	public void manipulateDoc(Document document){
+		Table table = document.getMainDocumentPart().getTables().get(0);
 		for (int i = 0; i < participants.size(); ++i) {
 			NamiMitglied p = participants.get(i);
 			Map<NamiBaustein, NamiSchulung> s = schulungen.get(i);
-			tbl.getContent().add(createTr(
+			table.addRow(
 				p.getNachname() + ", " + p.getVorname(),
 					p.getStrasse(),
 					p.getPlz() + " " + p.getOrt(),
@@ -55,9 +56,9 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 					getYear(s, NamiBaustein.BAUSTEIN_1B),
 					getYear(s, NamiBaustein.BAUSTEIN_2D),
 					getYear(s, NamiBaustein.BAUSTEIN_3B),
-					getYear(s, NamiBaustein.BAUSTEIN_3C)));
+					getYear(s, NamiBaustein.BAUSTEIN_3C));
 		}
-		addBorders(tbl);
+		table.setBorders(4);
 	}
 
 	@Override

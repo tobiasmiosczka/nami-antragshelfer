@@ -6,21 +6,18 @@ import java.util.List;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Participants;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Document;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Table;
 import nami.connector.namitypes.NamiMitglied;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.Tbl;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findHeaders;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.getTableCellP;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAgeRange;
 import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
 
 @Form(title = "Antrag an BDKJ Dinslaken")
 public class ApplicationBdkjDinslaken extends DocumentWriter {
 
+	private final List<NamiMitglied> participants;
 	private final String 	massnahme,
 							plz,
 							ort,
@@ -29,6 +26,7 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 							datumBis;
 
 	public ApplicationBdkjDinslaken(
+			@Participants List<NamiMitglied> participants,
 			@Option(title = "Maßnahme") String massnahme,
 			@Option(title = "Datum (von)") LocalDate datumVon,
 			@Option(title = "Datum (bis)") LocalDate datumBis,
@@ -36,6 +34,7 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 			@Option(title = "Ort") String ort,
 			@Option(title = "Tagungsstätte") String tagungsstaette) {
 		super();
+		this.participants = participants;
 		this.massnahme = massnahme;
 		this.datumVon = datumVon;
 		this.datumBis = datumBis;
@@ -45,28 +44,27 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 	}
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
+	public void manipulateDoc(Document document) {
 		String plzOrt = plz + " " + ort;
 		boolean dateSet = datumVon != null && datumBis != null;
-		Tbl tblMain = findTables(doc.getMainDocumentPart().getContent()).get(0);
+		Table tableMain = document.getMainDocumentPart().getTables().get(0);
 
 		if (datumVon != null)
-			getTableCellP(tblMain, 5, 1).getContent().add(createR(getDateString(datumVon)));
+			tableMain.cellAt(5, 1).add(getDateString(datumVon));
 		if (datumBis != null)
-			getTableCellP(tblMain, 5, 3).getContent().add(createR(getDateString(datumBis)));
-		getTableCellP(tblMain, 5, 5).getContent().add(createR(plzOrt));
-		getTableCellP(tblMain, 7, 1).getContent().add(createR(tagungsstaette));
+			tableMain.cellAt(5, 3).add(getDateString(datumBis));
+		tableMain.cellAt(5, 5).add(plzOrt);
+		tableMain.cellAt(7, 1).add(tagungsstaette);
 
-		Tbl tblEvents = findTables(findHeaders(doc).get(0).getContent()).get(0);
-		getTableCellP(tblEvents, 0, 0).getContent().add(createR(massnahme));
+		Table tableEvents = document.getHeaders().get(0).getTables().get(0);
+		tableEvents.cellAt(0, 0).add(massnahme);
 		if (dateSet)
-			getTableCellP(tblEvents, 1, 0).getContent()
-					.add(createR(getDateString(datumVon) + " - " + getDateString(datumBis)));
-		getTableCellP(tblEvents, 1, 1).getContent().add(createR(plzOrt));
+			tableEvents.cellAt(1, 0).add(getDateString(datumVon) + " - " + getDateString(datumBis));
+		tableEvents.cellAt(1, 1).add(plzOrt);
 
-		Tbl tblParticipants = findTables(doc.getMainDocumentPart().getContent()).get(1);
+		Table tableParticipants = document.getMainDocumentPart().getTables().get(1);
 		for (NamiMitglied p : participants) {
-			tblParticipants.getContent().add(createTr(
+			tableParticipants.addRow(
 					"",
 					p.getNachname(),
 					p.getVorname(),
@@ -75,7 +73,7 @@ public class ApplicationBdkjDinslaken extends DocumentWriter {
 					p.getOrt(),
 					getDateString(LocalDate.from(p.getGeburtsDatum())),
 					(dateSet) ? calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis) : "",
-					"", ""));
+					"", "");
 		}
 	}
 
