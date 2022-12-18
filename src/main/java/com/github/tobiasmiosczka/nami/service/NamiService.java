@@ -53,7 +53,6 @@ public class NamiService {
     }
 
     public void login(String username, String password) throws NamiException, InterruptedException {
-    public void login(String username, String password) throws NamiException {
         connector = new NamiConnector(NamiServer.getLiveserver());
         connector.login(username, password);
         isLoggedIn = true;
