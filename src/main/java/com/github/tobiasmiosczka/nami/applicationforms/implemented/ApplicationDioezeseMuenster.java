@@ -3,117 +3,126 @@ package com.github.tobiasmiosczka.nami.applicationforms.implemented;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Participants;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Document;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Table;
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Option;
 import nami.connector.namitypes.NamiMitglied;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.Tbl;
 
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createR;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findHeaders;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.getTableCellP;
 import static com.github.tobiasmiosczka.nami.util.GenderUtil.getCharacter;
-import static com.github.tobiasmiosczka.nami.util.TimeUtil.calcAgeRange;
-import static com.github.tobiasmiosczka.nami.util.TimeUtil.getDateString;
+import static com.github.tobiasmiosczka.nami.util.TimeUtil.*;
 
 @Form(title = "Antrag an Diözese Münster")
 public class ApplicationDioezeseMuenster extends DocumentWriter {
 
-	private final String 	mitgliedsVerband,
-							traeger,
-							plz,
-							ort,
-							land;
-	private final LocalDate datumVon,
-							datumBis;
-	private final boolean  	freizeit,
-							bildung,
-	 						ausbildung,
-	 						qualitaetssicherung,
-	 						grossveranstaltung;
+    private final List<NamiMitglied> participants;
+    private final String mitgliedsVerband;
+    private final String traeger;
+    private final String plz;
+    private final String ort;
+    private final String land;
+    private final LocalDate datumVon;
+    private final LocalDate datumBis;
+    private final boolean freizeit;
+    private final boolean bildung;
+    private final boolean ausbildung;
+    private final boolean qualitaetssicherung;
+    private final boolean grossveranstaltung;
 
-	public ApplicationDioezeseMuenster(
-			@Option(title = "Mitgliedsverband") String mitgliedsVerband,
-			@Option(title = "Träger") String traeger,
-			@Option(title = "Postleitzahl") String plz,
-			@Option(title = "Ort") String ort,
-			@Option(title = "Land") String land,
-			@Option(title = "Datum (von)") LocalDate datumVon,
-			@Option(title = "Datum (bis)") LocalDate datumBis,
-			@Option(title = "Freizeit") boolean freizeit,
-			@Option(title = "Bildung") boolean bildung,
-			@Option(title = "Aus-/Fortbildung") boolean ausbildung,
-			@Option(title = "Qualitätssicherung") boolean qualitaetssicherung,
-			@Option(title = "Großveranstaltung") boolean grossveranstaltung) {
-		super();
-		this.mitgliedsVerband = mitgliedsVerband;
-		this.traeger = traeger;
-		this.datumVon = datumVon;
-		this.datumBis = datumBis;
-		this.plz = plz;
-		this.ort = ort;
-		this.land = land;
-		this.freizeit = freizeit;
-		this.bildung = bildung;
-		this.ausbildung = ausbildung;
-		this.qualitaetssicherung = qualitaetssicherung;
-		this.grossveranstaltung = grossveranstaltung;
-	}
+    public ApplicationDioezeseMuenster(
+            @Participants List<NamiMitglied> participants,
+            @Option(title = "Mitgliedsverband") String mitgliedsVerband,
+            @Option(title = "Träger") String traeger,
+            @Option(title = "Postleitzahl") String plz,
+            @Option(title = "Ort") String ort,
+            @Option(title = "Land") String land,
+            @Option(title = "Datum (von)") LocalDate datumVon,
+            @Option(title = "Datum (bis)") LocalDate datumBis,
+            @Option(title = "Freizeit") boolean freizeit,
+            @Option(title = "Bildung") boolean bildung,
+            @Option(title = "Aus-/Fortbildung") boolean ausbildung,
+            @Option(title = "Qualitätssicherung") boolean qualitaetssicherung,
+            @Option(title = "Großveranstaltung") boolean grossveranstaltung) {
+        super();
+        this.participants = participants;
+        this.mitgliedsVerband = mitgliedsVerband;
+        this.traeger = traeger;
+        this.datumVon = datumVon;
+        this.datumBis = datumBis;
+        this.plz = plz;
+        this.ort = ort;
+        this.land = land;
+        this.freizeit = freizeit;
+        this.bildung = bildung;
+        this.ausbildung = ausbildung;
+        this.qualitaetssicherung = qualitaetssicherung;
+        this.grossveranstaltung = grossveranstaltung;
+    }
+
+    @Override
+    public void manipulateDoc(Document document) {
+        String dateFromToString = datumVon != null && datumBis != null ? getDateString(datumVon) + " - " + getDateString(datumBis) : "";
+        List<Table> tables = document.getMainDocumentPart().getTables();
+
+        Table table = tables.get(0);
+        table.cellAt(0, 2).add(mitgliedsVerband);
+        table.cellAt(1, 2).add(traeger);
+
+        table = tables.get(1);
+        table.cellAt(1, 0).add(dateFromToString);
+        table.cellAt(1, 1).add(plz + " " + ort);
+
+        table = tables.get(5);
+        table.cellAt(0, 2).add(mitgliedsVerband);
+        table.cellAt(1, 2).add(traeger);
+
+        table = tables.get(6);
+        table.cellAt(1, 0).add(dateFromToString);
+        table.cellAt(1, 1).add(plz + " " + ort);
+
+        fillParticipants(tables.get(9));
+
+        table = tables.get(10);
+        table.cellAt(0, 2).add(mitgliedsVerband);
+        table.cellAt(1, 2).add(traeger);
+
+        table = tables.get(11);
+        table.cellAt(2, 0).add(dateFromToString);
+        table.cellAt(2, 1).add(plz + " " + ort);
+
+        //tables = findTables(findHeaders(doc).get(2).getContent());
+        tables = document.getHeaders().get(2).getTables();
+
+        table = tables.get(0);
+        table.cellAt(0, 2).add(mitgliedsVerband);
+        table.cellAt(1, 2).add(traeger);
+        table = tables.get(1);
+        table.cellAt(0, 1).add(dateFromToString);
+        table.cellAt(0, 3).add(plz + " " + ort);
+        table.cellAt(0, 5).add(land);
+        table.cellAt(1, 0).add(freizeit ? "x" : "");
+        table.cellAt(1, 2).add(bildung ? "x" : "");
+        table.cellAt(1, 4).add(ausbildung ? "x" : "");
+        table.cellAt(1, 6).add(qualitaetssicherung ? "x" : "");
+        table.cellAt(1, 8).add(grossveranstaltung ? "x" : "");
+    }
+
+    private void fillParticipants(Table table) {
+        for (NamiMitglied e : participants) {
+            table.addRow("",
+                    "",
+                    e.getNachname() + ", " + e.getVorname(),
+                    e.getPlz() + " " + e.getOrt(),
+                    String.valueOf(getCharacter(e.getGeschlecht())),
+                    calcAgeRange(e.getGeburtsDatum(), datumVon, datumBis),
+                    "");
+        }
+    }
 
 	@Override
-	public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc) {
-		boolean dateSet = datumVon != null && datumBis != null;
-		String plzOrt = plz + " " + ort;
-		String dateFromToString = dateSet ? getDateString(datumVon) + " - " + getDateString(datumBis) : "";
-		List<Tbl> tblList = findTables(doc.getMainDocumentPart().getContent());
-		Tbl tbl = tblList.get(0);
-		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
-		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-		tbl = tblList.get(1);
-		getTableCellP(tbl, 1, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 1, 1).getContent().add(createR(plzOrt));
-		tbl = tblList.get(5);
-		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
-		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-		tbl = tblList.get(6);
-		getTableCellP(tbl, 1, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 1, 1).getContent().add(createR(plzOrt));
-		tbl = tblList.get(9);
-		for (NamiMitglied p : participants)
-			tbl.getContent().add(createTr(
-					"",
-					"",
-					p.getNachname() + ", " + p.getVorname(),
-					p.getPlz() + " " + p.getOrt(),
-					String.valueOf(getCharacter(p.getGeschlecht())),
-					calcAgeRange(p.getGeburtsDatum(), datumVon, datumBis),
-					""));
-		tbl = tblList.get(10);
-		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
-		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-		tbl = tblList.get(11);
-		getTableCellP(tbl, 2, 0).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 2, 1).getContent().add(createR(plzOrt));
-		tblList = findTables(findHeaders(doc).get(2).getContent());
-		tbl = tblList.get(0);
-		getTableCellP(tbl, 0, 2).getContent().add(createR(mitgliedsVerband));
-		getTableCellP(tbl, 1, 2).getContent().add(createR(traeger));
-		tbl = tblList.get(1);
-		getTableCellP(tbl, 0, 1).getContent().add(createR(dateFromToString));
-		getTableCellP(tbl, 0, 3).getContent().add(createR(plzOrt));
-		getTableCellP(tbl, 0, 5).getContent().add(createR(land));
-		getTableCellP(tbl, 1, 0).getContent().add(createR(freizeit ? "x" : ""));
-		getTableCellP(tbl, 1, 2).getContent().add(createR(bildung ? "x" : ""));
-		getTableCellP(tbl, 1, 4).getContent().add(createR(ausbildung ? "x" : ""));
-		getTableCellP(tbl, 1, 6).getContent().add(createR(qualitaetssicherung ? "x" : ""));
-		getTableCellP(tbl, 1, 8).getContent().add(createR(grossveranstaltung ? "x" : ""));
-	}
-
-	@Override
-	protected String getResourceFileName() {
-		return "DPSG-Münster-16.12.2020.docx";
-	}
+    protected String getResourceFileName() {
+        return "DPSG-Münster-16.12.2020.docx";
+    }
 }

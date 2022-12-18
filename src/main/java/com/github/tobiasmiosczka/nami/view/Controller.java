@@ -29,11 +29,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.chrono.ChronoLocalDate;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,7 +87,14 @@ public class Controller implements Initializable, NamiService.Listener {
                 fxIdTvParticipants,
                 namiService::putMembersToParticipants,
                 namiService::putParticipantsToMembers);
-        ApplicationFormsMenuUtil.init(fxIdMnApplicationForms, namiService, this::onException,
+        ApplicationFormsMenuUtil.init(fxIdMnApplicationForms, namiService::getParticipants, () -> {
+                    try {
+                        return namiService.loadTrainingsOfParticipants();
+                    } catch (ExecutionException | InterruptedException e) {
+                        onException("Fehler beim laden der Module.", e);
+                        return null;
+                    }
+                }, this::onException,
                 List.of(
                     ApplicationBdkjDinslaken.class,
                     GemeindeDinslakenCoronaRaumnutzungung.class,
@@ -114,6 +119,9 @@ public class Controller implements Initializable, NamiService.Listener {
         } catch (NamiException e) {
             onException("Fehler beim Login", e);
             return;
+        } catch (InterruptedException e) {
+            onException("Netzwerkfehler", e);
+            return;
         }
         fxIdTfUsername.setDisable(true);
         fxIdPfPassword.setText("");
@@ -123,7 +131,7 @@ public class Controller implements Initializable, NamiService.Listener {
         fxIdBtLogin.setText("Logout");
         try {
             namiService.loadData(true);
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (NamiException | InterruptedException | ExecutionException e) {
             onException("Fehler beim Laden der Mitgliedsdaten", e);
         }
     }
@@ -185,6 +193,10 @@ public class Controller implements Initializable, NamiService.Listener {
     @FXML
     private void checkForUpdates() {
         checkForUpdates(false);
+    }
+
+    private static Predicate<? super NamiMitglied> isInAgeGroup(NamiStufe...ageGroups) {
+        return e -> Arrays.asList(ageGroups).contains(e.getStufe());
     }
 
     private boolean checkFilter(NamiMitglied m) {
