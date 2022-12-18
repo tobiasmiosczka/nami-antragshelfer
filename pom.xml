@@ -46,9 +46,6 @@
                     <launcher>Nami-Antragshelfer</launcher>
                     <jlinkZipName>Nami-Antragshelfer</jlinkZipName>
                     <mainClass>${app.class}</mainClass>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                    <release>${maven.compiler.release}</release>
                     <bindServices>true</bindServices>
                 </configuration>
             </plugin>
