@@ -1,4 +1,4 @@
-package com.github.tobiasmiosczka.nami.applicationforms;
+package com.github.tobiasmiosczka.nami.applicationforms.api;
 
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
@@ -27,40 +27,40 @@ import java.util.stream.Collectors;
 
 public class DocUtil {
 
-    private static final ObjectFactory FACTORY = ObjectFactory.get();
+    protected static final ObjectFactory FACTORY = ObjectFactory.get();
 
-    public static Text createText(String content) {
+    protected static Text createText(String content) {
         Text text = FACTORY.createText();
         text.setValue(content);
         return text;
     }
 
-    public static R createR(String content) {
+    protected static R createR(String content) {
         R r = FACTORY.createR();
         r.getContent().add(createText(content));
         return r;
     }
 
-    public static P createP(String content) {
+    protected static P createP(String content) {
         P p = FACTORY.createP();
         p.getContent().add(createR(content));
         return p;
     }
 
-    public static Tc createTc(String content) {
+    protected static Tc createTc(String content) {
         Tc tc = FACTORY.createTc();
         tc.getContent().add(createP(content));
         return tc;
     }
 
-    public static Tr createTr(String...contents) {
+    protected static Tr createTr(String...contents) {
         Tr tr = FACTORY.createTr();
         for (String content : contents)
             tr.getContent().add(createTc(content));
         return tr;
     }
 
-    public static List<Tbl> findTables(List<Object> objects) {
+    protected static List<Tbl> findTables(List<Object> objects) {
         TableFinder tableFinder = new TableFinder();
         new TraversalUtil(objects, tableFinder);
         return tableFinder.tblList.stream()
@@ -70,7 +70,7 @@ public class DocUtil {
                 .collect(Collectors.toList());
     }
 
-    public static P getTableCellP(Tbl tbl, int row, int column) {
+    protected static P getTableCellP(Tbl tbl, int row, int column) {
         Tr tr = (Tr) tbl.getContent().get(row);
         Tc tc = (Tc) XmlUtils.unwrap(tr.getContent().get(column));
         return tc.getContent().stream()
@@ -80,7 +80,7 @@ public class DocUtil {
                 .orElse(null);
     }
 
-    public static List<HeaderPart> findHeaders(WordprocessingMLPackage wordMLPackage) {
+    protected static List<HeaderPart> findHeaders(WordprocessingMLPackage wordMLPackage) {
         RelationshipsPart rp = wordMLPackage.getMainDocumentPart().getRelationshipsPart();
         List<HeaderPart> result = new ArrayList<>();
         for (Relationship r : rp.getRelationships().getRelationship())
@@ -89,11 +89,11 @@ public class DocUtil {
         return result;
     }
 
-    public static void addBorders(Tbl table) {
+    protected static void addBorders(Tbl table, int size) {
         table.setTblPr(new TblPr());
         CTBorder border = new CTBorder();
         border.setColor("auto");
-        border.setSz(new BigInteger("4"));
+        border.setSz(new BigInteger(String.valueOf(size)));
         border.setSpace(new BigInteger("0"));
         border.setVal(STBorder.SINGLE);
 

@@ -1,6 +1,5 @@
 package com.github.tobiasmiosczka.nami.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +18,8 @@ import nami.connector.namitypes.NamiSchulung;
 import nami.connector.namitypes.NamiSearchedValues;
 
 public class NamiService {
+
+
 
     public interface Listener {
         void onMemberLoaded(int current, int count, NamiMitglied member);
@@ -39,7 +40,7 @@ public class NamiService {
         this.gui = gui;
     }
 
-    public List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws InterruptedException, ExecutionException {
+    private List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws InterruptedException, ExecutionException {
         //TODO: make multithreaded
         List<Map<NamiBaustein, NamiSchulung>> result = new ArrayList<>();
         for (NamiMitglied participant : member)
@@ -47,13 +48,17 @@ public class NamiService {
         return result;
     }
 
-    public void login(String username, String password) throws NamiException, IOException, InterruptedException {
+    public List<Map<NamiBaustein, NamiSchulung>> loadTrainingsOfParticipants() throws ExecutionException, InterruptedException {
+        return loadSchulungen(getParticipants());
+    }
+
+    public void login(String username, String password) throws NamiException, InterruptedException {
         connector = new NamiConnector(NamiServer.getLiveserver());
         connector.login(username, password);
         isLoggedIn = true;
     }
 
-    public void loadData(boolean loadInactive) throws IOException, NamiException, InterruptedException, ExecutionException {
+    public void loadData(boolean loadInactive) throws NamiException, InterruptedException, ExecutionException {
         members.clear();
         participants.clear();
         NamiGruppierung group = gui.selectGroup(connector.getAccessibleGroups().get());

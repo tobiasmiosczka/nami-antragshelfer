@@ -4,29 +4,30 @@ import java.util.List;
 
 import com.github.tobiasmiosczka.nami.applicationforms.DocumentWriter;
 import com.github.tobiasmiosczka.nami.applicationforms.annotations.Form;
+import com.github.tobiasmiosczka.nami.applicationforms.annotations.Participants;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Document;
+import com.github.tobiasmiosczka.nami.applicationforms.api.Table;
 import nami.connector.namitypes.NamiMitglied;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.Tbl;
-
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.createTr;
-import static com.github.tobiasmiosczka.nami.applicationforms.DocUtil.findTables;
 
 @Form(title = "Anwesenheitsliste")
 public class ParticipationList extends DocumentWriter {
 
-    public ParticipationList() {
+    private final List<NamiMitglied> participants;
+
+    public ParticipationList(@Participants List<NamiMitglied> participants) {
         super();
+        this.participants = participants;
     }
 
     @Override
-    public void manipulateDoc(List<NamiMitglied> participants, WordprocessingMLPackage doc){
-        Tbl tbl = findTables(doc.getMainDocumentPart().getContent()).get(0);
+    public void manipulateDoc(Document document){
+        Table table = document.getMainDocumentPart().getTables().get(0);
         for (NamiMitglied p : participants)
-            tbl.getContent().add(createTr(
+            table.addRow(
                     p.getNachname(),
                     p.getVorname(),
                     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-            ));
+            );
     }
 
     @Override
