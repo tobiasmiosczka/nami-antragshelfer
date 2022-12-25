@@ -24,13 +24,13 @@ import java.util.function.Supplier;
 
 public class ApplicationFormsMenuUtil {
 
-    public static void init(Menu menu, Supplier<List<NamiMitglied>> participantsSupplier, Supplier<List<Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, BiConsumer<String, Throwable> exceptionConsumer, List<Class<? extends DocumentWriter>> writers) {
+    public static void init(Menu menu, Supplier<List<NamiMitglied>> participantsSupplier, Supplier<Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, BiConsumer<String, Throwable> exceptionConsumer, List<Class<? extends DocumentWriter>> writers) {
         writers.stream()
                 .map(e -> buildMenuItem(participantsSupplier, trainingsSupplier, exceptionConsumer, e))
                 .forEach(item -> menu.getItems().add(item));
     }
 
-    private static <T extends DocumentWriter> T genWriter(Constructor<T> constructor, Supplier<List<NamiMitglied>> participantsSupplier, Supplier<List<Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, List<Object> options) throws Exception {
+    private static <T extends DocumentWriter> T genWriter(Constructor<T> constructor, Supplier<List<NamiMitglied>> participantsSupplier, Supplier<Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, List<Object> options) throws Exception {
         int iParameter = 0, iOption = 0;
         Object[] constructorParameters = new Object[constructor.getParameterCount()];
         for (Parameter c : constructor.getParameters()) {
@@ -64,7 +64,7 @@ public class ApplicationFormsMenuUtil {
         return hasOption ? customDialog : null;
     }
 
-    private static <T extends DocumentWriter> MenuItem buildMenuItem(Supplier<List<NamiMitglied>> participantsSupplier, Supplier<List<Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, BiConsumer<String, Throwable> consumer, Class<T> c) {
+    private static <T extends DocumentWriter> MenuItem buildMenuItem(Supplier<List<NamiMitglied>> participantsSupplier, Supplier<Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>>> trainingsSupplier, BiConsumer<String, Throwable> consumer, Class<T> c) {
         String title = c.getAnnotation(Form.class).title();
         Constructor<T> constructor = (Constructor<T>) c.getConstructors()[0];
         CustomDialog customDialog = buildCustomDialog(constructor);
