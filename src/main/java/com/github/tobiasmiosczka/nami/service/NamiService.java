@@ -1,10 +1,6 @@
 package com.github.tobiasmiosczka.nami.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import nami.connector.NamiConnector;
@@ -40,15 +36,15 @@ public class NamiService {
         this.gui = gui;
     }
 
-    private List<Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws InterruptedException, ExecutionException {
+    private Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>> loadSchulungen(List<NamiMitglied> member) throws InterruptedException, ExecutionException {
         //TODO: make multithreaded
-        List<Map<NamiBaustein, NamiSchulung>> result = new ArrayList<>();
+        Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>> result = new HashMap<>();
         for (NamiMitglied participant : member)
-            result.add(connector.getLatestTrainingsByUser(participant.getId()).get());
+            result.put(participant, connector.getLatestTrainingsByUser(participant.getId()).get());
         return result;
     }
 
-    public List<Map<NamiBaustein, NamiSchulung>> loadTrainingsOfParticipants() throws ExecutionException, InterruptedException {
+    public Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>> loadTrainingsOfParticipants() throws ExecutionException, InterruptedException {
         return loadSchulungen(getParticipants());
     }
 

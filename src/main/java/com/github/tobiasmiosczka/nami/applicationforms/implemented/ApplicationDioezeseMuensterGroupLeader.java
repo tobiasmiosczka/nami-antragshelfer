@@ -23,11 +23,11 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 
 	private final List<NamiMitglied> participants;
 	private final LocalDate datum;
-	private final List<Map<NamiBaustein, NamiSchulung>> schulungen;
+	private final Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>> schulungen;
 
 	public ApplicationDioezeseMuensterGroupLeader(
 			@Participants List<NamiMitglied> participants,
-			@Training List<Map<NamiBaustein, NamiSchulung>> schulungen,
+			@Training Map<NamiMitglied, Map<NamiBaustein, NamiSchulung>> schulungen,
 			@Option(title = "datum") LocalDate datum) {
 		super();
 		this.participants = participants;
@@ -42,11 +42,10 @@ public class ApplicationDioezeseMuensterGroupLeader extends DocumentWriter {
 	@Override
 	public void manipulateDoc(Document document){
 		Table table = document.getMainDocumentPart().getTables().get(0);
-		for (int i = 0; i < participants.size(); ++i) {
-			NamiMitglied p = participants.get(i);
-			Map<NamiBaustein, NamiSchulung> s = schulungen.get(i);
+		for (NamiMitglied p : participants) {
+			Map<NamiBaustein, NamiSchulung> s = schulungen.get(p);
 			table.addRow(
-				p.getNachname() + ", " + p.getVorname(),
+					p.getNachname() + ", " + p.getVorname(),
 					p.getStrasse(),
 					p.getPlz() + " " + p.getOrt(),
 					String.valueOf(calcAge(p.getGeburtsDatum(), datum)),
